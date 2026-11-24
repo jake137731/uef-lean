@@ -98,10 +98,10 @@ noncomputable def corr (A B : Matrix (Fin 2) (Fin 2) ℝ) : ℝ :=
 
 theorem corr_ZZ : corr Z Z = 1 := by
   simp [corr, ψ, Z, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
-    Matrix.kroneckerMap_apply]; norm_num
+    Matrix.kroneckerMap_apply]
 theorem corr_XX : corr X X = 1 := by
   simp [corr, ψ, X, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
-    Matrix.kroneckerMap_apply]; norm_num
+    Matrix.kroneckerMap_apply]
 theorem corr_ZX : corr Z X = 0 := by
   simp [corr, ψ, Z, X, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
     Matrix.kroneckerMap_apply]
@@ -116,16 +116,16 @@ noncomputable def Bb' : Matrix (Fin 2) (Fin 2) ℝ := (1 / Real.sqrt 2) • (Z -
 /-- ⟨A ⊗ (Z ± X)/√2⟩ = (⟨A ⊗ Z⟩ ± ⟨A ⊗ X⟩)/√2, worked out entry by entry. -/
 theorem corr_ZB : corr Z Bb = 1 / Real.sqrt 2 := by
   simp [corr, ψ, Z, X, Bb, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
-    Matrix.kroneckerMap_apply]; ring
+    Matrix.kroneckerMap_apply]
 theorem corr_ZB' : corr Z Bb' = 1 / Real.sqrt 2 := by
   simp [corr, ψ, Z, X, Bb', Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
-    Matrix.kroneckerMap_apply]; ring
+    Matrix.kroneckerMap_apply]
 theorem corr_XB : corr X Bb = 1 / Real.sqrt 2 := by
   simp [corr, ψ, Z, X, Bb, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
-    Matrix.kroneckerMap_apply]; ring
+    Matrix.kroneckerMap_apply]
 theorem corr_XB' : corr X Bb' = -(1 / Real.sqrt 2) := by
   simp [corr, ψ, Z, X, Bb', Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
-    Matrix.kroneckerMap_apply]; ring
+    Matrix.kroneckerMap_apply]
 
 /-- The quantum CHSH value is 2√2. -/
 theorem quantum_S : corr Z Bb + corr Z Bb' + corr X Bb - corr X Bb' = 2 * Real.sqrt 2 := by

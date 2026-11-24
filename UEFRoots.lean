@@ -10,6 +10,8 @@ import Mathlib
 
 open MeasureTheory
 
+set_option linter.unusedSectionVars false
+
 namespace UEF.Roots
 
 variable {ℋ : Type*} [NormedAddCommGroup ℋ] [InnerProductSpace ℂ ℋ] [CompleteSpace ℋ]
