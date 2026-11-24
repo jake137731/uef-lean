@@ -104,6 +104,9 @@ import UEFPredictions
 #print axioms UEF.Riemann.spectral_bridge
 #print axioms UEF.Riemann.xi4_zero_iff
 #print axioms UEF.Riemann.theorem_xi4_5
+#print axioms UEF.Bridges.K7.certifiable_iff
+#print axioms UEF.Bridges.cannot_be_held
+#print axioms UEF.Bridges.binary
 #print axioms UEF.Bridges.binary_existence
 #print axioms UEF.Bridges.constantly_zero
 #print axioms UEF.Complexity.Θ_injective

@@ -115,22 +115,76 @@ theorem B6 (C V : ℝ) (h : max 0 (C - V) = 0) : C ≤ V := by
   rw [h] at this
   linarith
 
+/-! ## 8.3–8.7 — the K7 lock and the ground-state closure -/
+
+/-- The K7 defect flow dξᵢ/dt = Gᵢ(ξ₁, …, ξ₇) (8.3), with the two properties the manuscript gives it.
+    The ground state is at rest under the flow (Proposition 8.6). The seven channels are locked [M]:
+    no channel can stay at zero unless all seven do (8.7); locking forbids partial resolution by
+    construction (§5.3). On the face ξᵢ = 0 with some ξⱼ > 0, Gᵢ ≠ 0 (8.3). Near Ξ = 0 the lock is
+    the local form Gᵢ = Σ cᵢⱼξⱼ + Rᵢ with cᵢⱼ ≥ c > 0 and |Rᵢ| ≤ K|Ξ|² (`UEF.K7.lock_local`). -/
+structure K7 where
+  G : (Fin 7 → ℝ) → (Fin 7 → ℝ)
+  rest : G 0 = 0
+  lock : ∀ Ξ : Fin 7 → ℝ, (∀ j, 0 ≤ Ξ j) → Ξ ≠ 0 → ∀ i, Ξ i = 0 → G Ξ i ≠ 0
+
+/-- ξᵢ = 0 is certifiable at Ξ: it holds, and it is invariant under the flow. A level set {ξᵢ = 0}
+    is invariant under a C¹ flow only where the flow is tangent to it (Nagumo; Khalil §4.2):
+    Gᵢ(Ξ) = 0. -/
+def K7.Certifiable (k : K7) (Ξ : Fin 7 → ℝ) (i : Fin 7) : Prop := Ξ i = 0 ∧ k.G Ξ i = 0
+
+/-- Theorem 8.3 (ground-state closure; mutual necessity) — for each channel i, ξᵢ = 0 is
+    certifiable exactly when Ξ = 0. Steps 2–5: at Ξ = 0 the ground state is at rest, so each
+    ξᵢ = 0 is certifiable; with ξᵢ = 0 and Ξ ≠ 0, the lock gives Gᵢ(Ξ) ≠ 0, and ξᵢ = 0 is not
+    invariant. -/
+theorem K7.certifiable_iff (k : K7) {Ξ : Fin 7 → ℝ} (h : ∀ j, 0 ≤ Ξ j) (i : Fin 7) :
+    k.Certifiable Ξ i ↔ Ξ = 0 := by
+  constructor
+  · rintro ⟨hi, hG⟩
+    by_contra hne
+    exact k.lock Ξ h hne i hi hG
+  · rintro rfl
+    exact ⟨by simp, by simp [k.rest]⟩
+
+/-- Every defect is non-negative: ξᵢ = Rᵢ ∘ Πᵢ and Rᵢ ≥ 0 (24.2). -/
+theorem Ξ_nonneg {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State) :
+    ∀ j, 0 ≤ Ξ bs s j :=
+  fun j => (bs j).R_nonneg _
+
+/-- A state is held when it is certified: every ξᵢ = 0 holds and is invariant under the flow
+    (8.7: a state is certified exactly when Ξ = 0). -/
+def Held (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State) : Prop :=
+  ∀ i, k.Certifiable (Ξ bs s) i
+
 /-! ## 24.1 — binary existence -/
 
-/-- 24.1 — Existence is binary: a state with Ξ ≠ 0 does not exist. We exist, so Ξ = 0: all seven
-    defects are zero together, and all seven classical faces hold together. -/
-theorem binary_existence {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
-    (Exists : State → Prop) (binary : ∀ s, Ξ bs s ≠ 0 → ¬Exists s) (s : State) (h : Exists s) :
-    Ξ bs s = 0 ∧ ∀ j, (bs j).claim ((bs j).proj s) := by
-  have h0 : Ξ bs s = 0 := Classical.byContradiction fun hne => binary s hne h
+/-- Theorem 24.1, Steps 3–4 — a state with Ξ ≠ 0 cannot be held. For any channel with ξⱼ = 0 the
+    lock makes its rate nonzero; no channel survives alone, so no channel is certifiable. -/
+theorem cannot_be_held (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State)
+    (h : Ξ bs s ≠ 0) : ∀ i, ¬k.Certifiable (Ξ bs s) i :=
+  fun i hc => h ((k.certifiable_iff (Ξ_nonneg bs s) i).mp hc)
+
+/-- Existence in the UEF is binary (24.1, by 8.4): one channel certified, all seven certified, and
+    Ξ = 0 are the same. There is no partial existence. -/
+theorem binary (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State) :
+    ((∃ i, k.Certifiable (Ξ bs s) i) ↔ Held k bs s) ∧ (Held k bs s ↔ Ξ bs s = 0) := by
+  have each := fun j => k.certifiable_iff (Ξ_nonneg bs s) j
+  refine ⟨⟨fun ⟨i, hi⟩ j => (each j).mpr ((each i).mp hi), fun hall => ⟨0, hall 0⟩⟩,
+    ⟨fun hall => (each 0).mp (hall 0), fun hz j => (each j).mpr hz⟩⟩
+
+/-- 8.7 — reality is at Ξ = 0, because the world exists. A state with Ξ ≠ 0 cannot be held; the
+    realized world is held; so the realized world is at Ξ = 0, and all seven classical faces hold
+    together. -/
+theorem binary_existence (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State)
+    (held : Held k bs s) : Ξ bs s = 0 ∧ ∀ j, (bs j).claim ((bs j).proj s) := by
+  have h0 : Ξ bs s = 0 := ((binary k bs s).2).mp held
   exact ⟨h0, (closure bs s).mp h0⟩
 
-/-- Constantly: at every moment we exist, all seven are zero together, and all seven classical
-    faces hold together. -/
-theorem constantly_zero {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
-    (Exists : State → Prop) (binary : ∀ s, Ξ bs s ≠ 0 → ¬Exists s) (world : ℝ → State)
-    (we_exist : ∀ t, Exists (world t)) :
+/-- 8.7 — the realized world exists and holds (E11: the record contains distinct states; E12: every
+    recorded state is a state the world was in). At every moment the world is in, all seven defects
+    are zero together, and all seven classical faces hold together. -/
+theorem constantly_zero (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
+    (world : ℝ → State) (held : ∀ t, Held k bs (world t)) :
     ∀ t, Ξ bs (world t) = 0 ∧ ∀ j, (bs j).claim ((bs j).proj (world t)) :=
-  fun t => binary_existence bs Exists binary (world t) (we_exist t)
+  fun t => binary_existence k bs (world t) (held t)
 
 end UEF.Bridges
