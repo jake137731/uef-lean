@@ -16,6 +16,28 @@ namespace UEF.Roots
 
 variable {ℋ : Type*} [NormedAddCommGroup ℋ] [InnerProductSpace ℂ ℋ] [CompleteSpace ℋ]
 
+/-! ## §4.1 — Everything that exists coexists non-contradictorily (N1–N10) -/
+
+/-- N4 (L2) — the accepted contradiction identity: P ∧ ¬P ↔ F. -/
+theorem N4 (P : Prop) : (P ∧ ¬P) ↔ False := and_not_self_iff P
+
+/-- N5 (L1) — no truth-value assignment satisfies P ∧ ¬P. -/
+theorem N5 (v : Bool) : (v && !v) = false := by cases v <;> rfl
+
+/-- N6–N9 — a realized state satisfies the propositions that describe it, so no realized state
+    instantiates P ∧ ¬P in the same respect, and a continuously realized world consists of
+    realized states that do not instantiate same-respect contradiction. -/
+theorem N9 {State : Type*} (world : ℝ → State) :
+    ∀ t (P : State → Prop), ¬(P (world t) ∧ ¬P (world t)) :=
+  fun _ _ h => h.2 h.1
+
+/-- N10 (E11, E12) — the realized record is nonempty; the world is here. The record holds at least
+    three distinct states (E11), each a state the world was in (E12). -/
+theorem N10 {State : Type*} (world : ℝ → State) (record : Finset ℝ)
+    (E11 : 3 ≤ (record.image world).card) : Nonempty State := by
+  obtain ⟨x, _⟩ := Finset.card_pos.mp (show 0 < (record.image world).card by omega)
+  exact ⟨x⟩
+
 /-! ## §4.2 — A1 is proved from E -/
 
 /-- A1.1 [P] — P ≔ 0 ∈ ℋ, the zero vector: the origin of the state space. -/

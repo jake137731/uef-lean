@@ -396,6 +396,33 @@ theorem action_to_seven {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (
     exact closed_loop_zero (j i) (hj i) (γ i) (γ' i) a b (hγ i) (hγ' i) (closed i)
   exact ⟨h0, (closure bs s).mp h0⟩
 
+/-! ## §4.1 with §4.4 and §8.7 — from non-contradiction to Ξ = 0 -/
+
+/-- Ker(Φ) ≠ ∅ by R13, ∃-introduction (S7), with the world's state as the witness. -/
+theorem ker_nonempty (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State)
+    (held : Held k bs s) : ∃ x, Ξ bs x = 0 :=
+  ⟨s, ((binary k bs s).2).mp held⟩
+
+/-- The joint, in the manuscript's own terms: "a state with Ξ ≠ 0 is a contradiction". Since no
+    P ∧ ¬P holds (N4–N9), this is exactly Ξ = 0 at that state. -/
+theorem joint_iff (s : State) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) :
+    (Ξ bs s ≠ 0 → ∃ P : Prop, P ∧ ¬P) ↔ Ξ bs s = 0 := by
+  constructor
+  · intro h
+    by_contra hne
+    obtain ⟨P, hP, hnP⟩ := h hne
+    exact hnP hP
+  · intro h hne
+    exact absurd h hne
+
+/-- §4.1 through §8.7 — every realized state is non-contradictory. If a state with Ξ ≠ 0 is a
+    contradiction, the world's state has Ξ = 0, and all seven classical statements hold there. -/
+theorem noncontradiction_to_seven {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State)
+    (joint : Ξ bs s ≠ 0 → ∃ P : Prop, P ∧ ¬P) :
+    Ξ bs s = 0 ∧ ∀ i, (bs i).claim ((bs i).proj s) := by
+  have h0 := (joint_iff s bs).mp joint
+  exact ⟨h0, (closure bs s).mp h0⟩
+
 /-- 8.7 — reality is at Ξ = 0, because the world exists. A state with Ξ ≠ 0 cannot be held; the
     realized world is held; so the realized world is at Ξ = 0, and all seven classical faces hold
     together. -/

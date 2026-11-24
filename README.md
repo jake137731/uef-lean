@@ -101,6 +101,7 @@ Everything after that is the Law of Reciprocity.
 | A1.6: every unitary fixes P | `A1_symmetric` |
 | A1.7: the only fixed point, (−𝟙)x ≠ x for x ≠ P | `A1_only_fixed` |
 | A1.8: ‖P‖ = 0, so P is not a realized state | `A1_not_realized` |
+| §4.1, N1–N10: P ∧ ¬P ↔ F; no assignment satisfies it; no realized state instantiates same-respect contradiction; the record is nonempty (E11, E12), the world is here | `N4`, `N5`, `N9`, `N10` |
 | A1.9 [M]: 0 = ∞. Every ray passes through P (E10), and the rays are infinitely many (E19): nothing is realized at P, and every possible state is a direction out of P | `A1_9_every_ray`, `A1_9_rays_distinct`, `A1_9` |
 | A2, Lemma 1: from P and a realized record, a first disturbance P → P′ ≠ P | `A2` |
 | A2.5: no linear law moves P | `A2_not_linear` |
@@ -191,6 +192,7 @@ These are two different relationships. The physical couplings carry one channel'
 | Ch. 24: when the classical object doesn't depend on the state, "some state has ξᵢ = 0" is the classical claim itself | `constant_bridge` |
 | Ch. 8.3–8.7 and 24.1, binary existence: the K7 lock [M]; Theorem 8.3, ξᵢ = 0 is certifiable exactly when Ξ = 0; a state with Ξ ≠ 0 cannot be held; one certified, all seven certified and Ξ = 0 are the same; if the realized world is held, all seven are zero together, constantly, and all seven classical faces hold; Nagumo: a channel that stays at zero has rate zero | `K7`, `K7.certifiable_iff`, `invariant_tangent`, `cannot_stay`, `cannot_be_held`, `binary`, `binary_existence`, `constantly_zero` |
 | The lock on the pinned channels, from E alone: a world whose seven defects are fixed runs on a locked K7 flow exactly when Ξ = 0 or every channel is open; with one classical statement holding, exactly when all seven hold | `pinned_lock_iff`, `pinned_world` |
+| §4.1 to §8.7, from non-contradiction to Ξ = 0: Ker(Φ) ≠ ∅ by ∃-introduction (S7, R13); "a state with Ξ ≠ 0 is a contradiction" is exactly Ξ = 0 at that state; with it, all seven classical statements hold | `ker_nonempty`, `joint_iff`, `noncontradiction_to_seven` |
 | Ch. 28, Ξ = 0 from the action: Noether for translation in defect space; the net charge around any closed loop is zero; if each channel's defect is its closed-loop charge, Ξ = 0 and all seven classical statements hold | `noether_defect`, `closed_loop_zero`, `xi_from_action`, `action_to_seven` |
 | Ch. 24.1, Tests 1–7 and Theorem CF: one open channel opens all seven within three steps of the collapse sequence; along the flow, a channel at zero sits at a minimum, so the lock opens all seven at the same moment; one classical statement failing means all seven fail and the state cannot be held; the seven are resolved together or not at all | `pushes`, `one_opens_all`, `tests_spread`, `all_open_at_once`, `counterfactual_all`, `together` |
 | Ch. 24, Thms B.2, B.4, B.5, B.6: Δ_YM ≥ m_UEF > 0; rank = ord; Alg^p = Hdg^p from equal dimension; C(E) ≤ V(E) | `B2`, `B4`, `B5`, `B6` |

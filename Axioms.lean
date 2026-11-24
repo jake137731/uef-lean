@@ -37,6 +37,9 @@ import UEFPredictions
 #print axioms UEF.Roots.roots
 #print axioms UEF.Roots.A1_9_every_ray
 #print axioms UEF.Roots.A1_9
+#print axioms UEF.Roots.N4
+#print axioms UEF.Roots.N9
+#print axioms UEF.Roots.N10
 #print axioms UEF.Roots.lemma2
 #print axioms UEF.Roots.spread
 #print axioms UEF.Roots.lemma4
@@ -130,6 +133,9 @@ import UEFPredictions
 #print axioms UEF.Bridges.closed_loop_zero
 #print axioms UEF.Bridges.xi_from_action
 #print axioms UEF.Bridges.action_to_seven
+#print axioms UEF.Bridges.ker_nonempty
+#print axioms UEF.Bridges.joint_iff
+#print axioms UEF.Bridges.noncontradiction_to_seven
 #print axioms UEF.Bridges.binary_existence
 #print axioms UEF.Bridges.constantly_zero
 #print axioms UEF.Complexity.Θ_injective
