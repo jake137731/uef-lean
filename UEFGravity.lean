@@ -46,13 +46,13 @@ section Geodesic
 variable {n : ℕ}
 
 /-- Γ^α_{μν} = ½ g^{αρ}(∂_μ g_{ρν} + ∂_ν g_{ρμ} − ∂_ρ g_{μν}); dg σ ρ ν stands for ∂_σ g_{ρν}. -/
-def christoffel (ginv : Matrix (Fin n) (Fin n) ℝ) (dg : Fin n → Matrix (Fin n) (Fin n) ℝ)
+noncomputable def christoffel (ginv : Matrix (Fin n) (Fin n) ℝ) (dg : Fin n → Matrix (Fin n) (Fin n) ℝ)
     (α μ ν : Fin n) : ℝ :=
   1 / 2 * ∑ ρ, ginv α ρ * (dg μ ρ ν + dg ν ρ μ - dg ρ μ ν)
 
 /-- Step 6 — the Euler–Lagrange expression of L_p:
     g_{ρν} ẍ^ν + ∂_σ g_{ρν} ẋ^σ ẋ^ν − ½ ∂_ρ g_{μν} ẋ^μ ẋ^ν. -/
-def eulerLagrange (g : Matrix (Fin n) (Fin n) ℝ) (dg : Fin n → Matrix (Fin n) (Fin n) ℝ)
+noncomputable def eulerLagrange (g : Matrix (Fin n) (Fin n) ℝ) (dg : Fin n → Matrix (Fin n) (Fin n) ℝ)
     (v a : Fin n → ℝ) (ρ : Fin n) : ℝ :=
   ∑ ν, g ρ ν * a ν + ∑ σ, ∑ ν, dg σ ρ ν * v σ * v ν - 1 / 2 * ∑ μ, ∑ ν, dg ρ μ ν * v μ * v ν
 
@@ -133,7 +133,8 @@ theorem grr {α : ℝ → ℝ} {C : ℝ} (hC : 0 ≤ C)
     have hrc : r - C ≠ 0 := (sub_pos.mpr hr).ne'
     have hq : HasDerivAt (fun r => 1 - C / r) (C / r ^ 2) r := by
       have := ((hasDerivAt_inv hr0.ne').const_mul C).const_sub 1
-      convert this using 1 <;> first | (funext s; ring) | ring
+      convert this using 1
+      ring
     have hpos : 0 < 1 - C / r := by
       rw [sub_pos, div_lt_one hr0]
       exact hr
@@ -195,7 +196,7 @@ theorem redshift (rs r₁ r₂ : ℝ) (hrs : 0 < rs) (h1 : rs < r₁) (h12 : r�
     exact h1
   have b : 1 - rs / r₁ < 1 - rs / r₂ := by
     have : rs / r₂ < rs / r₁ := by
-      rw [div_lt_div_iff hr2 hr1]
+      rw [div_lt_div_iff₀ hr2 hr1]
       exact mul_lt_mul_of_pos_left h12 hrs
     linarith
   rw [div_lt_one (Real.sqrt_pos.mpr (a.trans b))]
