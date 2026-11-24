@@ -136,7 +136,7 @@ theorem bridge_mass (G c E M : ℝ) (hG : 0 < G) (hc : 0 < c) (hE : 0 ≤ E) (hM
 theorem closed_iff_separable (G c E : ℝ) (hG : 0 < G) (hc : 0 < c) (hE : 0 ≤ E) :
     c ^ 2 / G * Real.sqrt (E * G / (4 * π)) = 0 ↔ E = 0 := by
   have hc2 : c ^ 2 / G ≠ 0 := by positivity
-  rw [mul_eq_zero, Real.sqrt_eq_zero (by positivity), div_eq_zero_iff, mul_eq_zero]
+  rw [mul_eq_zero, Real.sqrt_eq_zero (by positivity)]
   simp [hc2, hG.ne', hc.ne', Real.pi_ne_zero]
 
 /-- Step 4 — entangled ⟺ the bridge is open: M > 0 exactly when E_F > 0. -/

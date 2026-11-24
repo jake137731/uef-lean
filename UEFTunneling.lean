@@ -68,7 +68,8 @@ theorem spectral_gap {n : ℕ} (k : Fin n → ℤ) (hk : k ≠ 0) : 1 ≤ ∑ i,
     have h3 : (1 : ℝ) ≤ |(k i : ℝ)| := by exact_mod_cast h2
     nlinarith [abs_nonneg ((k i : ℝ)), sq_abs ((k i : ℝ))]
   calc (1 : ℝ) ≤ (k i : ℝ) ^ 2 := h1
-    _ ≤ ∑ j, (k j : ℝ) ^ 2 := Finset.single_le_sum (fun j _ => sq_nonneg _) (Finset.mem_univ i)
+    _ ≤ ∑ j, (k j : ℝ) ^ 2 :=
+        Finset.single_le_sum (fun j _ => sq_nonneg ((k j : ℝ))) (Finset.mem_univ i)
 
 /-- …and |k|² = 1 is reached by a unit winding, so λ₁ = 1 and the decay rate is λ = 2. -/
 theorem gap_reached (n : ℕ) (i : Fin n) : ∑ j, ((Pi.single i (1 : ℤ) : Fin n → ℤ) j : ℝ) ^ 2 = 1 := by
