@@ -19,6 +19,12 @@ import UEFCycle
 import UEFCollapse
 import UEFBridges
 import UEFRiemann
+import UEFComplexity
+import UEFFluids
+import UEFGauge
+import UEFElliptic
+import UEFHodge
+import UEFPoincare
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -98,3 +104,11 @@ import UEFRiemann
 #print axioms UEF.Riemann.theorem_xi4_5
 #print axioms UEF.Bridges.binary_existence
 #print axioms UEF.Bridges.constantly_zero
+#print axioms UEF.Complexity.Θ_injective
+#print axioms UEF.Complexity.threshold
+#print axioms UEF.Fluids.enstrophy
+#print axioms UEF.Gauge.decoupling
+#print axioms UEF.Gauge.transverse_mass
+#print axioms UEF.Elliptic.sha_finite
+#print axioms UEF.Hodge.steps_9_10
+#print axioms UEF.Poincare.volume_bound
