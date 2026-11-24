@@ -4,7 +4,7 @@
 
 ## Check it yourself
 
-Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all thirteen files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
+Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twelve files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
 
 To check it on your own machine:
 
@@ -17,7 +17,7 @@ lake build
 ```
 
 - `UEF.lean` uses only Lean's core library, so `lean UEF.lean` checks it on its own.
-- The other twelve files need Mathlib, for the real numbers, calculus, measure theory and integrals.
+- The other eleven files need Mathlib, for the real numbers, calculus, measure theory and integrals.
 
 There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
