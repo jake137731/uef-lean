@@ -59,7 +59,7 @@ theorem prod_lower (A B K S C A0 B0 S0 C0 : ℝ) (hA0 : A0 ≤ A) (hB0 : B0 ≤ 
   exact mul_le_mul h3 h4 h5 (mul_nonneg (mul_nonneg hA hB) pK)
 
 /-- The same product, for the upper bound. -/
-theorem prod_upper (A B K S C S1 C1 : ℝ) (hA : A ≤ 1) (hB : B ≤ 1) (pA : 0 ≤ A) (pB : 0 ≤ B)
+theorem prod_upper (A B K S C S1 C1 : ℝ) (hA : A ≤ 1) (hB : B ≤ 1) (pB : 0 ≤ B)
     (hS1 : S ≤ S1) (hC1 : C ≤ C1) (pS : 0 ≤ S) (pC : 0 ≤ C) (pK : 0 ≤ K) :
     A * B * K * (2 * (S * C)) ≤ 1 * 1 * K * (2 * (S1 * C1)) := by
   have h1 : A * B ≤ 1 * 1 := mul_le_mul hA hB pB zero_le_one
@@ -118,7 +118,7 @@ theorem F10_jarlskog :
   · refine le_trans ?_ (prod_lower _ _ _ _ _ _ _ _ _ hA0 hB0 hS0 hC0 (by norm_num) (by norm_num)
       pS0 pC0 pK)
     norm_num
-  · refine le_trans (prod_upper _ _ _ _ _ _ _ hA1 hB1 (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
+  · refine le_trans (prod_upper _ _ _ _ _ _ _ hA1 hB1 (Real.sqrt_nonneg _)
       hS1 hC1 (pS0.trans hS0) (pC0.trans hC0) pK) ?_
     norm_num
 

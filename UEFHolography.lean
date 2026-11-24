@@ -128,8 +128,11 @@ theorem bridge_mass (G c E M : ℝ) (hG : 0 < G) (hc : 0 < c) (hE : 0 ≤ E) (hM
     rw [show c ^ 4 * E / (4 * π * G) = (c ^ 2 / G) ^ 2 * (E * G / (4 * π)) by field_simp; ring,
       Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]
   have key : M = Real.sqrt (c ^ 4 * E / (4 * π * G)) ↔ M ^ 2 = c ^ 4 * E / (4 * π * G) := by
-    rw [@eq_comm _ M]
-    exact Real.sqrt_eq_iff_sq_eq (by positivity) hM
+    constructor
+    · intro h
+      rw [h, Real.sq_sqrt (by positivity)]
+    · intro h
+      rw [← h, Real.sqrt_sq hM]
   rw [area, hsq, key]
 
 /-- Step 3 — separable ⟺ the throat is closed: M = 0 exactly when E_F = 0. -/

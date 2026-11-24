@@ -363,11 +363,11 @@ theorem planck_energy :
       Real.sqrt (662607015 / 10 ^ 42 / (2 * π) * 299792458 ^ 5 / (667430 / 10 ^ 16)) /
           (1602176634 / 10 ^ 19) < 12210 * 10 ^ 15 := by
   have p1 : (3141592 / 1000000 : ℝ) < π := by
-    have := Real.pi_gt_3141592
+    have := Real.pi_gt_d6
     norm_num at this ⊢
     linarith
   have p2 : π < 3141593 / 1000000 := by
-    have := Real.pi_lt_3141593
+    have := Real.pi_lt_d6
     norm_num at this ⊢
     linarith
   have hπ := Real.pi_pos

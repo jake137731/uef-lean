@@ -25,13 +25,13 @@ theorem complete_square (a c B : ℂ) (ha : a ≠ 0) :
   ring
 
 /-- Step 6 — with a = Δ/(2κ²) and c = iλF, the stationary point is B₀ = −c/(2a) = −iλκ²F/Δ. -/
-theorem stationary_point (κ lam D F : ℂ) (hκ : κ ≠ 0) (hD : D ≠ 0) :
+theorem stationary_point (κ lam D F : ℂ) (hD : D ≠ 0) :
     -(I * lam * F) / (2 * (D / (2 * κ ^ 2))) = -I * lam * κ ^ 2 * F / D := by
   field_simp
   ring
 
 /-- Step 6 — the constant left over is −c²/(4a) = (λ²κ²/2)F²/Δ, since i² = −1. -/
-theorem leftover (κ lam D F : ℂ) (hκ : κ ≠ 0) (hD : D ≠ 0) :
+theorem leftover (κ lam D F : ℂ) (hD : D ≠ 0) :
     -(I * lam * F) ^ 2 / (4 * (D / (2 * κ ^ 2))) = lam ^ 2 * κ ^ 2 / 2 * F ^ 2 / D := by
   rw [mul_pow, mul_pow, I_sq]
   field_simp
@@ -42,9 +42,9 @@ theorem decoupling (κ lam D F B : ℂ) (hκ : κ ≠ 0) (hD : D ≠ 0) :
     D / (2 * κ ^ 2) * B ^ 2 + I * lam * F * B
       = D / (2 * κ ^ 2) * (B - -I * lam * κ ^ 2 * F / D) ^ 2 + lam ^ 2 * κ ^ 2 / 2 * F ^ 2 / D := by
   have ha : D / (2 * κ ^ 2) ≠ 0 := div_ne_zero hD (by simp [hκ])
-  rw [complete_square _ _ B ha, ← leftover κ lam D F hκ hD,
+  rw [complete_square _ _ B ha, ← leftover κ lam D F hD,
     show B + I * lam * F / (2 * (D / (2 * κ ^ 2))) = B - -(I * lam * F) / (2 * (D / (2 * κ ^ 2)))
-      by ring, stationary_point κ lam D F hκ hD]
+      by ring, stationary_point κ lam D F hD]
   ring
 
 /-! ## Part III — the functional-analysis bound -/
