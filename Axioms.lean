@@ -8,6 +8,7 @@ import UEFGauss
 import UEFEmergence
 import UEFStandardModel
 import UEFGolden
+import UEFGravity
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -47,3 +48,6 @@ import UEFGolden
 #print axioms UEF.Golden.whole
 #print axioms UEF.Golden.theorem19
 #print axioms UEF.Golden.invPhi_self_similar
+#print axioms UEF.Gravity.partition
+#print axioms UEF.Gravity.horizon_entropy
+#print axioms UEF.Gravity.friedmann_acceleration
