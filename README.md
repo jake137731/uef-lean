@@ -4,7 +4,7 @@
 
 ## Check it yourself
 
-Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in both files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
+Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all thirteen files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
 
 To check it on your own machine:
 
@@ -17,7 +17,7 @@ lake build
 ```
 
 - `UEF.lean` uses only Lean's core library, so `lean UEF.lean` checks it on its own.
-- `UEFReal.lean` needs Mathlib, for the real numbers, calculus and integrals.
+- The other twelve files need Mathlib, for the real numbers, calculus, measure theory and integrals.
 
 There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
@@ -125,8 +125,27 @@ These are two different relationships. The physical couplings carry one channel'
 | Thm 7: β₀ = 11 − (2/3)n_f, 7 for six flavours; g_s → 0 as μ → ∞; the denominator vanishes at Λ_QCD | `β₀_SU3`, `asymptotic_freedom`, `lambda_QCD` |
 | Thm 8: m_W/m_Z = g/√(g²+g′²) = 1/√(1+tan²θ_W) = cos θ_W | `mass_ratio`, `tan_sq_value` |
 | Thm 10: \|W(SU(3))\| / \|W(U(2))\| = 6/2 = 3 | `weyl_count` |
+| Ch. 12, Def. 1.2: R = {x : C_λx = x}, Ω_dark = Ω ∖ R; Ω = R ∪ Ω_dark, R ∩ Ω_dark = ∅; Ω_dark = ∅ ⇔ R = Ω; R closed, Ω_dark open | `UEFDark.lean`, `partition`, `dark_empty_iff`, `realized_closed`, `dark_open` |
+| Ch. 12, Thm 1: Ω_dark = ∅ ⟹ ∂R = ∅; a non-empty interface needs μ(Ω_dark) > 0 | `interface_empty`, `dark_measure_pos` |
+| Ch. 12, Thm 2: a gauge coupling over R has no term with Ω_dark | `no_gauge_coupling` |
+| Ch. 12, Thm 3: the action splits over the partition; E38, μ(Ω∖R)/μ(R) = (1 − η)/η; 844/156 = 211/39; the finite model | `action_splits`, `dark_ratio_measure`, `ratio_156`, `finite_model` |
+| Ch. 12, 12.4: Planck ratio 75/14, η = 14/89, dark matter 75/89 of all matter | `planck_ratio`, `eta_planck`, `dark_fraction` |
+| Ch. 12, Thm 4: μ₀ = 1/(m_S V), ε₀ = k_S V/c², c = 1/√(ε₀μ₀) hold together exactly when k_S = m_S, where c = 1; Z₀ = √(μ₀/ε₀) = μ₀c; μ₀c = 4709128920835668637/12500000000000000 Ω | `units_forced`, `c_is_one`, `impedance`, `impedance_value` |
+| Ch. 12, Thm 5: R(t₁) ⊆ R(t₂) ⟹ μ(Ω_dark) decreases, and Λ_eff with it | `depletion`, `lambda_decreases` |
+| Ch. 13, Thm 12, Step 12: G₀₀ = (8πG/c⁴)T₀₀ is Poisson's equation ∇²Φ = 4πGρ, and that fixes the coefficient | `UEFGravity.lean`, `newtonian_limit`, `coefficient_fixed` |
+| Ch. 13, Thm 13, Step 6: g^{αρ} times the Euler–Lagrange expression of ½g_{μν}ẋ^μẋ^ν is ẍ^α + Γ^α_{μν}ẋ^μẋ^ν | `christoffel`, `eulerLagrange`, `geodesic_equation` |
+| Ch. 13, Thm 14, Steps 4–5: G_tt = 0 gives e^{−2β} = 1 − C/r; G_rr = 0 gives e^{2α} = K(1 − C/r); asymptotic flatness fixes K = 1, so α = −β | `gtt`, `grr`, `flat_fixes_K`, `alpha_neg_beta` |
+| Ch. 13, Thm 14, Step 7: r_s(☉) = 9479460000000000000/3209839924060063 m exactly; light climbing out is redshifted | `sun_radius`, `sun_radius_bounds`, `redshift` |
+| Ch. 13, Thm 15: A = 4πr_s² = 16πG²M²/c⁴; A/4l_P² = 4πGM²/(ħc) | `horizon_area`, `horizon_entropy` |
+| Ch. 13, Thm 16, Steps 2–6: the flux balance; an injective encoding and an isometric evaporation keep distinct states distinct and every inner product | `flux_balance`, `flux_accounting`, `information_preserved` |
+| Ch. 13, Thm 17: [G_d] = 2 − d makes the action dimensionless in every d; [G₈] = −6; G = G₈/V₄ has −2; dimension 4 + 2k ↔ the k-th KK mode, one to one | `action_dimensionless`, `G8_dimension`, `G4_dimension`, `kk_correspondence` |
+| Ch. 13, Thm 18: both Friedmann equations from G₀₀ and G_ii; the second also from the first and ρ̇a = −3ȧ(ρ + p); the cosmic budget sums to 1 | `friedmann_first`, `friedmann_second`, `friedmann_acceleration`, `budget`, `budget_any_eta` |
+| Ch. 14: O = ker Φ and C = Ω ∖ O partition Ω; level conservation uₙ₋₁ = rₙ + uₙ; down to any depth the parts add to 1 | `UEFGolden.lean`, `binary_partition`, `level_zero`, `level_conservation`, `whole` |
+| Ch. 14, Thm 19: the only x in (0, 1) with x = (1 − x)/x is (√5 − 1)/2 = φ⁻¹; the same as x² + x − 1 = 0 and x = 1/(1 + x) | `theorem19`, `invPhi_self_similar`, `invPhi_eq`, `self_similar_iff`, `continued_fraction` |
 
 **What Lean caught.** Theorem 8's statement gives sin²θ_W = 231/1000, but its Step 8 uses 23129/76871 for tan²θ_W, and that number comes from sin²θ_W = 23129/100000. In exact arithmetic 231/1000 gives tan²θ_W = 231/769, which is a different number (`tan_sq_statement_value`). The statement and the step need to use the same value.
+
+Chapter 12 states two values of the realized fraction η. Theorem 3, Step 5 sets η = 156/1000, which gives a dark-to-visible ratio of 211/39, and Chapter 13's cosmic budget uses the same 156/1000. Section 12.4 solves (1 − η)/η = 75/14 from Planck 2018 and gets η = 14/89. In exact arithmetic 156/1000 ≠ 14/89 and 211/39 ≠ 75/14 (`eta_values_differ`, `ratios_differ`). Each computation is right on its own terms, but the chapter needs one value. Neither value changes the budget's sum, which comes to 1 for every η (`budget_any_eta`).
 
 ## What Lean takes from E as it stands
 
@@ -136,3 +155,5 @@ The thesis is that E is used as it stands. Where an established result enters, t
 - **Noether in general (E35).** It enters where A4.7 cites it. The case A4.2 uses is proved directly: the charge of the phase symmetry is conserved. Bell (E26) and the divergence theorem (E32) no longer come from E. `UEFBell.lean` and `UEFGauss.lean` prove them.
 - **The K7 lock and invariance.** These enter as evidence §8.3 states them. `lock_local` proves the lock from its local form.
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
+- **Chapter 13's curvature steps.** The variation δ(R√−g)/δg^{μν} = G_μν√−g (Theorem 12, Step 6), the weak-field G₀₀ = 2∇²Φ/c², the reduction of G_μν = 0 to the two radial equations (Theorem 14, Step 4), the FLRW components G₀₀ and G_ii (Theorem 18, Step 3), Birkhoff's theorem and the Bianchi identity all need Lorentzian curvature. They enter as the manuscript states them, and Lean proves every step after them.
+- **Physical premises in Chapters 12 and 13.** These enter as hypotheses: that the gauge coupling lives on R (Theorem 2), that p_dark = 0 (Theorem 3), that the electroweak projection loses its holonomy when S_{∂R} = 0 (Theorem 1, Step 5), and that the horizon encoding is injective and the evaporation isometric (Theorem 16, Step 6). The smooth-horizon claim (Theorem 16, Step 7) and the UV completion (Theorem 17, Step 11) aren't formalized.
