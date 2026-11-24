@@ -9,7 +9,7 @@
 -/
 import Mathlib
 
-open MeasureTheory
+open MeasureTheory Matrix
 
 namespace UEF.Bell
 
@@ -64,8 +64,16 @@ theorem chsh (s : Strategy Ω) : |S μ s| ≤ 2 := by
   have i3 := integrable_product μ _ _ s.mA' s.mB s.sA' s.sB
   have i4 := integrable_product μ _ _ s.mA' s.mB' s.sA' s.sB'
   have e : S μ s = ∫ ω, (s.A ω * s.B ω + s.A ω * s.B' ω + s.A' ω * s.B ω - s.A' ω * s.B' ω) ∂μ := by
+    have e1 : ∫ ω, (s.A ω * s.B ω + s.A ω * s.B' ω + s.A' ω * s.B ω - s.A' ω * s.B' ω) ∂μ
+        = ∫ ω, (s.A ω * s.B ω + s.A ω * s.B' ω + s.A' ω * s.B ω) ∂μ - ∫ ω, s.A' ω * s.B' ω ∂μ :=
+      integral_sub ((i1.add i2).add i3) i4
+    have e2 : ∫ ω, (s.A ω * s.B ω + s.A ω * s.B' ω + s.A' ω * s.B ω) ∂μ
+        = ∫ ω, (s.A ω * s.B ω + s.A ω * s.B' ω) ∂μ + ∫ ω, s.A' ω * s.B ω ∂μ :=
+      integral_add (i1.add i2) i3
+    have e3 : ∫ ω, (s.A ω * s.B ω + s.A ω * s.B' ω) ∂μ
+        = ∫ ω, s.A ω * s.B ω ∂μ + ∫ ω, s.A ω * s.B' ω ∂μ := integral_add i1 i2
     unfold S
-    rw [integral_sub ((i1.add i2).add i3) i4, integral_add (i1.add i2) i3, integral_add i1 i2]
+    rw [e1, e2, e3]
   rw [e, ← Real.norm_eq_abs]
   have := norm_integral_le_of_norm_le_const (μ := μ) (C := 2)
     (f := fun ω => s.A ω * s.B ω + s.A ω * s.B' ω + s.A' ω * s.B ω - s.A' ω * s.B' ω)
@@ -101,25 +109,27 @@ theorem corr_XZ : corr X Z = 0 := by
   simp [corr, ψ, Z, X, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
     Matrix.kroneckerMap_apply]
 
-/-- The correlation is linear in B. -/
-theorem corr_add (A B C : Matrix (Fin 2) (Fin 2) ℝ) : corr A (B + C) = corr A B + corr A C := by
-  simp only [corr, Matrix.kroneckerMap_add_right (fun a b c => mul_add a b c), Matrix.add_mulVec,
-    dotProduct_add, add_div]
-
-theorem corr_smul (A B : Matrix (Fin 2) (Fin 2) ℝ) (c : ℝ) : corr A (c • B) = c * corr A B := by
-  simp only [corr, Matrix.kroneckerMap_smul_right (fun a b => mul_left_comm c a b), Matrix.smul_mulVec_assoc,
-    dotProduct_smul, smul_eq_mul, mul_div_assoc]
-
-theorem corr_sub (A B C : Matrix (Fin 2) (Fin 2) ℝ) : corr A (B - C) = corr A B - corr A C := by
-  rw [sub_eq_add_neg, corr_add, ← neg_one_smul ℝ C, corr_smul]; ring
-
 /-- The settings: A on Z or X; B on (Z + X)/√2 or (Z − X)/√2. -/
 noncomputable def Bb : Matrix (Fin 2) (Fin 2) ℝ := (1 / Real.sqrt 2) • (Z + X)
 noncomputable def Bb' : Matrix (Fin 2) (Fin 2) ℝ := (1 / Real.sqrt 2) • (Z - X)
 
+/-- ⟨A ⊗ (Z ± X)/√2⟩ = (⟨A ⊗ Z⟩ ± ⟨A ⊗ X⟩)/√2, worked out entry by entry. -/
+theorem corr_ZB : corr Z Bb = 1 / Real.sqrt 2 := by
+  simp [corr, ψ, Z, X, Bb, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
+    Matrix.kroneckerMap_apply]; ring
+theorem corr_ZB' : corr Z Bb' = 1 / Real.sqrt 2 := by
+  simp [corr, ψ, Z, X, Bb', Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
+    Matrix.kroneckerMap_apply]; ring
+theorem corr_XB : corr X Bb = 1 / Real.sqrt 2 := by
+  simp [corr, ψ, Z, X, Bb, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
+    Matrix.kroneckerMap_apply]; ring
+theorem corr_XB' : corr X Bb' = -(1 / Real.sqrt 2) := by
+  simp [corr, ψ, Z, X, Bb', Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Fin.sum_univ_two,
+    Matrix.kroneckerMap_apply]; ring
+
 /-- The quantum CHSH value is 2√2. -/
 theorem quantum_S : corr Z Bb + corr Z Bb' + corr X Bb - corr X Bb' = 2 * Real.sqrt 2 := by
-  simp only [Bb, Bb', corr_smul, corr_add, corr_sub, corr_ZZ, corr_XX, corr_ZX, corr_XZ]
+  rw [corr_ZB, corr_ZB', corr_XB, corr_XB']
   have h : Real.sqrt 2 ≠ 0 := by positivity
   field_simp
   rw [mul_assoc, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)]
