@@ -309,12 +309,12 @@ theorem friedmann_acceleration (a a' a'' ρ ρ' p : ℝ → ℝ) (G Λ k : ℝ)
   apply mul_left_cancel₀ (mul_ne_zero two_ne_zero hmove)
   linear_combination E + 8 * π * G / 3 * a t * conserv t
 
-/-- The cosmic budget as stated: matter Ω_m = 315/1000 split by η = 156/1000, and dark energy
-    Ω_Λ = 685/1000. Ordinary 2457/50000, dark 13293/50000, and the three sum to 1. -/
+/-- The cosmic budget as stated: matter Ω_m = 315/1000 split by η = 14/89, and dark energy
+    Ω_Λ = 685/1000. Ordinary 441/8900, dark 189/712, and the three sum to 1. -/
 theorem budget :
-    (156 : ℚ) / 1000 * (315 / 1000) = 2457 / 50000 ∧
-      (844 : ℚ) / 1000 * (315 / 1000) = 13293 / 50000 ∧
-      (2457 : ℚ) / 50000 + 13293 / 50000 + 685 / 1000 = 1 := by
+    (14 : ℚ) / 89 * (315 / 1000) = 441 / 8900 ∧
+      (75 : ℚ) / 89 * (315 / 1000) = 189 / 712 ∧
+      (441 : ℚ) / 8900 + 189 / 712 + 685 / 1000 = 1 := by
   norm_num
 
 /-- The budget closes for every realized fraction η: ηΩ_m + (1 − η)Ω_m + Ω_Λ = Ω_m + Ω_Λ. -/

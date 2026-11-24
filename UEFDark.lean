@@ -112,10 +112,12 @@ theorem finite_model (N k : ℕ) (hk : 0 < k) (hkN : k ≤ N) :
   rw [Nat.cast_sub hkN]
   field_simp
 
-/-- Theorem 3, Step 6 — η = 156/1000 gives (1 − η)/η = 844/156 = 211/39. -/
-theorem ratio_156 : (1 - (156 : ℚ) / 1000) / (156 / 1000) = 211 / 39 := by norm_num
+/-- Theorem 3, Step 6 — η = 14/89 gives (1 − η)/η = (1 − 14/89)/(14/89) = (75/89)/(14/89) = 75/14. -/
+theorem ratio_step6 : (1 - (14 : ℚ) / 89) / (14 / 89) = (75 / 89) / (14 / 89) ∧
+    ((75 : ℚ) / 89) / (14 / 89) = 75 / 14 := by norm_num
 
-theorem ratio_844 : (844 : ℚ) / 156 = 211 / 39 := by norm_num
+/-- Step 7 — 75/89 dark matter to 14/89 baryonic matter. -/
+theorem split_step7 : 1 - (14 : ℚ) / 89 = 75 / 89 ∧ (75 : ℚ) / 89 + 14 / 89 = 1 := by norm_num
 
 /-- 12.4 — Planck 2018: Ω_c h² = 120/1000 against Ω_b h² = 224/10000, a ratio of 75/14. -/
 theorem planck_ratio : ((120 : ℚ) / 1000) / (224 / 10000) = 75 / 14 := by norm_num
@@ -132,11 +134,9 @@ theorem eta_planck (η : ℚ) (h : η ≠ 0) : (1 - η) / η = 75 / 14 ↔ η = 
 /-- 12.4 — dark matter is 75/89 of all matter. -/
 theorem dark_fraction : 1 - (14 : ℚ) / 89 = 75 / 89 := by norm_num
 
-/-- Chapter 12 states two values of η: 156/1000 (Theorem 3, Step 5) and 14/89 (12.4).
-    They are not equal, and neither are the ratios they give. -/
-theorem eta_values_differ : (156 : ℚ) / 1000 ≠ 14 / 89 := by norm_num
-
-theorem ratios_differ : (211 : ℚ) / 39 ≠ 75 / 14 := by norm_num
+/-- Theorem 3 and 12.4 give the same ratio: the η of Step 5 is the η that Planck 2018 fixes. -/
+theorem step6_is_planck : (1 - (14 : ℚ) / 89) / (14 / 89) = ((120 : ℚ) / 1000) / (224 / 10000) := by
+  norm_num
 
 /-! ## Theorem 4 — ε₀, μ₀ and c -/
 

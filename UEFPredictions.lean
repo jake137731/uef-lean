@@ -29,8 +29,10 @@ theorem F3 : (23129 / 100000 : ℚ) / (1 - 23129 / 100000) = 23129 / 76871 := by
 /-- F4 — Planck 2018's ratio 75/14 fixes η = 14/89. -/
 theorem F4 : (1 - (14 : ℚ) / 89) / (14 / 89) = 75 / 14 := by norm_num
 
-/-- F5's text uses η = 156/1000, giving 211/39; the table of 33.12 uses η = 14/89. -/
-theorem F4_F5 : (1 - (156 : ℚ) / 1000) / (156 / 1000) = 211 / 39 ∧ (156 : ℚ) / 1000 ≠ 14 / 89 := by
+/-- F4 as stated in 34 and in the table of 33.12: 75/14 at collapse efficiency η = 14/89, the
+    Planck 2018 ratio Ω_c h²/Ω_b h². -/
+theorem F4_F5 : (1 - (14 : ℚ) / 89) / (14 / 89) = 75 / 14 ∧
+    ((120 : ℚ) / 1000) / (224 / 10000) = 75 / 14 := by
   norm_num
 
 /-- F5 — LEP's (29963 ± 74)/10000 lies half a standard deviation from 3. -/

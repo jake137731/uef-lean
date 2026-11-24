@@ -60,7 +60,7 @@ import UEFPredictions
 #print axioms UEF.StandardModel.lambda_value
 #print axioms UEF.StandardModel.asymptotic_freedom
 #print axioms UEF.StandardModel.mass_ratio
-#print axioms UEF.StandardModel.tan_sq_statement_value
+#print axioms UEF.StandardModel.tan_sq_value
 #print axioms UEF.StandardModel.weyl_count
 #print axioms UEF.Golden.binary_partition
 #print axioms UEF.Golden.whole

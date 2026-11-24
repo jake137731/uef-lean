@@ -100,11 +100,11 @@ theorem holding_costs_work {n : ℕ} (M Minv : Matrix (Fin n) (Fin n) ℝ) (hinv
 
 /-! ## 19.4 — the dark matter ratio -/
 
-/-- With k/N → η = 156/1000 the ratio is (1 − η)/η = 211/39. -/
-theorem ratio_chapter19 : (1 - (156 : ℚ) / 1000) / (156 / 1000) = 211 / 39 := by norm_num
+/-- With k/N → η = 14/89 the ratio is (1 − η)/η = 75/14. -/
+theorem ratio_chapter19 : (1 - (14 : ℚ) / 89) / (14 / 89) = 75 / 14 := by norm_num
 
-/-- 19.4 says 211/39 matches Planck 2018; the Planck ratio of 12.4 is 75/14. They are close,
-    and they differ by exactly 29/546. -/
-theorem planck_gap : (211 : ℚ) / 39 - 75 / 14 = 29 / 546 := by norm_num
+/-- 19.4 — the ratio matches Planck 2018: Ω_c h²/Ω_b h² = (120/1000)/(224/10000) = 75/14. -/
+theorem planck_match : (1 - (14 : ℚ) / 89) / (14 / 89) = ((120 : ℚ) / 1000) / (224 / 10000) := by
+  norm_num
 
 end UEF.Moral

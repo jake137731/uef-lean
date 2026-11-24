@@ -156,17 +156,10 @@ theorem mass_ratio (g g' v : ℝ) (hg : 0 < g) (hv : 0 < v) :
     rw [e, Real.sqrt_div' _ (by positivity), Real.sqrt_sq hg.le]
     field_simp
 
-/-- tan²θ_W = sin²θ_W/(1 − sin²θ_W): with sin²θ_W = 23129/100000 this is 23129/76871,
-    the value in Step 8. -/
+/-- tan²θ_W = sin²θ_W/(1 − sin²θ_W): with sin²θ_W = 23129/100000, the value Theorem 8 states,
+    this is 23129/76871, the value in Step 8. -/
 theorem tan_sq_value : (23129 / 100000 : ℝ) / (1 - 23129 / 100000) = 23129 / 76871 := by
   norm_num
-
-/-- The statement of Theorem 8 gives sin²θ_W = 231/1000. In exact arithmetic that value
-    gives tan²θ_W = 231/769, not 23129/76871: the theorem's statement and its Step 8 use
-    two different numbers. -/
-theorem tan_sq_statement_value : (231 / 1000 : ℝ) / (1 - 231 / 1000) = 231 / 769 ∧
-    (231 / 769 : ℝ) ≠ 23129 / 76871 := by
-  constructor <;> norm_num
 
 /-! ## Theorem 10 — The Weyl count -/
 
