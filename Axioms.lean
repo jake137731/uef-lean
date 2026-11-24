@@ -7,6 +7,7 @@ import UEFFields
 import UEFGauss
 import UEFEmergence
 import UEFStandardModel
+import UEFGolden
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -42,3 +43,7 @@ import UEFStandardModel
 #print axioms UEF.StandardModel.mass_ratio
 #print axioms UEF.StandardModel.tan_sq_statement_value
 #print axioms UEF.StandardModel.weyl_count
+#print axioms UEF.Golden.binary_partition
+#print axioms UEF.Golden.whole
+#print axioms UEF.Golden.theorem19
+#print axioms UEF.Golden.invPhi_self_similar
