@@ -12,6 +12,8 @@ import Mathlib
 
 open Finset
 
+set_option linter.unusedSectionVars false
+
 namespace UEF.Coupling
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -95,7 +97,8 @@ theorem positive_definite (M : Matrix ι ι ℝ) (hsym : ∀ a b, M a b = M b a)
     apply Finset.sum_pos'
     · intro b _
       exact mul_nonneg (by linarith [dominant b]) (sq_nonneg _)
-    · exact ⟨a, mem_univ a, mul_pos (by linarith [dominant a]) (by positivity)⟩
+    · exact ⟨a, mem_univ a, mul_pos (by linarith [dominant a])
+        (lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 ha)))⟩
   exact lt_of_lt_of_le hpos (T_lower M hsym v)
 
 /-- The coupling graph: an edge between a and b whenever κ_ab ≠ 0. -/
