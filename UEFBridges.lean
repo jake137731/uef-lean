@@ -338,6 +338,64 @@ theorem pinned_world {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (wor
     rw [← pinned 0]
     exact (closure bs (world 0)).mpr hall
 
+/-! ## Chapter 28 — Ξ = 0 from the action
+
+"The condition Ξ = 0 is derived from the variational principle on M. The action
+S = ∫_M (R + L_transport) dV has Euler–Lagrange equations whose solutions yield Ξ as the conserved
+Noether charge associated with translation in defect space. In any closed-loop existence, the net
+charge must vanish: Ξ = ∮ j · ds = 0." -/
+
+/-- Noether, for translation in defect space (Definition 2, δ_Δ = log w_Δ). The Lagrangian is the
+    same under δ ↦ δ + s, so ∂L/∂δ = 0, and along a solution of the Euler–Lagrange equation
+    d/dt(∂L/∂δ̇) = ∂L/∂δ the charge ∂L/∂δ̇ never changes. -/
+theorem noether_defect (L Lv : ℝ → ℝ → ℝ) (δ δ' : ℝ → ℝ)
+    (inv : ∀ s x v, L (x + s) v = L x v)
+    (EL : ∀ t, HasDerivAt (fun t => Lv (δ t) (δ' t)) (deriv (fun x => L x (δ' t)) (δ t)) t)
+    (a b : ℝ) : Lv (δ a) (δ' a) = Lv (δ b) (δ' b) := by
+  have flat : ∀ v, (fun x => L x v) = fun _ => L 0 v := fun v => funext fun x => by
+    have := inv x 0 v
+    rwa [zero_add] at this
+  have h0 : ∀ t, HasDerivAt (fun t => Lv (δ t) (δ' t)) 0 t := fun t => by
+    have := EL t
+    rwa [flat (δ' t), deriv_const] at this
+  exact is_const_of_deriv_eq_zero (fun t => (h0 t).differentiableAt) (fun t => (h0 t).deriv) a b
+
+/-- In any closed loop the net charge vanishes: ∮ j · ds = ∫ₐᵇ j(γ(t)) γ′(t) dt = 0 when the loop
+    returns to its start, γ(b) = γ(a). -/
+theorem closed_loop_zero (j : ℝ → ℝ) (hj : Continuous j) (γ γ' : ℝ → ℝ) (a b : ℝ)
+    (hγ : ∀ t, HasDerivAt γ (γ' t) t) (hγ' : Continuous γ') (closed : γ b = γ a) :
+    ∫ t in a..b, j (γ t) * γ' t = 0 := by
+  have hγc : Continuous γ := continuous_iff_continuousAt.mpr fun t => (hγ t).continuousAt
+  have hF : ∀ x, HasDerivAt (fun u => ∫ y in (0 : ℝ)..u, j y) (j x) x :=
+    fun x => (hj.integral_hasStrictDerivAt 0 x).hasDerivAt
+  have hcomp : ∀ t, HasDerivAt ((fun u => ∫ y in (0 : ℝ)..u, j y) ∘ γ) (j (γ t) * γ' t) t :=
+    fun t => (hF (γ t)).comp t (hγ t)
+  have hint : IntervalIntegrable (fun t => j (γ t) * γ' t) MeasureTheory.volume a b :=
+    ((hj.comp hγc).mul hγ').intervalIntegrable a b
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => hcomp t) hint]
+  simp [Function.comp, closed]
+
+/-- The seven defects as net charges, each around a closed loop: Ξ = 0. -/
+theorem xi_from_action (j : Fin 7 → ℝ → ℝ) (hj : ∀ i, Continuous (j i)) (γ γ' : Fin 7 → ℝ → ℝ)
+    (a b : ℝ) (hγ : ∀ i t, HasDerivAt (γ i) (γ' i t) t) (hγ' : ∀ i, Continuous (γ' i))
+    (closed : ∀ i, γ i b = γ i a) :
+    (fun i => ∫ t in a..b, j i (γ i t) * γ' i t) = 0 :=
+  funext fun i => closed_loop_zero (j i) (hj i) (γ i) (γ' i) a b (hγ i) (hγ' i) (closed i)
+
+/-- Chapter 28 with the bridges. If each channel's defect at a state is its net charge around a
+    closed loop, then Ξ = 0 at that state, and all seven classical statements hold there. -/
+theorem action_to_seven {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State)
+    (j : Fin 7 → ℝ → ℝ) (hj : ∀ i, Continuous (j i)) (γ γ' : Fin 7 → ℝ → ℝ) (a b : ℝ)
+    (hγ : ∀ i t, HasDerivAt (γ i) (γ' i t) t) (hγ' : ∀ i, Continuous (γ' i))
+    (closed : ∀ i, γ i b = γ i a)
+    (charge : ∀ i, (bs i).ξ s = ∫ t in a..b, j i (γ i t) * γ' i t) :
+    Ξ bs s = 0 ∧ ∀ i, (bs i).claim ((bs i).proj s) := by
+  have h0 : Ξ bs s = 0 := funext fun i => by
+    show (bs i).ξ s = 0
+    rw [charge i]
+    exact closed_loop_zero (j i) (hj i) (γ i) (γ' i) a b (hγ i) (hγ' i) (closed i)
+  exact ⟨h0, (closure bs s).mp h0⟩
+
 /-- 8.7 — reality is at Ξ = 0, because the world exists. A state with Ξ ≠ 0 cannot be held; the
     realized world is held; so the realized world is at Ξ = 0, and all seven classical faces hold
     together. -/

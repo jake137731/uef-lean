@@ -126,6 +126,10 @@ import UEFPredictions
 #print axioms UEF.Bridges.together
 #print axioms UEF.Bridges.pinned_lock_iff
 #print axioms UEF.Bridges.pinned_world
+#print axioms UEF.Bridges.noether_defect
+#print axioms UEF.Bridges.closed_loop_zero
+#print axioms UEF.Bridges.xi_from_action
+#print axioms UEF.Bridges.action_to_seven
 #print axioms UEF.Bridges.binary_existence
 #print axioms UEF.Bridges.constantly_zero
 #print axioms UEF.Complexity.Θ_injective
