@@ -115,4 +115,26 @@ theorem B6 (C V : ℝ) (h : max 0 (C - V) = 0) : C ≤ V := by
   rw [h] at this
   linarith
 
+/-! ## One condition, seven faces — none in isolation -/
+
+/-- The Global Closure Theorem (8.4) with the seven bridges: when certifying any one channel is
+    certifying Ξ = 0 (the K7 lock, Solve(i) ⇔ Solve(all) [M]), certifying channel i is
+    certifying all seven classical statements together. No channel is solved alone. -/
+theorem not_in_isolation {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
+    (Certified : Fin 7 → State → Prop) (lock : ∀ i s, Certified i s ↔ Ξ bs s = 0)
+    (i : Fin 7) (s : State) :
+    Certified i s ↔ ∀ j, (bs j).claim ((bs j).proj s) :=
+  (lock i s).trans (closure bs s)
+
+/-- The seven stand or fall together: at the realized ground state Ξ = 0 all seven classical
+    statements hold at once; a counterexample to any one of them, and Ξ ≠ 0 with no channel
+    certifiable. -/
+theorem the_seven {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
+    (Certified : Fin 7 → State → Prop) (lock : ∀ i s, Certified i s ↔ Ξ bs s = 0)
+    (s : State) :
+    (Ξ bs s = 0 → ∀ j, (bs j).claim ((bs j).proj s)) ∧
+      ((∃ j, ¬(bs j).claim ((bs j).proj s)) → Ξ bs s ≠ 0 ∧ ∀ i, ¬Certified i s) := by
+  refine ⟨(closure bs s).mp, fun h => ⟨refutation bs s h, fun i hc => ?_⟩⟩
+  exact refutation bs s h ((lock i s).mp hc)
+
 end UEF.Bridges
