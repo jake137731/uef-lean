@@ -179,10 +179,13 @@ theorem newton_constant (G₈ G₄ vol : ℝ) (h₈ : 0 < G₈) (hv : 0 < vol) :
   constructor
   · intro h
     have hG₄ : G₄ ≠ 0 := by
-      rintro rfl; simp at h
+      rintro rfl
+      simp at h
+      have : 0 < vol / (16 * π * G₈) := div_pos hv (mul_pos (mul_pos (by norm_num) hπ) h₈)
+      linarith
     field_simp at h ⊢
     nlinarith [h]
-  · intro h; subst h; field_simp; ring
+  · intro h; subst h; field_simp
 
 /-- S⁽⁸⁾ ∘ s = S⁽⁴⁾: the fibre integral of a lifted field is Vol(T⁴) times its
     integral on the base.   (§6.3.4, p. 131, l. 2817) -/
