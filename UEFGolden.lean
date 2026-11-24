@@ -51,8 +51,9 @@ theorem whole (x : ℝ) (N : ℕ) : (∑ n ∈ Finset.range (N + 1), r x n) + u 
   induction N with
   | zero => simp [r, u]
   | succ N ih =>
-    rw [Finset.sum_range_succ, add_assoc, ← level_conservation x N] at *
-    linarith [ih]
+    rw [Finset.sum_range_succ]
+    have := level_conservation x N
+    linarith
 
 /-! ## Step 4d — full self-similarity, and Theorem 19 -/
 
