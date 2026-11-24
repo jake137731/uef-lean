@@ -52,6 +52,34 @@ theorem A1_only_fixed (x : ℋ) (hx : x ≠ P) : (-1 : ℋ →L[ℂ] ℋ) x ≠ 
 theorem A1_not_realized : ‖(P : ℋ)‖ ≠ 1 := by
   simp [P]
 
+/-- A1.9 [M] — 0 = ∞. Every ray {λx : λ ∈ ℂ} of ℋ passes through P (E10): every possible state is a
+    direction out of P. -/
+theorem A1_9_every_ray (x : ℋ) : (P : ℋ) ∈ Submodule.span ℂ {x} := by
+  show (0 : ℋ) ∈ Submodule.span ℂ {x}
+  exact Submodule.zero_mem _
+
+/-- A1.9 [M] — the rays are infinitely many (E19). Already in the two-level system of E10, the rays
+    through (1, n) for n = 0, 1, 2, … are pairwise distinct. -/
+theorem A1_9_rays_distinct :
+    Function.Injective (fun n : ℕ => Submodule.span ℂ {(![1, (n : ℂ)] : Fin 2 → ℂ)}) := by
+  intro m n h
+  have hm : (![1, (m : ℂ)] : Fin 2 → ℂ) ∈ Submodule.span ℂ {(![1, (n : ℂ)] : Fin 2 → ℂ)} := by
+    have : (![1, (m : ℂ)] : Fin 2 → ℂ) ∈ Submodule.span ℂ {(![1, (m : ℂ)] : Fin 2 → ℂ)} :=
+      Submodule.mem_span_singleton_self _
+    simpa only [h] using this
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hm
+  have h0 : c = 1 := by simpa using congrFun hc 0
+  have h1 : c * (n : ℂ) = m := by simpa using congrFun hc 1
+  rw [h0, one_mul] at h1
+  exact_mod_cast h1.symm
+
+/-- A1.9 [M] — so the set of rays is infinite, and each of them passes through P: nothing is
+    realized at P, and everything is possible from P. -/
+theorem A1_9 :
+    (Set.range (fun n : ℕ => Submodule.span ℂ {(![1, (n : ℂ)] : Fin 2 → ℂ)})).Infinite ∧
+      ∀ n : ℕ, (0 : Fin 2 → ℂ) ∈ Submodule.span ℂ {(![1, (n : ℂ)] : Fin 2 → ℂ)} :=
+  ⟨Set.infinite_range_of_injective A1_9_rays_distinct, fun _ => Submodule.zero_mem _⟩
+
 /-! ## §4.3 — A2: the first disturbance is necessary -/
 
 /-- A2.1–A2.6 [P] — Lemma 1, First-Difference Necessity. The history starts at P (A1.1).

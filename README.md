@@ -85,6 +85,7 @@ Everything after that is the Law of Reciprocity.
 | A1.6: every unitary fixes P | `A1_symmetric` |
 | A1.7: the only fixed point, (−𝟙)x ≠ x for x ≠ P | `A1_only_fixed` |
 | A1.8: ‖P‖ = 0, so P is not a realized state | `A1_not_realized` |
+| A1.9 [M]: 0 = ∞. Every ray passes through P (E10), and the rays are infinitely many (E19): nothing is realized at P, and every possible state is a direction out of P | `A1_9_every_ray`, `A1_9_rays_distinct`, `A1_9` |
 | A2, Lemma 1: from P and a realized record, a first disturbance P → P′ ≠ P | `A2` |
 | A2.5: no linear law moves P | `A2_not_linear` |
 | A3.1–A3.3, Lemma 2: a G-equivariant rule fixes P | `lemma2` |

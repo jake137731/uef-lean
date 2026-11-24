@@ -35,6 +35,8 @@ import UEFPredictions
 #print axioms UEF.Reals.kk_mode
 #print axioms UEF.Reals.fibre_integral
 #print axioms UEF.Roots.roots
+#print axioms UEF.Roots.A1_9_every_ray
+#print axioms UEF.Roots.A1_9
 #print axioms UEF.Roots.lemma2
 #print axioms UEF.Roots.spread
 #print axioms UEF.Roots.lemma4
