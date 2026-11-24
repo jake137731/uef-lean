@@ -96,5 +96,5 @@ import UEFRiemann
 #print axioms UEF.Riemann.spectral_bridge
 #print axioms UEF.Riemann.xi4_zero_iff
 #print axioms UEF.Riemann.theorem_xi4_5
-#print axioms UEF.Bridges.not_in_isolation
-#print axioms UEF.Bridges.the_seven
+#print axioms UEF.Bridges.binary_existence
+#print axioms UEF.Bridges.constantly_zero

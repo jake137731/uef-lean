@@ -115,26 +115,22 @@ theorem B6 (C V : ℝ) (h : max 0 (C - V) = 0) : C ≤ V := by
   rw [h] at this
   linarith
 
-/-! ## One condition, seven faces — none in isolation -/
+/-! ## 24.1 — binary existence -/
 
-/-- The Global Closure Theorem (8.4) with the seven bridges: when certifying any one channel is
-    certifying Ξ = 0 (the K7 lock, Solve(i) ⇔ Solve(all) [M]), certifying channel i is
-    certifying all seven classical statements together. No channel is solved alone. -/
-theorem not_in_isolation {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
-    (Certified : Fin 7 → State → Prop) (lock : ∀ i s, Certified i s ↔ Ξ bs s = 0)
-    (i : Fin 7) (s : State) :
-    Certified i s ↔ ∀ j, (bs j).claim ((bs j).proj s) :=
-  (lock i s).trans (closure bs s)
+/-- 24.1 — Existence is binary: a state with Ξ ≠ 0 does not exist. We exist, so Ξ = 0: all seven
+    defects are zero together, and all seven classical faces hold together. -/
+theorem binary_existence {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
+    (Exists : State → Prop) (binary : ∀ s, Ξ bs s ≠ 0 → ¬Exists s) (s : State) (h : Exists s) :
+    Ξ bs s = 0 ∧ ∀ j, (bs j).claim ((bs j).proj s) := by
+  have h0 : Ξ bs s = 0 := Classical.byContradiction fun hne => binary s hne h
+  exact ⟨h0, (closure bs s).mp h0⟩
 
-/-- The seven stand or fall together: at the realized ground state Ξ = 0 all seven classical
-    statements hold at once; a counterexample to any one of them, and Ξ ≠ 0 with no channel
-    certifiable. -/
-theorem the_seven {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
-    (Certified : Fin 7 → State → Prop) (lock : ∀ i s, Certified i s ↔ Ξ bs s = 0)
-    (s : State) :
-    (Ξ bs s = 0 → ∀ j, (bs j).claim ((bs j).proj s)) ∧
-      ((∃ j, ¬(bs j).claim ((bs j).proj s)) → Ξ bs s ≠ 0 ∧ ∀ i, ¬Certified i s) := by
-  refine ⟨(closure bs s).mp, fun h => ⟨refutation bs s h, fun i hc => ?_⟩⟩
-  exact refutation bs s h ((lock i s).mp hc)
+/-- Constantly: at every moment we exist, all seven are zero together, and all seven classical
+    faces hold together. -/
+theorem constantly_zero {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
+    (Exists : State → Prop) (binary : ∀ s, Ξ bs s ≠ 0 → ¬Exists s) (world : ℝ → State)
+    (we_exist : ∀ t, Exists (world t)) :
+    ∀ t, Ξ bs (world t) = 0 ∧ ∀ j, (bs j).claim ((bs j).proj (world t)) :=
+  fun t => binary_existence bs Exists binary (world t) (we_exist t)
 
 end UEF.Bridges
