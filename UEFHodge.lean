@@ -22,7 +22,7 @@ theorem transcendental_part (Alg : Submodule ℚ V) : ∃ T : Submodule ℚ V, I
 
 /-- Step 4 — every Hodge class splits uniquely as α = α_alg + α_T. -/
 theorem unique_split (Alg T : Submodule ℚ V) (h : IsCompl Alg T) (α : V) :
-    ∃! u : Alg × T, (u.1 : V) + u.2 = α :=
+    ∃ (u : Alg) (v : T), (u : V) + v = α ∧ ∀ (r : Alg) (t : T), (r : V) + t = α → r = u ∧ t = v :=
   Submodule.existsUnique_add_of_isCompl h α
 
 /-- Step 9 — a ghost class in T^p that is algebraic is zero: Alg^p ∩ T^p = 0. -/
@@ -48,7 +48,7 @@ theorem dims_agree [FiniteDimensional ℚ V] (Alg : Submodule ℚ V) (h : Alg = 
 
 /-- Step 5 — Ξ = 0 gives ∏ w_Δ = 1, and then every transport has w_Δ = 1. -/
 theorem unimodular {ι : Type*} (s : Finset ι) (w : ι → ℕ) (h : ∏ i ∈ s, w i = 1) :
-    ∀ i ∈ s, w i = 1 := fun i hi =>
+    ∀ i ∈ s, w i = 1 := fun _ hi =>
   Nat.dvd_one.mp (h ▸ Finset.dvd_prod_of_mem w hi)
 
 /-- Step 5 — a transport of weight |det Δ| = 1 acts on the integral lattice as a unimodular

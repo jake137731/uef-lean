@@ -37,13 +37,15 @@ theorem no_p_torsion {G : Type*} [AddGroup G] [Fintype G] (p : ℕ) (hp : p.Prim
   have h1 : addOrderOf x ∣ p := addOrderOf_dvd_of_nsmul_eq_zero hx
   have h2 : addOrderOf x ∣ Fintype.card G := addOrderOf_dvd_card
   rcases (Nat.dvd_prime hp).mp h1 with h | h
-  · exact addOrderOf_eq_one_iff.mp h
+  · have h1x := addOrderOf_nsmul_eq_zero x
+    rw [h, one_nsmul] at h1x
+    exact h1x
   · rw [h] at h2
     exact absurd h2 hdvd
 
 /-- Step 9 — only finitely many primes divide |Sha|. -/
 theorem finitely_many_primes (n : ℕ) (hn : n ≠ 0) : Set.Finite {p : ℕ | p.Prime ∧ p ∣ n} :=
-  (Finset.finite_toSet (Nat.divisors n)).subset fun p hp => Nat.mem_divisors.mpr ⟨hp.2, hn⟩
+  (Finset.finite_toSet (Nat.divisors n)).subset fun _ hp => Nat.mem_divisors.mpr ⟨hp.2, hn⟩
 
 /-- Step 9 — 0 → E(ℚ)/pE(ℚ) → Sel⁽ᵖ⁾ → Sha[p] → 0 with Sha[p] = 0: the first map is an
     isomorphism. -/

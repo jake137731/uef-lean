@@ -79,7 +79,7 @@ theorem enstrophy (y y' : ℝ → ℝ) (K1 K2 : ℝ) (hK1 : 0 < K1) (hK2 : 0 ≤
     have h2 : K2 * Real.sqrt (y s) ≤ K2 * ((1 + y s) / 2) := mul_le_mul_of_nonneg_left h1 hK2
     nlinarith [hineq s]
   have := gronwall y y' (K1 + K2 / 2) (K2 / 2) (by positivity) (by positivity) hy hlin t ht
-  rwa [show K2 / 2 / (K1 + K2 / 2) = K2 / (2 * K1 + K2) by field_simp; ring] at this
+  rwa [div_div, show 2 * (K1 + K2 / 2) = 2 * K1 + K2 by ring] at this
 
 /-- Part IV — u bounded in L^q uniformly in time with q = 6 (p = ∞): 2/p + 3/q = 0 + 1/2 ≤ 1,
     Serrin's condition. -/

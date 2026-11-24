@@ -64,7 +64,7 @@ theorem transverse_mass (p A : E) (hT : @inner ℝ _ _ p A = 0) (hp : p ≠ 0) :
 theorem kernel_nonneg (p A : E) :
     0 ≤ @inner ℝ _ _ A (‖p‖ ^ 2 • A - (@inner ℝ _ _ p A) • p) := by
   rw [inner_sub_right, real_inner_smul_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
-    real_inner_comm A p]
+    real_inner_comm p A]
   have := real_inner_mul_inner_self_le p A
   rw [real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq] at this
   nlinarith

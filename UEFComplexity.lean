@@ -146,7 +146,7 @@ theorem iterate (e : ℕ → ℝ) (r : ℝ) (hr : 0 ≤ r) (h : ∀ j, e (j + 1)
 /-- Step 4 — (1 − x)^j ≤ e^{−jx}, from 1 − x ≤ e^{−x}. -/
 theorem pow_le_exp (x : ℝ) (hx : 0 ≤ 1 - x) (j : ℕ) : (1 - x) ^ j ≤ Real.exp (-(j * x)) := by
   have h := Real.add_one_le_exp (-x)
-  calc (1 - x) ^ j ≤ Real.exp (-x) ^ j := pow_le_pow_left hx (by linarith) j
+  calc (1 - x) ^ j ≤ Real.exp (-x) ^ j := pow_le_pow_left₀ hx (by linarith) j
     _ = Real.exp (-(j * x)) := by
       rw [← Real.exp_nat_mul]
       congr 1
