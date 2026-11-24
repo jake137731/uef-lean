@@ -100,12 +100,12 @@ theorem feasible_later (L U : ℝ → Defects) (G : Defects → Defects) (hL : �
     · have hγ := hD s ⟨hs.1, hlt⟩ hsE.2
       have heq : (fun s => if s ≤ tstar then γ s else 0) =ᶠ[𝓝 s] γ := by
         filter_upwards [Iio_mem_nhds hlt] with y hy
-        simp only [if_pos (le_of_lt hy)]
+        simp only [if_pos (le_of_lt (show y < tstar from hy))]
       simp only [if_pos hlt.le]
       exact hγ.congr_of_eventuallyEq heq
     · have heq : (fun s => if s ≤ tstar then γ s else 0) =ᶠ[𝓝 s] fun _ => (0 : Defects) := by
         filter_upwards [Ioi_mem_nhds hgt] with y hy
-        simp only [if_neg (not_le.mpr hy)]
+        simp only [if_neg (not_le.mpr (show tstar < y from hy))]
       simp only [if_neg (not_le.mpr hgt), hG]
       exact (hasDerivAt_const s (0 : Defects)).congr_of_eventuallyEq heq
 

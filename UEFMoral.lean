@@ -84,7 +84,7 @@ theorem free_energy_falls {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) (hM : M.Pos
     (g : Fin n → ℝ) : g ⬝ᵥ (-(M *ᵥ g)) ≤ 0 := by
   have := hM.2 g
   simp only [star_trivial] at this
-  rw [Matrix.dotProduct_neg]
+  rw [dotProduct_neg]
   linarith
 
 /-- Holding a configuration still, −M(∇F − F_ext) = 0 with M invertible, takes F_ext = ∇F:
