@@ -4,7 +4,7 @@
 
 ## Check it yourself
 
-Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twelve files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
+Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twenty files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
 
 To check it on your own machine:
 
@@ -17,7 +17,7 @@ lake build
 ```
 
 - `UEF.lean` uses only Lean's core library, so `lean UEF.lean` checks it on its own.
-- The other eleven files need Mathlib, for the real numbers, calculus, measure theory and integrals.
+- The other nineteen files need Mathlib, for the real numbers, calculus, measure theory and integrals.
 
 There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
@@ -142,10 +142,37 @@ These are two different relationships. The physical couplings carry one channel'
 | Ch. 13, Thm 18: both Friedmann equations from G₀₀ and G_ii; the second also from the first and ρ̇a = −3ȧ(ρ + p); the cosmic budget sums to 1 | `friedmann_first`, `friedmann_second`, `friedmann_acceleration`, `budget`, `budget_any_eta` |
 | Ch. 14: O = ker Φ and C = Ω ∖ O partition Ω; level conservation uₙ₋₁ = rₙ + uₙ; down to any depth the parts add to 1 | `UEFGolden.lean`, `binary_partition`, `level_zero`, `level_conservation`, `whole` |
 | Ch. 14, Thm 19: the only x in (0, 1) with x = (1 − x)/x is (√5 − 1)/2 = φ⁻¹; the same as x² + x − 1 = 0 and x = 1/(1 + x) | `theorem19`, `invPhi_self_similar`, `invPhi_eq`, `self_similar_iff`, `continued_fraction` |
+| Ch. 15, 15.4: B_μν = κ_B(S_μA_ν − S_νA_μ) is antisymmetric; H = dB = κ_B(dS ∧ A − S ∧ dA) | `UEFHolography.lean`, `B_antisymmetric`, `B_diagonal`, `H_eq` |
+| Ch. 15, 15.5, Step 1: E_F = −Σλₖ log λₖ ≥ 0, zero exactly for a single Schmidt term; log d for the maximally entangled state | `EF_nonneg`, `EF_zero_iff`, `EF_maximal` |
+| Ch. 15, 15.5, Steps 2–5: Area = 4G_N E_F with A = 16πG²M²/c⁴ fixes M = (c²/G)√(E_F G/4π); separable ⇔ closed throat; entangled ⇔ open bridge; S = Area/4G_N | `bridge_mass`, `closed_iff_separable`, `open_iff_entangled`, `ryu_takayanagi` |
+| Ch. 15, 15.6, Thm 1: the fiber distance ΣR_i²Δθ_i² ≤ π²ΣR_i²; Φ_B = −Φ_A; the null energy condition | `fiber_distance_bound`, `throat_flux`, `null_energy` |
+| Ch. 15, 15.6, Thm 2: Vol(T⁴) = (2π)⁴R₁R₂R₃R₄, also as a measure; m_n² = Σ(n_j/R_j)² = 0 only for the zero mode | `fiber_volume`, `torus_volume`, `kk_mass_zero_iff` |
+| Ch. 16: the toroidal band has no edge and wraps; finitely many lattice states; S-preserving transitions compose; a targeted attack on one channel leaves Ξ ≠ 0 and VK > 0 | `UEFTorus.lean`, `no_edge`, `wraps`, `finitely_many`, `admissible_comp`, `attack_detected` |
+| Ch. 17, Thm T6.2: Young's inequality; dV/dτ ≤ −(2/C_P)V; 2λ₁ ≥ Φλ₁; each mode a_k(0)e^{−λ_kτ}; Σ\|a_k\|²e^{−2λ_kτ} ≤ e^{−2λ₁τ}‖D(0)‖² | `UEFTunneling.lean`, `young`, `lyapunov_rate`, `rate_bound`, `mode_decay`, `modes_bound` |
+| Ch. 17, the flat torus: \|k\|² ≥ 1 for k ≠ 0, reached by a unit winding; Poincaré with C_P = 1; cos(kθ) has eigenvalue k² | `spectral_gap`, `gap_reached`, `poincare`, `eigenmode` |
+| Ch. 17, Thm T7.1: a closed geodesic has L = 2π‖w‖; closing with radii R_i makes every ratio rational; d_T = 0 ⇔ every Δθ_i = 0 | `closed_length`, `commensurable`, `synchronized` |
+| Ch. 17, 17.7: C r^{−n} solves the radial Laplace equation in d = n + 2, with r^{d−1}u′ constant; 1/r⁴ ⇔ d = 6 = 4 + 1 + 1 | `radial_green`, `flux_constant`, `six_dimensions` |
+| Ch. 17, 17.8: 0 ≤ C_corr ≤ 1; C_corr = 1 ⇔ Ψ_B = rΨ_A; ‖Ψ_A − Ψ_B‖² = 2 − 2Re⟨Ψ_A, Ψ_B⟩; C_corr ≥ 1 − ½‖Ψ_A − Ψ_B‖²; a lock exists ⇔ \|Δω\| ≤ \|K\|, and Δθ* = 0 is stable | `Ccorr_range`, `Ccorr_one_iff`, `mismatch`, `Ccorr_ge`, `lock_exists`, `lock_stable` |
+| Ch. 18, GTC.1: the corridor is a closed, bounded, convex, connected box containing Ker Φ | `UEFContainment.lean`, `corridor_closed_bounded`, `ground_in_corridor`, `corridor_convex`, `corridor_connected` |
+| Ch. 18, GTC.2: Θ(x₀, t₀) = 1; under the Lyapunov condition the only rest point is Ξ = 0, and Θ stays 1 there; ξ_j > 0 means Ξ ≠ 0 | `Feasible`, `feasible_now`, `rest_point_is_ground`, `feasible_later`, `k7_binary` |
+| Ch. 18, GTC.3: C(t + Δt) ⊆ C(t); U_i(0)e^{−λt} → 0; ⋂ₜ C(t) = Ker Φ; nonempty interior while U_i > 0 | `contraction`, `corridor_mono`, `bound_to_zero`, `contracts_to_ker`, `corridor_interior` |
+| Ch. 18, GTC.4–GTC.5, Thm GTC.1: admissibility holds for Ξ = 0, restricts, concatenates, and fails on one exit; GTC-stable ⟹ Ξ = 0, and not conversely | `admissible_ground`, `admissible_restrict`, `admissible_concat`, `inadmissible`, `gtc_ground`, `gtc_strict` |
+| Ch. 19, 19.1: c_ij ∈ [−1, 1]; 0 ≤ E_ij ≤ 2κ_ij, zero only at θ = 0, slope κ sin θ > 0; E_rel least when all pairs align; δ(0)e^{−Mkt}; dF/dt = −∇FᵀM∇F ≤ 0; holding still takes F_ext = ∇F | `UEFMoral.lean`, `alignment_range`, `energy_bounds`, `energy_zero_iff`, `energy_slope`, `network_least`, `deviation_decays`, `free_energy_falls`, `holding_costs_work` |
+| Ch. 20, WH.1–WH.2: Φ_WH = −Φ_BH; dr*/dr = 1/f; realization is monotone and never shrinks | `UEFCycle.lean`, `mouths`, `tortoise`, `no_uncollapse`, `measure_grows` |
+| Ch. 20, WH.3–WH.4: V_P ≥ 0, zero exactly when every ⟨O⟩ = 0; 𝒞(P) = P; Ω_dark and Λ_eff fall; turnover at Λ_eff = 4πG(ρ + 3p); binding grows; ρa³ is conserved; no bounce without curvature or the S sector | `VP_ground`, `cycle_fixes_P`, `depletes`, `lambda_falls`, `turnover`, `binding_grows`, `dust_conserved`, `no_bounce_without` |
+| Ch. 20, WH.5–WH.7: Var(ε) → 0 and H_Q → 0; the S flux survives; the winding number is an integer and cannot jump; c_AB = 1 ⇔ aligned | `randomness_starves`, `quantum_off`, `flux_survives`, `winding_integer`, `winding_invariant`, `aligned_iff` |
+| Ch. 21–22, Thm 20: a minimizer of E exists over a finite admissible set, and is unique when E is strictly convex; Thms 25, 29, 39 | `UEFCollapse.lean`, `minimizer_exists`, `minimizer_unique`, `moral_domain`, `filtered`, `stays_admissible` |
+| Ch. 21.4–21.5, Thms 22 and 26: \|Λⁿ(Ψ) − Ψ*\| ≤ cⁿ\|Ψ − Ψ*\| → 0; Banach's fixed point; F ≥ c^{−R}F₀, rising with each layer | `recursion_bound`, `identity_converges`, `identity_attractor`, `fidelity_bound`, `fidelity_grows` |
+| Ch. 21.6, Thm 32: e^{ΔD′} = e^{ΔD} + ε − η, so ΔD = log(1 + Σε − Ση) | `drift_step`, `drift_log` |
+| Ch. 21.3, 21.8, Thm 37: Δt ∝ 1/(1 + \|κᵉ\|); Δt = 1/ω; log of the product is the sum of logs | `time_distortion`, `baseline`, `collapse_rate`, `dimensional_access` |
+| Ch. 23.2: as β → ∞, the weight of the unique minimizer in Z_β tends to 1 | `laplace` |
+| Ch. 23.6, Lemmas 23.1–23.2, Thm 23.3: 0 < Φ ≤ 1; Φ = 1 ⇔ no swerve, div S = 0, no contradiction; strictly decreasing; no floor; a violation drops Φ and repair raises it | `coherence_range`, `coherence_one_iff`, `coherence_strictAnti`, `no_floor`, `decoherence`, `violation_drops`, `repair_restores` |
 
 **What Lean caught.** Theorem 8's statement gives sin²θ_W = 231/1000, but its Step 8 uses 23129/76871 for tan²θ_W, and that number comes from sin²θ_W = 23129/100000. In exact arithmetic 231/1000 gives tan²θ_W = 231/769, which is a different number (`tan_sq_statement_value`). The statement and the step need to use the same value.
 
 Chapter 12 states two values of the realized fraction η. Theorem 3, Step 5 sets η = 156/1000, which gives a dark-to-visible ratio of 211/39, and Chapter 13's cosmic budget uses the same 156/1000. Section 12.4 solves (1 − η)/η = 75/14 from Planck 2018 and gets η = 14/89. In exact arithmetic 156/1000 ≠ 14/89 and 211/39 ≠ 75/14 (`eta_values_differ`, `ratios_differ`). Each computation is right on its own terms, but the chapter needs one value. Neither value changes the budget's sum, which comes to 1 for every η (`budget_any_eta`).
+
+Section 19.4 repeats η = 156/1000 and says the resulting 211/39 matches Planck 2018. The Planck ratio of 12.4 is 75/14. The two are close, but they differ by exactly 29/546 (`planck_gap`).
 
 ## What Lean takes from E as it stands
 
@@ -157,3 +184,4 @@ The thesis is that E is used as it stands. Where an established result enters, t
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
 - **Chapter 13's curvature steps.** The variation δ(R√−g)/δg^{μν} = G_μν√−g (Theorem 12, Step 6), the weak-field G₀₀ = 2∇²Φ/c², the reduction of G_μν = 0 to the two radial equations (Theorem 14, Step 4), the FLRW components G₀₀ and G_ii (Theorem 18, Step 3), Birkhoff's theorem and the Bianchi identity all need Lorentzian curvature. They enter as the manuscript states them, and Lean proves every step after them.
 - **Physical premises in Chapters 12 and 13.** These enter as hypotheses: that the gauge coupling lives on R (Theorem 2), that p_dark = 0 (Theorem 3), that the electroweak projection loses its holonomy when S_{∂R} = 0 (Theorem 1, Step 5), and that the horizon encoding is injective and the evaporation isometric (Theorem 16, Step 6). The smooth-horizon claim (Theorem 16, Step 7) and the UV completion (Theorem 17, Step 11) aren't formalized.
+- **Chapters 15–23.** The map 𝓦 (Area = 4G_N E_F) enters as 15.5 defines it. Well-posedness (Theorem T6.1, Hille–Yosida and Chernoff) and the Hopf–Rinow step of Theorem T9.1 enter as cited. Chapter 22's Theorems 23, 24, 27, 28, 30, 31, 33, 34, 35, 36 and 38 are stated without a derivation, or as qualitative statements, and the phenomenology of 23.1, 23.3, 23.5 and the channel readings of 23.6 aren't mathematical claims. Lean holds what those chapters derive.
