@@ -10,6 +10,9 @@ import UEFStandardModel
 import UEFGolden
 import UEFDark
 import UEFGravity
+import UEFHolography
+import UEFTorus
+import UEFTunneling
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -59,3 +62,11 @@ import UEFGravity
 #print axioms UEF.Gravity.grr
 #print axioms UEF.Gravity.flat_fixes_K
 #print axioms UEF.Gravity.friedmann_second
+#print axioms UEF.Holography.EF_zero_iff
+#print axioms UEF.Holography.bridge_mass
+#print axioms UEF.Holography.H_eq
+#print axioms UEF.Torus.attack_detected
+#print axioms UEF.Tunneling.closed_length
+#print axioms UEF.Tunneling.radial_green
+#print axioms UEF.Tunneling.Ccorr_one_iff
+#print axioms UEF.Tunneling.lock_exists
