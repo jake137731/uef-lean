@@ -28,3 +28,5 @@ import UEFGauss
 #print axioms UEF.Fields.no_split
 #print axioms UEF.Gauss.E32
 #print axioms UEF.Gauss.A4
+#print axioms UEF.Gauss.phase_invariant
+#print axioms UEF.Gauss.charge_conserved
