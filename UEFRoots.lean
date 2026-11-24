@@ -12,7 +12,7 @@ open MeasureTheory
 
 namespace UEF.Roots
 
-variable {ℋ : Type*} [NormedAddCommGroup ℋ] [InnerProductSpace ℂ ℋ]
+variable {ℋ : Type*} [NormedAddCommGroup ℋ] [InnerProductSpace ℂ ℋ] [CompleteSpace ℋ]
 
 /-! ## §4.2 — A1 is proved from E -/
 
@@ -131,7 +131,7 @@ end Spread
 theorem lemma4 {n : ℕ} (divS : EuclideanSpace ℝ (Fin n) → ℝ) (hc : Continuous divS)
     (flux : ∀ V, IsCompact V → ∫ x in V, divS x = 0) : divS = 0 := by
   have hae : divS =ᵐ[volume] 0 :=
-    ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero hc.locallyIntegrable flux
+    ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' hc.locallyIntegrable flux
   exact (Continuous.ae_eq_iff_eq volume hc continuous_const).mp hae
 
 /-- A4.2 — Local conservation from unitary evolution, on a finite lattice of sites.
@@ -150,9 +150,8 @@ theorem conservation {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ) (hH : H.Is
         have := congrFun (congrFun hH i) j
         simpa [Matrix.conjTranspose_apply] using this
       rw [this]; ring
-    have := congrArg Complex.im hs
-    simp at this
-    linarith
+    rw [Complex.star_def] at hs
+    exact Complex.conj_eq_iff_im.mp hs
   have e : ∀ i, 2 * (star (ψ i) * (-Complex.I * ∑ j, H i j * ψ j)).re
       = 2 * (∑ j, star (ψ i) * H i j * ψ j).im := by
     intro i
