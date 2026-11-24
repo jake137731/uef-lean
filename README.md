@@ -74,10 +74,34 @@ Everything after that is the Law of Reciprocity.
 | S⁽⁸⁾ ∘ s = S⁽⁴⁾: fibre integration multiplies by Vol(T⁴) (§6.3.4, l. 2817) | `fibre_integral` |
 | S_UEF = ∫_M L dV, L = L_SM + L_grav + L_cross (§5.2, ll. 2714–2716) | `action`, `lagrangian`, `action_sectors` |
 
+## The root relations A1–A4 (`UEFRoots.lean`, §4)
+
+ℋ is a complex Hilbert space. Each line is proved from what the manuscript cites.
+
+| Manuscript | Lean |
+|---|---|
+| A1.1–A1.4: P ≔ 0, ⟨O⟩_P = 0 for every observable | `P`, `A1` |
+| A1.5: only P | `A1_only_P` |
+| A1.6: every unitary fixes P | `A1_symmetric` |
+| A1.7: the only fixed point, (−𝟙)x ≠ x for x ≠ P | `A1_only_fixed` |
+| A1.8: ‖P‖ = 0, so P is not a realized state | `A1_not_realized` |
+| A2, Lemma 1: from P and a realized record, a first disturbance P → P′ ≠ P | `A2` |
+| A2.5: no linear law moves P | `A2_not_linear` |
+| A3.1–A3.3, Lemma 2: a G-equivariant rule fixes P | `lemma2` |
+| A3.4, Corollary 2.1 | `corollary2_1` |
+| A3.5–A3.6, spread: a law invariant under the symmetries of P is no single value, so Var(ε) > 0 | `spread` |
+| A3.8: no computable sequence is Martin-Löf random | `no_computable_is_random` |
+| A3.9: a seeded process repeats | `seeded_repeats` |
+| A3.11, Lemma 3A, exhaustion: the first disturbance is a function of no prior state | `exhaustion` |
+| A4.3–A4.5, Lemma 4: zero flux through every region ⟹ ∇ₐSᵃ = 0 at every point | `lemma4` |
+| A4.2: local conservation under unitary evolution | `conservation` |
+| E ⊢ A1 ⟹ A2 ⟹ A3 | `roots` |
+
 ## What Lean takes from E as it stands
 
-The thesis is that E is used as it stands. Where an established result enters, the file says so:
+The thesis is that E is used as it stands. Where an established result enters, the file names it:
 
-- **The physics inside the spine.** The physics of A1 → A2 → A3 → A4 (Noether, symmetry, continuity) comes from E. Lean checks that the chain is derived from E.
-- **The K7 lock and invariance.** The lock and Nagumo's tangency rule come in as evidence §8.3 states them. `lock_local` proves the lock from its local form.
-- **The gravity and gauge lines.** Mathlib has no Lorentzian curvature, so Lean can't re-derive Einstein's equation G_μν = 8πG₄T_μν from the variation. It comes from E as established physics. The same goes for the identifications π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR.
+- **Kolmogorov complexity bounds (E23–E25).** A Martin-Löf random record has K(x↾n) ≥ n − c₀, and a program's output has K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′. Mathlib doesn't define Kolmogorov complexity, so these enter as stated. Lean proves the contradiction that follows from them.
+- **Bell (A3.10, E26), the divergence theorem (E32) and Noether (A4.7).** Each enters where the step cites it.
+- **The K7 lock and invariance.** These enter as evidence §8.3 states them. `lock_local` proves the lock from its local form.
+- **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
