@@ -42,13 +42,13 @@ theorem E32 (S : (Fin (n + 1) → ℝ) → (Fin (n + 1) → ℝ)) (hS : ContDiff
     fun x => ((hS.differentiable le_rfl) x).hasFDerivAt
   exact integral_divergence_of_hasFDerivWithinAt_off_countable a b hle S (fun x => fderiv ℝ S x)
     ∅ countable_empty hS.continuous.continuousOn (fun x _ => hd x)
-    ((div_continuous S hS).integrableOn_compact isCompact_Icc)
+    ((div_continuous S hS).continuousOn.integrableOn_compact isCompact_Icc)
 
 /-- Localization: a continuous function that is positive at a point has a box around
     the point on which its integral is positive. -/
 theorem box_pos (g : (Fin (n + 1) → ℝ) → ℝ) (hg : Continuous g) (x₀ : Fin (n + 1) → ℝ)
     (hpos : 0 < g x₀) : ∃ a b, a ≤ b ∧ 0 < ∫ x in Icc a b, g x := by
-  obtain ⟨δ, hδ, hball⟩ := Metric.continuousAt_iff.mp hg.continuousAt (g x₀ / 2) (by linarith)
+  obtain ⟨δ, hδ, hball⟩ := Metric.continuousAt_iff.mp (hg.continuousAt (x := x₀)) (g x₀ / 2) (by linarith)
   set ε := δ / 2 with hε
   have hε0 : 0 < ε := by positivity
   set a : Fin (n + 1) → ℝ := fun i => x₀ i - ε
@@ -57,8 +57,11 @@ theorem box_pos (g : (Fin (n + 1) → ℝ) → ℝ) (hg : Continuous g) (x₀ : 
   have hsub : ∀ y ∈ Icc a b, g x₀ / 2 ≤ g y := by
     intro y hy
     have hd : dist y x₀ ≤ ε := (dist_pi_le_iff hε0.le).mpr fun i => by
+      have h1 := hy.1 i
+      have h2 := hy.2 i
+      simp only [a, b] at h1 h2
       rw [Real.dist_eq, abs_le]
-      constructor <;> linarith [hy.1 i, hy.2 i]
+      constructor <;> linarith
     have := hball (lt_of_le_of_lt hd (by linarith))
     rw [Real.dist_eq, abs_lt] at this
     linarith [this.1]
@@ -70,7 +73,7 @@ theorem box_pos (g : (Fin (n + 1) → ℝ) → ℝ) (hg : Continuous g) (x₀ : 
     rw [ENNReal.toReal_ofReal (by linarith)]
     linarith
   have hge := setIntegral_ge_of_const_le (μ := volume) measurableSet_Icc
-    (isCompact_Icc.measure_lt_top).ne hsub (hg.integrableOn_compact isCompact_Icc)
+    (isCompact_Icc.measure_lt_top).ne hsub (hg.continuousOn.integrableOn_compact isCompact_Icc)
   exact ⟨a, b, hab, lt_of_lt_of_le (mul_pos (by linarith) hvol) hge⟩
 
 /-- Lemma 4 [P] (A4.4–A4.5) — A continuous function whose integral over every box is
