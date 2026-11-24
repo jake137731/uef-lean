@@ -88,7 +88,6 @@ theorem action_splits [MeasurableSpace Ω] (μ : Measure Ω) {C : Ω → Ω}
 theorem dark_ratio (mR mΩ : ℝ) (hR : 0 < mR) (hΩ : 0 < mΩ) :
     (mΩ - mR) / mR = (1 - mR / mΩ) / (mR / mΩ) := by
   field_simp
-  ring
 
 /-- E38 for a finite measure: μ(Ω ∖ R)/μ(R) = (1 − η)/η. -/
 theorem dark_ratio_measure [MeasurableSpace Ω] (μ : Measure Ω) [IsFiniteMeasure μ] {C : Ω → Ω}
@@ -112,7 +111,6 @@ theorem finite_model (N k : ℕ) (hk : 0 < k) (hkN : k ≤ N) :
   have hk' : (0 : ℚ) < k := by exact_mod_cast hk
   rw [Nat.cast_sub hkN]
   field_simp
-  ring
 
 /-- Theorem 3, Step 6 — η = 156/1000 gives (1 − η)/η = 844/156 = 211/39. -/
 theorem ratio_156 : (1 - (156 : ℚ) / 1000) / (156 / 1000) = 211 / 39 := by norm_num
