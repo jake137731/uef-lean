@@ -5,6 +5,8 @@ import UEFTime
 import UEFBell
 import UEFFields
 import UEFGauss
+import UEFEmergence
+import UEFStandardModel
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -30,3 +32,13 @@ import UEFGauss
 #print axioms UEF.Gauss.A4
 #print axioms UEF.Gauss.phase_invariant
 #print axioms UEF.Gauss.charge_conserved
+#print axioms UEF.Emergence.record_grows
+#print axioms UEF.Emergence.labels_preserve_order
+#print axioms UEF.StandardModel.quadratic_negative
+#print axioms UEF.StandardModel.vacuum_is_minimum
+#print axioms UEF.StandardModel.higgs_mass
+#print axioms UEF.StandardModel.lambda_value
+#print axioms UEF.StandardModel.asymptotic_freedom
+#print axioms UEF.StandardModel.mass_ratio
+#print axioms UEF.StandardModel.tan_sq_statement_value
+#print axioms UEF.StandardModel.weyl_count
