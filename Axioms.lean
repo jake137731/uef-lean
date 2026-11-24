@@ -13,6 +13,8 @@ import UEFGravity
 import UEFHolography
 import UEFTorus
 import UEFTunneling
+import UEFContainment
+import UEFMoral
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -70,3 +72,8 @@ import UEFTunneling
 #print axioms UEF.Tunneling.radial_green
 #print axioms UEF.Tunneling.Ccorr_one_iff
 #print axioms UEF.Tunneling.lock_exists
+#print axioms UEF.Containment.feasible_later
+#print axioms UEF.Containment.contracts_to_ker
+#print axioms UEF.Containment.gtc_strict
+#print axioms UEF.Moral.energy_zero_iff
+#print axioms UEF.Moral.free_energy_falls
