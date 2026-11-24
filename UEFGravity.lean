@@ -35,8 +35,11 @@ end Dark
 
 /-- The horizon r = r_s = 2GM/c² has area A = 4πr_s², and with l_P² = ħG/c³ the
     Bekenstein–Hawking term is A/4l_P² = 4πGM²/(ħc). -/
-theorem horizon_entropy (G M c ħ : ℝ) (hG : 0 < G) (hc : 0 < c) (hħ : 0 < ħ) :
-    (4 * π * (2 * G * M / c ^ 2) ^ 2) / (4 * (ħ * G / c ^ 3)) = 4 * π * G * M ^ 2 / (ħ * c) := by
+theorem horizon_entropy (G M c hbar : ℝ) (hG : 0 < G) (hc : 0 < c) (hh : 0 < hbar) :
+    (4 * π * (2 * G * M / c ^ 2) ^ 2) / (4 * (hbar * G / c ^ 3)) = 4 * π * G * M ^ 2 / (hbar * c) := by
+  have h1 := hG.ne'
+  have h2 := hc.ne'
+  have h3 := hh.ne'
   field_simp
   ring
 
@@ -49,26 +52,24 @@ theorem horizon_entropy (G M c ħ : ℝ) (hG : 0 < G) (hc : 0 < c) (hħ : 0 < ħ
 theorem friedmann_acceleration (a a' a'' ρ ρ' p : ℝ → ℝ) (G Λ k : ℝ)
     (ha : ∀ t, HasDerivAt a (a' t) t) (ha' : ∀ t, HasDerivAt a' (a'' t) t)
     (hρ : ∀ t, HasDerivAt ρ (ρ' t) t)
-    (first : ∀ t, a' t ^ 2 = 8 * π * G / 3 * ρ t * a t ^ 2 - k + Λ / 3 * a t ^ 2)
-    (continuity : ∀ t, ρ' t * a t = -3 * a' t * (ρ t + p t))
+    (friedmann1 : ∀ t, a' t ^ 2 = 8 * π * G / 3 * ρ t * a t ^ 2 - k + Λ / 3 * a t ^ 2)
+    (conserv : ∀ t, ρ' t * a t = -3 * a' t * (ρ t + p t))
     (t : ℝ) (hpos : 0 < a t) (hmove : a' t ≠ 0) :
     a'' t / a t = -(4 * π * G / 3) * (ρ t + 3 * p t) + Λ / 3 := by
   have hL : HasDerivAt (fun s => a' s ^ 2) (2 * a' t * a'' t) t := by
     convert (ha' t).pow 2 using 1
-    push_cast; ring
+    norm_num <;> ring
   have hR : HasDerivAt (fun s => 8 * π * G / 3 * ρ s * a s ^ 2 - k + Λ / 3 * a s ^ 2)
       (8 * π * G / 3 * (ρ' t * a t ^ 2 + ρ t * (2 * a t * a' t)) + Λ / 3 * (2 * a t * a' t)) t := by
     have h := ((((hρ t).mul ((ha t).pow 2)).const_mul (8 * π * G / 3)).sub_const k).add
       (((ha t).pow 2).const_mul (Λ / 3))
-    convert h using 1
-    · funext s; ring
-    · push_cast; ring
+    convert h using 1 <;> first | (funext s; ring) | (norm_num <;> ring)
   have heq : (fun s => a' s ^ 2) = (fun s => 8 * π * G / 3 * ρ s * a s ^ 2 - k + Λ / 3 * a s ^ 2) :=
-    funext first
+    funext friedmann1
   rw [heq] at hL
   have E := hL.unique hR
   rw [div_eq_iff hpos.ne']
   apply mul_left_cancel₀ (mul_ne_zero two_ne_zero hmove)
-  linear_combination E + 8 * π * G / 3 * a t * continuity t
+  linear_combination E + 8 * π * G / 3 * a t * conserv t
 
 end UEF.Gravity
