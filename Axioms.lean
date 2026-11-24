@@ -119,6 +119,11 @@ import UEFPredictions
 #print axioms UEF.Bridges.cannot_stay
 #print axioms UEF.Bridges.cannot_be_held
 #print axioms UEF.Bridges.binary
+#print axioms UEF.Bridges.one_opens_all
+#print axioms UEF.Bridges.tests_spread
+#print axioms UEF.Bridges.all_open_at_once
+#print axioms UEF.Bridges.counterfactual_all
+#print axioms UEF.Bridges.together
 #print axioms UEF.Bridges.binary_existence
 #print axioms UEF.Bridges.constantly_zero
 #print axioms UEF.Complexity.Θ_injective

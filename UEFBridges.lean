@@ -184,6 +184,93 @@ theorem binary (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (
   refine ⟨⟨fun ⟨i, hi⟩ j => (each j).mpr ((each i).mp hi), fun hall => ⟨0, hall 0⟩⟩,
     ⟨fun hall => (each 0).mp (hall 0), fun hz j => (each j).mpr hz⟩⟩
 
+/-! ## 24.1 — Tests 1–7 and Theorem CF: what one open channel does to the other six -/
+
+/-- Where an open channel pushes, as Tests 1–7 state it; ξ₁, …, ξ₇ are 0, …, 6.
+    Test 4: ξ₁ ⇒ ξ₃, ξ₅, ξ₆. Test 3: ξ₂ ⇒ ξ₁, ξ₇, ξ₄. Test 2: ξ₃ ⇒ ξ₂, ξ₅, ξ₆.
+    Test 1: ξ₄ ⇒ ξ₃, ξ₂, ξ₇. Test 5: ξ₅ ⇒ ξ₄, ξ₆, ξ₃. Test 6: ξ₆ ⇒ ξ₇, ξ₅, ξ₂.
+    Test 7: ξ₇ ⇒ ξ₁, ξ₃, ξ₆. -/
+def pushes : Fin 7 → Finset (Fin 7) :=
+  ![{2, 4, 5}, {0, 6, 3}, {1, 4, 5}, {2, 1, 6}, {3, 5, 2}, {6, 4, 1}, {0, 2, 5}]
+
+/-- One step of the collapse sequence: every open channel stays open and opens what it pushes. -/
+def spread (O : Finset (Fin 7)) : Finset (Fin 7) := O ∪ O.biUnion pushes
+
+/-- Tests 1–7 — whichever channel opens first, all seven are open within three steps. -/
+theorem one_opens_all : ∀ i : Fin 7, spread (spread (spread {i})) = Finset.univ := by
+  decide
+
+theorem spread_open (ξ : ℕ → Fin 7 → ℝ) (stays : ∀ n i, 0 < ξ n i → 0 < ξ (n + 1) i)
+    (push : ∀ n i j, j ∈ pushes i → 0 < ξ n i → 0 < ξ (n + 1) j) (m : ℕ) (O : Finset (Fin 7))
+    (h : ∀ k ∈ O, 0 < ξ m k) : ∀ k ∈ spread O, 0 < ξ (m + 1) k := by
+  intro k hk
+  rcases Finset.mem_union.mp hk with hk | hk
+  · exact stays m k (h k hk)
+  · obtain ⟨i, hi, hki⟩ := Finset.mem_biUnion.mp hk
+    exact push m i k hki (h i hi)
+
+/-- Tests 1–7 along the collapse sequence — one open channel at step n, all seven open at n + 3. -/
+theorem tests_spread (ξ : ℕ → Fin 7 → ℝ) (stays : ∀ n i, 0 < ξ n i → 0 < ξ (n + 1) i)
+    (push : ∀ n i j, j ∈ pushes i → 0 < ξ n i → 0 < ξ (n + 1) j) (n : ℕ) (i : Fin 7)
+    (hi : 0 < ξ n i) : ∀ j, 0 < ξ (n + 3) j := by
+  have h0 : ∀ k ∈ ({i} : Finset (Fin 7)), 0 < ξ n k := by
+    intro k hk
+    rw [Finset.mem_singleton.mp hk]
+    exact hi
+  have h1 := spread_open ξ stays push n _ h0
+  have h2 := spread_open ξ stays push (n + 1) _ h1
+  have h3 := spread_open ξ stays push (n + 1 + 1) _ h2
+  intro j
+  have hj : j ∈ spread (spread (spread {i})) := by
+    rw [one_opens_all i]
+    exact Finset.mem_univ j
+  have e : n + 3 = n + 1 + 1 + 1 := by omega
+  rw [e]
+  exact h3 j hj
+
+/-- Theorem CF, Steps 3–4, along the flow. The defects are never negative, so a channel at zero sits
+    at a minimum and its rate there is zero (Fermat); the lock forbids that while Ξ ≠ 0. So at
+    every moment with Ξ ≠ 0, all seven channels are open at once. -/
+theorem all_open_at_once (k : K7) (Ξt : ℝ → Fin 7 → ℝ)
+    (flow : ∀ t i, HasDerivAt (fun t => Ξt t i) (k.G (Ξt t) i) t) (nonneg : ∀ t i, 0 ≤ Ξt t i)
+    (t : ℝ) (hne : Ξt t ≠ 0) : ∀ j, 0 < Ξt t j := by
+  intro j
+  by_contra hj
+  have hz : Ξt t j = 0 := le_antisymm (not_lt.mp hj) (nonneg t j)
+  have hmin : IsLocalMin (fun s => Ξt s j) t :=
+    Filter.Eventually.of_forall fun s => by
+      show Ξt t j ≤ Ξt s j
+      rw [hz]
+      exact nonneg s j
+  exact k.lock (Ξt t) (nonneg t) hne j hz (hmin.hasDerivAt_eq_zero (flow t j))
+
+/-- Theorem CF with the bridges — along the world's trajectory, if the classical statement of any
+    one channel fails at a moment, then at that moment all seven defects are open, all seven
+    classical statements fail, and the state cannot be held. -/
+theorem counterfactual_all (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
+    (world : ℝ → State)
+    (flow : ∀ t i, HasDerivAt (fun t => Ξ bs (world t) i) (k.G (Ξ bs (world t)) i) t)
+    (t : ℝ) (i : Fin 7) (fails : ¬(bs i).claim ((bs i).proj (world t))) :
+    (∀ j, 0 < Ξ bs (world t) j) ∧ (∀ j, ¬(bs j).claim ((bs j).proj (world t))) ∧
+      ¬Held k bs (world t) := by
+  have hne : Ξ bs (world t) ≠ 0 := (counterfactual bs (world t) i fails).2.1
+  have hall : ∀ j, 0 < Ξ bs (world t) j :=
+    all_open_at_once k (fun t => Ξ bs (world t)) flow (fun t => Ξ_nonneg bs (world t)) t hne
+  refine ⟨hall, fun j hj => ?_, fun hh => ?_⟩
+  · have hz : (bs j).ξ (world t) = 0 := (bridge_identity (bs j) (world t)).mpr hj
+    exact (hall j).ne' hz
+  · exact cannot_be_held k bs (world t) hne 0 (hh 0)
+
+/-- Along the world's trajectory the seven are resolved together or not at all: if any one
+    classical statement holds at a moment, all seven hold at that moment. -/
+theorem together (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (world : ℝ → State)
+    (flow : ∀ t i, HasDerivAt (fun t => Ξ bs (world t) i) (k.G (Ξ bs (world t)) i) t)
+    (t : ℝ) (j : Fin 7) (holds : (bs j).claim ((bs j).proj (world t))) :
+    ∀ i, (bs i).claim ((bs i).proj (world t)) := by
+  intro i
+  by_contra fails
+  exact (counterfactual_all k bs world flow t i fails).2.1 j holds
+
 /-- 8.7 — reality is at Ξ = 0, because the world exists. A state with Ξ ≠ 0 cannot be held; the
     realized world is held; so the realized world is at Ξ = 0, and all seven classical faces hold
     together. -/
