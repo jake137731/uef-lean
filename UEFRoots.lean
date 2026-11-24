@@ -117,7 +117,11 @@ theorem spread (μ : Measure ℋ) (invariant : ∀ g ∈ (G : Set (ℋ →L[ℂ]
   intro hμ
   have h := invariant (-1) neg_one_unitary
   rw [hμ, Measure.map_dirac (ContinuousLinearMap.continuous _).measurable] at h
-  have hx' : (-1 : ℋ →L[ℂ] ℋ) x = x := Measure.dirac_eq_dirac_iff.mp h
+  have hx' : (-1 : ℋ →L[ℂ] ℋ) x = x := by
+    by_contra hne
+    have h1 := congrArg (fun m : Measure ℋ => m {x}) h
+    simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.one_apply] at hne h1
+    simp [Measure.dirac_apply, Set.indicator, hne] at h1
   exact A1_only_fixed x (by intro h0; simp [h0, P] at hx) hx'
 
 end Spread
