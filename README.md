@@ -4,7 +4,7 @@
 
 ## Check it yourself
 
-Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twenty files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
+Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twenty-two files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
 
 To check it on your own machine:
 
@@ -17,7 +17,7 @@ lake build
 ```
 
 - `UEF.lean` uses only Lean's core library, so `lean UEF.lean` checks it on its own.
-- The other nineteen files need Mathlib, for the real numbers, calculus, measure theory and integrals.
+- The other twenty-one files need Mathlib, for the real numbers, calculus, measure theory and integrals.
 
 There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
@@ -167,12 +167,22 @@ These are two different relationships. The physical couplings carry one channel'
 | Ch. 21.3, 21.8, Thm 37: Δt ∝ 1/(1 + \|κᵉ\|); Δt = 1/ω; log of the product is the sum of logs | `time_distortion`, `baseline`, `collapse_rate`, `dimensional_access` |
 | Ch. 23.2: as β → ∞, the weight of the unique minimizer in Z_β tends to 1 | `laplace` |
 | Ch. 23.6, Lemmas 23.1–23.2, Thm 23.3: 0 < Φ ≤ 1; Φ = 1 ⇔ no swerve, div S = 0, no contradiction; strictly decreasing; no floor; a violation drops Φ and repair raises it | `coherence_range`, `coherence_one_iff`, `coherence_strictAnti`, `no_floor`, `decoherence`, `violation_drops`, `repair_restores` |
+| Ch. 24, 24.2: the bridge identity ξᵢ = Rᵢ ∘ Πᵢ; Ξ = 0 ⇔ every classical residual vanishes | `UEFBridges.lean`, `Bridge`, `bridge_identity`, `closure` |
+| Ch. 24, Thm CF and Cor. CF.1: a failed classical statement gives ξᵢ > 0, Ξ ≠ 0 and VK > 0; one counterexample refutes Ξ = 0 | `counterfactual`, `refutation` |
+| Ch. 24: when the classical object doesn't depend on the state, "some state has ξᵢ = 0" is the classical claim itself | `constant_bridge` |
+| Ch. 24, Thms B.2, B.4, B.5, B.6: Δ_YM ≥ m_UEF > 0; rank = ord; Alg^p = Hdg^p from equal dimension; C(E) ≤ V(E) | `B2`, `B4`, `B5`, `B6` |
+| Ch. 28, Phase I: w(Δ) = \|det Δ\| multiplies; w = 1 ⇔ automorphism; prime weight ⟹ irreducible; diag(p, 1, …, 1) has weight p; δ = log w adds | `UEFRiemann.lean`, `weight`, `lemma_1_1`, `weight_one_iff`, `prime_irreducible`, `prime_transport`, `defect_adds` |
+| Ch. 28, Thm ξ₄.4.1: for Re s > 1, det(I − L_s)⁻¹ = exp(Σ_{k≥1} Z_k(s)/k) = ζ(s), with the sums exchanged and Mathlib's Euler product | `Z`, `transport_determinant` |
+| Ch. 28, Phase VI: γ_ρ is real ⇔ Re ρ = 1/2; \|e^{i log p · γ_ρ}\| = p^{Re ρ − 1/2} | `gamma_real_iff`, `unitarity` |
+| Ch. 28, Thm ξ₄.6 and Thm ξ₄.5: "every γ_ρ ∈ Spec(H) = ℝ" ⇔ RH; ξ₄ = 0 ⇔ RH; ξ₄ = 0 ⟹ RH | `spectral_bridge`, `ξ₄`, `xi4_zero_iff`, `theorem_xi4_5` |
 
 **What Lean caught.** Theorem 8's statement gives sin²θ_W = 231/1000, but its Step 8 uses 23129/76871 for tan²θ_W, and that number comes from sin²θ_W = 23129/100000. In exact arithmetic 231/1000 gives tan²θ_W = 231/769, which is a different number (`tan_sq_statement_value`). The statement and the step need to use the same value.
 
 Chapter 12 states two values of the realized fraction η. Theorem 3, Step 5 sets η = 156/1000, which gives a dark-to-visible ratio of 211/39, and Chapter 13's cosmic budget uses the same 156/1000. Section 12.4 solves (1 − η)/η = 75/14 from Planck 2018 and gets η = 14/89. In exact arithmetic 156/1000 ≠ 14/89 and 211/39 ≠ 75/14 (`eta_values_differ`, `ratios_differ`). Each computation is right on its own terms, but the chapter needs one value. Neither value changes the budget's sum, which comes to 1 for every η (`budget_any_eta`).
 
 Section 19.4 repeats η = 156/1000 and says the resulting 211/39 matches Planck 2018. The Planck ratio of 12.4 is 75/14. The two are close, but they differ by exactly 29/546 (`planck_gap`).
+
+**What Lean found in Chapter 28.** Lean accepts Phase I, Phase IV and the computations of Phase VI. That includes det(I − L_s)⁻¹ = ζ(s) for Re s > 1, proved from Mathlib's Euler product, with the exchange of sums checked. Lean also shows exactly where the Riemann Hypothesis enters. The chapter defines ξ₄ = sup |Re ρ − 1/2| over the non-trivial zeros, and Lean proves ξ₄ = 0 ⇔ `RiemannHypothesis`, Mathlib's own statement (`xi4_zero_iff`). The spectral bridge compares each γ_ρ only with Spec(H) = ℝ, so "every γ_ρ lies in Spec(H)" is the Riemann Hypothesis restated (`spectral_bridge`). H comes from the Cauchy kernel and the translations alone, and no step ties a zero of ζ to a spectral value of H or of any other operator. Theorem ξ₄.5, Step 2 then takes ξ₄ = 0 from Ξ = 0. ζ is one function, the same for every state, so "some state has ξ₄ = 0" is the Riemann Hypothesis itself (`constant_bridge`). The chapter therefore does not derive the Riemann Hypothesis. It enters as the fourth coordinate of Ξ = 0. To close the gap, the chapter needs a derivation of ξ₄ = 0 that uses properties of ζ rather than Ξ = 0, for example a self-adjoint operator whose spectrum is shown to contain every γ_ρ.
 
 ## What Lean takes from E as it stands
 
@@ -184,4 +194,5 @@ The thesis is that E is used as it stands. Where an established result enters, t
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
 - **Chapter 13's curvature steps.** The variation δ(R√−g)/δg^{μν} = G_μν√−g (Theorem 12, Step 6), the weak-field G₀₀ = 2∇²Φ/c², the reduction of G_μν = 0 to the two radial equations (Theorem 14, Step 4), the FLRW components G₀₀ and G_ii (Theorem 18, Step 3), Birkhoff's theorem and the Bianchi identity all need Lorentzian curvature. They enter as the manuscript states them, and Lean proves every step after them.
 - **Physical premises in Chapters 12 and 13.** These enter as hypotheses: that the gauge coupling lives on R (Theorem 2), that p_dark = 0 (Theorem 3), that the electroweak projection loses its holonomy when S_{∂R} = 0 (Theorem 1, Step 5), and that the horizon encoding is injective and the evaporation isometric (Theorem 16, Step 6). The smooth-horizon claim (Theorem 16, Step 7) and the UV completion (Theorem 17, Step 11) aren't formalized.
+- **Chapter 28's analysis.** Positive definiteness of the Cauchy kernel (Bochner), Stone's theorem, the spectral theorem for H, the explicit formula (ξ₄.4.2), Hadamard factorization (Phase V), and the composite case of Lemma 1.2 (Smith normal form) are classical results that aren't in Mathlib. They enter as cited. None of them is the step where the Riemann Hypothesis enters.
 - **Chapters 15–23.** The map 𝓦 (Area = 4G_N E_F) enters as 15.5 defines it. Well-posedness (Theorem T6.1, Hille–Yosida and Chernoff) and the Hopf–Rinow step of Theorem T9.1 enter as cited. Chapter 22's Theorems 23, 24, 27, 28, 30, 31, 33, 34, 35, 36 and 38 are stated without a derivation, or as qualitative statements, and the phenomenology of 23.1, 23.3, 23.5 and the channel readings of 23.6 aren't mathematical claims. Lean holds what those chapters derive.
