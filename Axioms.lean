@@ -4,6 +4,7 @@ import UEFRoots
 import UEFTime
 import UEFBell
 import UEFFields
+import UEFGauss
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -25,3 +26,5 @@ import UEFFields
 #print axioms UEF.Bell.no_predetermined_strategy
 #print axioms UEF.Fields.positive_definite
 #print axioms UEF.Fields.no_split
+#print axioms UEF.Gauss.E32
+#print axioms UEF.Gauss.A4
