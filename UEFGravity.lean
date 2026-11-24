@@ -58,12 +58,12 @@ theorem friedmann_acceleration (a a' a'' ρ ρ' p : ℝ → ℝ) (G Λ k : ℝ)
     a'' t / a t = -(4 * π * G / 3) * (ρ t + 3 * p t) + Λ / 3 := by
   have hL : HasDerivAt (fun s => a' s ^ 2) (2 * a' t * a'' t) t := by
     convert (ha' t).pow 2 using 1
-    norm_num <;> ring
+    norm_num
   have hR : HasDerivAt (fun s => 8 * π * G / 3 * ρ s * a s ^ 2 - k + Λ / 3 * a s ^ 2)
       (8 * π * G / 3 * (ρ' t * a t ^ 2 + ρ t * (2 * a t * a' t)) + Λ / 3 * (2 * a t * a' t)) t := by
     have h := ((((hρ t).mul ((ha t).pow 2)).const_mul (8 * π * G / 3)).sub_const k).add
       (((ha t).pow 2).const_mul (Λ / 3))
-    convert h using 1 <;> first | (funext s; ring) | (norm_num <;> ring)
+    convert h using 1 <;> first | (funext s; ring) | norm_num
   have heq : (fun s => a' s ^ 2) = (fun s => 8 * π * G / 3 * ρ s * a s ^ 2 - k + Λ / 3 * a s ^ 2) :=
     funext friedmann1
   rw [heq] at hL

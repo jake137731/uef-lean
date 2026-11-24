@@ -8,6 +8,7 @@ import UEFGauss
 import UEFEmergence
 import UEFStandardModel
 import UEFGolden
+import UEFDark
 import UEFGravity
 
 #print axioms UEF.the_one_equation
@@ -48,6 +49,13 @@ import UEFGravity
 #print axioms UEF.Golden.whole
 #print axioms UEF.Golden.theorem19
 #print axioms UEF.Golden.invPhi_self_similar
-#print axioms UEF.Gravity.partition
+#print axioms UEF.Dark.partition
+#print axioms UEF.Dark.dark_measure_pos
+#print axioms UEF.Dark.eta_planck
+#print axioms UEF.Dark.units_forced
 #print axioms UEF.Gravity.horizon_entropy
 #print axioms UEF.Gravity.friedmann_acceleration
+#print axioms UEF.Gravity.geodesic_equation
+#print axioms UEF.Gravity.grr
+#print axioms UEF.Gravity.flat_fixes_K
+#print axioms UEF.Gravity.friedmann_second
