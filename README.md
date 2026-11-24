@@ -113,12 +113,16 @@ These are two different relationships. The physical couplings carry one channel'
 | §4.5.2 and §4.5.4, Time is not foundational: a relation requires its relata, a function requires its domain, Theorems 1–6, the block universe cannot exist | `UEFTime.lean` |
 | A3.10, E26, Bell: every predetermined strategy has \|S\| ≤ 2, the entangled state reaches 2√2, so no predetermined strategy produces it | `UEFBell.lean` |
 | Lemma 6.1 [P], No Field Evolves Alone: the kinetic mass matrix is positive definite, and the connected coupling graph allows no split into independent blocks | `UEFFields.lean` |
+| E32, the divergence theorem (Gauss): ∫ over a box of ∇ₐSᵃ = net flux through its faces | `UEFGauss.lean`, `E32` |
+| A4.4–A4.5 [P], localization: zero integral over every box ⟹ zero at every point | `UEFGauss.lean`, `zero_of_box_integrals` |
+| A4 [P]: zero net flux through every box ⟹ div S = ∇ₐSᵃ = 0 at every point | `UEFGauss.lean`, `A4` |
+| A4.2 [P]: a state is a ray, so every observable is invariant under the phase; the charge of that symmetry, Σ\|ψᵢ\|², is conserved under iψ′ = Hψ | `UEFGauss.lean`, `phase_invariant`, `charge_conserved` |
 
 ## What Lean takes from E as it stands
 
 The thesis is that E is used as it stands. Where an established result enters, the file names it:
 
 - **Kolmogorov complexity bounds (E23–E25).** A Martin-Löf random record has K(x↾n) ≥ n − c₀, and a program's output has K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′. Mathlib doesn't define Kolmogorov complexity, so these enter as stated. Lean proves the contradiction that follows from them.
-- **The divergence theorem (E32) and Noether (A4.7).** Each enters where the step cites it. Bell (E26) is no longer taken from E: `UEFBell.lean` proves it.
+- **Noether in general (E35).** It enters where A4.7 cites it. The case A4.2 uses is proved directly: the charge of the phase symmetry is conserved. Bell (E26) and the divergence theorem (E32) no longer come from E. `UEFBell.lean` and `UEFGauss.lean` prove them.
 - **The K7 lock and invariance.** These enter as evidence §8.3 states them. `lock_local` proves the lock from its local form.
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
