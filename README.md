@@ -4,16 +4,22 @@
 
 ## Check it yourself
 
+Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in both files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
+
+To check it on your own machine:
+
 1. Install Lean with elan: https://lean-lang.org/install
 2. In this folder, run:
 
 ```
-lean UEF.lean
+lake exe cache get
+lake build
 ```
 
-If nothing prints, every theorem was checked. The `lean-toolchain` file pins Lean 4.15.0.
+- `UEF.lean` uses only Lean's core library, so `lean UEF.lean` checks it on its own.
+- `UEFReal.lean` needs Mathlib, for the real numbers, calculus and integrals.
 
-The file uses only Lean's core library. There is no Mathlib, no `sorry`, and no axiom added. Lean's own `#print axioms` lists `propext`, `Quot.sound` and `Classical.choice` for `the_one_equation`. Those three are part of Lean itself, and every Lean proof uses them. All arithmetic is exact integers. There is no floating point.
+There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
 ## There is no closure operator
 
@@ -53,17 +59,25 @@ Everything after that is the Law of Reciprocity.
 | E ⊢ A1 ⟹ A2 ⟹ A3 ⟹ A4 (§4.6, l. 2592) | `Spine`, `Spine.from_E` |
 | The complete result (§6.9, ll. 2899–2904) | `the_one_equation` |
 
+## The lines over the real numbers (`UEFReal.lean`)
+
+| Manuscript | Lean |
+|---|---|
+| δ_Δ := log w_Δ ≥ 0; ∏w_Δ = exp(Σδ_Δ); ∏w_Δ = 1 ⇔ Σδ_Δ = 0 ⇔ ∀Δ δ_Δ = 0 (§5.3, ll. 2742–2748) | `δ_nonneg`, `δ_compose`, `prod_eq_exp_sum`, `transport` |
+| VK(Ξ) = ΞᵀΞ = Σξᵢ², zero exactly at Ξ = 0 (evidence §8.6, l. 3487) | `VK`, `VK_zero_iff` |
+| dVK/dt = 2ΞᵀG(Ξ) (l. 3489) | `dVK` |
+| VK(t) ≤ VK(t₀)e^{−γ(t−t₀)} when ΞᵀG ≤ −(γ/2)ΞᵀΞ (l. 3492) | `decay`, `proposition_8_6` |
+| Ξ̄* = φ⁻¹ = (√5 − 1)/2 (evidence §14.3, l. 5080) | `inv_phi` |
+| s(φ)(x, y) = φ(x), π_U ∘ s = id (§6.3.4, ll. 2811–2813) | `lift`, `zeroMode`, `zeroMode_lift` |
+| KK momentum: ∫ e^{iny/R} dy = 2πR δ_{n,0} on each circle of T⁴ (§6.3.1) | `kk_mode` |
+| G₄ = G₈ / Vol(T⁴) (§6.3.2, l. 2800) | `newton_constant` |
+| S⁽⁸⁾ ∘ s = S⁽⁴⁾: fibre integration multiplies by Vol(T⁴) (§6.3.4, l. 2817) | `fibre_integral` |
+| S_UEF = ∫_M L dV, L = L_SM + L_grav + L_cross (§5.2, ll. 2714–2716) | `action`, `lagrangian`, `action_sectors` |
+
 ## What Lean takes from E as it stands
 
-The manuscript's thesis is that E is used as it stands. In Lean, these come in the same way: as what E establishes, stated where they enter.
+The thesis is that E is used as it stands. Where an established result enters, the file says so:
 
-- **The steps of the spine.** A1 is proved from E. A2, A3 and A4 are each derived from E together with the line before. The physics of those derivations (Noether, symmetry, continuity) is in E. Lean checks that the chain is derived from E. It does not re-derive the physics, because the physics isn't formalized in Lean.
-- **The lock and invariance.** The lock (Gᵢ ≠ 0 on a face with another channel open) and Nagumo's tangency rule enter as stated in evidence §8.3. `lock_local` proves the lock from its local form: linear part at least c·|Ξ|, remainder at most K·|Ξ|², 0 < |Ξ| < c/K.
-- **Lines that need real numbers and calculus.** Lean's core library has neither. These lines are not written in this file:
-  - S_UEF = ∫ L dV
-  - dV/dt = 2ΞᵀG
-  - V(t) ≤ V(t₀)e^{−γ(t−t₀)}
-  - δ_Δ = log w_Δ
-  - the zero-mode reduction, G₄ = G₈/Vol(T⁴), G_μν = 8πG₄T_μν
-
-  Writing them needs Mathlib's real analysis.
+- **The physics inside the spine.** The physics of A1 → A2 → A3 → A4 (Noether, symmetry, continuity) comes from E. Lean checks that the chain is derived from E.
+- **The K7 lock and invariance.** The lock and Nagumo's tangency rule come in as evidence §8.3 states them. `lock_local` proves the lock from its local form.
+- **The gravity and gauge lines.** Mathlib has no Lorentzian curvature, so Lean can't re-derive Einstein's equation G_μν = 8πG₄T_μν from the variation. It comes from E as established physics. The same goes for the identifications π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR.
