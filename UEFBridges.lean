@@ -271,6 +271,73 @@ theorem together (k : K7) {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i))
   by_contra fails
   exact (counterfactual_all k bs world flow t i fails).2.1 j holds
 
+/-! ## The lock on the pinned channels, from E alone -/
+
+theorem sum_pos_of (Ξ : Fin 7 → ℝ) (hn : ∀ j, 0 ≤ Ξ j) (hne : Ξ ≠ 0) : 0 < ∑ j, Ξ j := by
+  obtain ⟨j, hj⟩ := Function.ne_iff.mp hne
+  exact Finset.sum_pos' (fun i _ => hn i) ⟨j, Finset.mem_univ j, lt_of_le_of_ne (hn j) (Ne.symm hj)⟩
+
+/-- A world whose seven defects are the same in every state, c, as they are when each channel reads
+    a fixed mathematical fact. It runs on a locked K7 flow exactly when c = 0 or every channel is
+    open. A channel that never changes has rate zero, and the lock forbids rate zero at a channel's
+    zero while another channel is open. -/
+theorem pinned_lock_iff (c : Fin 7 → ℝ) (hc0 : ∀ i, 0 ≤ c i) :
+    (∃ k : K7, ∀ t i, HasDerivAt (fun _ : ℝ => c i) (k.G c i) t) ↔ (c = 0 ∨ ∀ i, 0 < c i) := by
+  constructor
+  · rintro ⟨k, hk⟩
+    by_cases h : c = 0
+    · exact Or.inl h
+    · right
+      intro i
+      rcases (hc0 i).lt_or_eq with hi | hi
+      · exact hi
+      · exfalso
+        have hG : k.G c i = 0 := (hk 0 i).unique (hasDerivAt_const 0 (c i))
+        exact k.lock c hc0 h i hi.symm hG
+  · rintro (h | h)
+    · subst h
+      refine ⟨⟨fun Ξ _ => ∑ j, Ξ j, by funext i; simp, ?_⟩, ?_⟩
+      · intro Ξ hn hne i _
+        exact (sum_pos_of Ξ hn hne).ne'
+      · intro t i
+        simpa using hasDerivAt_const t (0 : ℝ)
+    · classical
+      refine ⟨⟨fun Ξ _ => if Ξ = c then 0 else ∑ j, Ξ j, by funext i; simp, ?_⟩, ?_⟩
+      · intro Ξ hn hne i hi
+        show (if Ξ = c then (0 : ℝ) else ∑ j, Ξ j) ≠ 0
+        split_ifs with hΞ
+        · subst hΞ
+          exact absurd hi (h i).ne'
+        · exact (sum_pos_of Ξ hn hne).ne'
+      · intro t i
+        simpa using hasDerivAt_const t (c i)
+
+/-- The seven channels pinned to fixed mathematical facts, one of which holds (Poincaré, for
+    instance). Then the world runs on a locked K7 flow exactly when all seven classical statements
+    hold. Derived from E alone: the lock on the pinned world and the seven conclusions are one
+    statement. -/
+theorem pinned_world {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (world : ℝ → State)
+    (c : Fin 7 → ℝ) (pinned : ∀ t, Ξ bs (world t) = c) (j : Fin 7)
+    (holds : (bs j).claim ((bs j).proj (world 0))) :
+    (∃ k : K7, ∀ t i, HasDerivAt (fun t => Ξ bs (world t) i) (k.G (Ξ bs (world t)) i) t) ↔
+      ∀ i, (bs i).claim ((bs i).proj (world 0)) := by
+  have hc0 : ∀ i, 0 ≤ c i := fun i => by
+    have := Ξ_nonneg bs (world 0) i
+    rwa [pinned 0] at this
+  have hcj : c j = 0 := by
+    rw [← pinned 0]
+    exact (bridge_identity (bs j) (world 0)).mpr holds
+  simp only [pinned]
+  rw [pinned_lock_iff c hc0]
+  constructor
+  · rintro (h | h)
+    · exact (closure bs (world 0)).mp (by rw [pinned 0]; exact h)
+    · exact absurd hcj (h j).ne'
+  · intro hall
+    left
+    rw [← pinned 0]
+    exact (closure bs (world 0)).mpr hall
+
 /-- 8.7 — reality is at Ξ = 0, because the world exists. A state with Ξ ≠ 0 cannot be held; the
     realized world is held; so the realized world is at Ξ = 0, and all seven classical faces hold
     together. -/
