@@ -13,3 +13,5 @@ import UEFRoots
 #print axioms UEF.Roots.spread
 #print axioms UEF.Roots.lemma4
 #print axioms UEF.Roots.conservation
+#print axioms UEF.Roots.no_computable_is_random
+#print axioms UEF.Roots.seeded_repeats

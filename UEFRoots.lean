@@ -126,6 +126,44 @@ theorem spread (μ : Measure ℋ) (invariant : ∀ g ∈ (G : Set (ℋ →L[ℂ]
 
 end Spread
 
+/-! ### A3.8–A3.9 — No program, no seed -/
+
+theorem four_mul_le_two_pow : ∀ m, 4 ≤ m → 4 * m ≤ 2 ^ m := by
+  intro m hm
+  induction m, hm using Nat.le_induction with
+  | base => norm_num
+  | succ m hm ih => rw [pow_succ]; omega
+
+/-- A3.8 — Lemma 3, line (ii). A Martin-Löf random record has K(x↾n) ≥ n − c₀ for all n
+    (E23). A fixed program's output has K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′ (E24, E25).
+    For large n, n − c₀ > log₂ n + 2 log₂ log₂ n + c′: contradiction. No computable
+    sequence is Martin-Löf random. `K n` is the complexity of the first n terms. -/
+theorem no_computable_is_random (K : ℕ → ℕ) (c₀ c' : ℕ)
+    (random : ∀ n, n ≤ K n + c₀)
+    (program : ∀ n, K n ≤ Nat.log 2 n + 2 * Nat.log 2 (Nat.log 2 n) + c') : False := by
+  set m := c₀ + c' + 4
+  have hm : 4 * m ≤ 2 ^ m := four_mul_le_two_pow m (by omega)
+  have h₁ := random (2 ^ m)
+  have h₂ := program (2 ^ m)
+  rw [Nat.log_pow (by norm_num)] at h₂
+  have h₃ : Nat.log 2 m ≤ m := (Nat.log_lt_self 2 (by omega)).le
+  omega
+
+/-- A3.9 — No seed, no repetition. A seeded process has finitely many internal states,
+    so its record is eventually periodic (E22): some internal state returns, and from
+    then on the record repeats. -/
+theorem seeded_repeats {k : ℕ} (next : Fin (k + 1) → Fin (k + 1)) (seed : Fin (k + 1)) :
+    ∃ a b, a < b ∧ ∀ t, Nat.iterate next (a + t) seed = Nat.iterate next (b + t) seed := by
+  obtain ⟨a, b, hne, heq⟩ := Fintype.exists_ne_map_eq_of_card_lt
+    (fun i : Fin (k + 2) => Nat.iterate next i.val seed) (by simp)
+  have key : ∀ x y : ℕ, Nat.iterate next x seed = Nat.iterate next y seed →
+      ∀ t, Nat.iterate next (x + t) seed = Nat.iterate next (y + t) seed := by
+    intro x y h t
+    rw [Nat.add_comm x t, Nat.add_comm y t, Function.iterate_add_apply, Function.iterate_add_apply, h]
+  rcases Nat.lt_or_gt_of_ne (Fin.val_ne_of_ne hne) with h | h
+  · exact ⟨a, b, h, key a b heq⟩
+  · exact ⟨b, a, h, key b a heq.symm⟩
+
 /-! ## §4.5 — A4: div S = ∇ₐSᵃ = 0 -/
 
 /-- Lemma 4 — Local Conservation Implies Zero Divergence (A4.3–A4.5). The net flux of
