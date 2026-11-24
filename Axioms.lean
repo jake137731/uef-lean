@@ -25,6 +25,8 @@ import UEFGauge
 import UEFElliptic
 import UEFHodge
 import UEFPoincare
+import UEFErdos
+import UEFPredictions
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -112,3 +114,8 @@ import UEFPoincare
 #print axioms UEF.Elliptic.sha_finite
 #print axioms UEF.Hodge.steps_9_10
 #print axioms UEF.Poincare.volume_bound
+#print axioms UEF.Erdos.power_law
+#print axioms UEF.Erdos.isometries_of_Z
+#print axioms UEF.Erdos.erdos_AP
+#print axioms UEF.Erdos.green_tao
+#print axioms UEF.Predictions.F10_jarlskog
