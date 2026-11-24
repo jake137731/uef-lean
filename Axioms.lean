@@ -3,7 +3,7 @@ import UEFReal
 import UEFRoots
 import UEFTime
 import UEFBell
-import UEFCoupling
+import UEFLock
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -23,5 +23,5 @@ import UEFCoupling
 #print axioms UEF.Bell.chsh
 #print axioms UEF.Bell.quantum_S
 #print axioms UEF.Bell.no_predetermined_strategy
-#print axioms UEF.Coupling.positive_definite
-#print axioms UEF.Coupling.no_split
+#print axioms UEF.Lock.positive_definite
+#print axioms UEF.Lock.no_split

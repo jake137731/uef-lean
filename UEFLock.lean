@@ -1,12 +1,12 @@
 /-
-  THE UNIFIED EXISTENCE FRAMEWORK — No field evolves alone, in Lean 4 with Mathlib
+  THE UNIFIED EXISTENCE FRAMEWORK — The seven fields are locked, in Lean 4 with Mathlib
 
   Jake McDonough, Institute for Higher Thinking, Louisville, Kentucky, USA
 
-  Source: UEF Release, 01_Manuscript.pdf, §5.2 (p. 126) and evidence Lemma 6.1:
-  the cross-coupled kinetic mass matrix m_ab = m_aδ_ab + κ_ab is positive definite
-  under the diagonal dominance condition, and the connected coupling graph prevents
-  a nontrivial partition of the seven fields into independently evolving blocks.
+  Source: UEF Release, 01_Manuscript.pdf, §5.2 (p. 126) and evidence Lemma 6.1
+  (No Field Evolves Alone): the kinetic mass matrix m_ab = m_aδ_ab + κ_ab is
+  positive definite under the diagonal dominance condition, and the seven fields
+  are locked: they cannot be split into independently evolving blocks.
 -/
 import Mathlib
 
@@ -14,11 +14,11 @@ open Finset
 
 set_option linter.unusedSectionVars false
 
-namespace UEF.Coupling
+namespace UEF.Lock
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
-/-- Σ_{b≠a} |m_ab|: the couplings of field a to every other field. -/
+/-- Σ_{b≠a} |m_ab|: the locks between field a and every other field. -/
 def offRow (M : Matrix ι ι ℝ) (a : ι) : ℝ := ∑ b, if b = a then 0 else |M a b|
 
 /-- The kinetic energy T(v) = Σ_ab m_ab v_a v_b (twice the usual ½). -/
@@ -32,7 +32,7 @@ theorem pair_bound (m x y : ℝ) : -(|m| * (x ^ 2 + y ^ 2) / 2) ≤ m * x * y :=
     exact mul_le_mul_of_nonneg_left hxy (abs_nonneg m)
   linarith [neg_abs_le (m * x * y)]
 
-/-- Each row split into its diagonal term and its couplings. -/
+/-- Each row split into its diagonal term and its locks. -/
 theorem row_split (f : ι → ℝ) (a : ι) :
     ∑ b, f b = f a + ∑ b, (if b = a then 0 else f b) := by
   have : ∀ b, f b = (if b = a then f b else 0) + (if b = a then 0 else f b) := by
@@ -52,7 +52,7 @@ theorem T_lower (M : Matrix ι ι ℝ) (hsym : ∀ a b, M a b = M b a) (v : ι �
     ring
   simp_rw [hrow]
   rw [Finset.sum_add_distrib]
-  -- the couplings are bounded below, pair by pair
+  -- the locks are bounded below, pair by pair
   have hoff : ∑ a, ∑ b, (if b = a then (0 : ℝ) else -(|M a b| * (v a ^ 2 + v b ^ 2) / 2))
       ≤ ∑ a, ∑ b, (if b = a then 0 else M a b * v a * v b) := by
     refine Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => ?_
@@ -101,17 +101,17 @@ theorem positive_definite (M : Matrix ι ι ℝ) (hsym : ∀ a b, M a b = M b a)
         (lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 ha)))⟩
   exact lt_of_lt_of_le hpos (T_lower M hsym v)
 
-/-- The coupling graph: an edge between a and b whenever κ_ab ≠ 0. -/
-def couplingGraph (M : Matrix ι ι ℝ) : SimpleGraph ι where
+/-- The lock graph: an edge between a and b whenever κ_ab ≠ 0. -/
+def lockGraph (M : Matrix ι ι ℝ) : SimpleGraph ι where
   Adj a b := a ≠ b ∧ (M a b ≠ 0 ∨ M b a ≠ 0)
   symm _ _ h := ⟨Ne.symm h.1, h.2.symm⟩
   loopless _ h := h.1 rfl
 
 /-- Lemma 6.1 (ii) — The kinetic energy does not split. For every splitting of the
-    fields into two non-empty groups J and J′, the coupling graph is connected, so
+    fields into two non-empty groups J and J′, the lock graph is connected, so
     some edge joins J to J′: there are a ∈ J, b ∈ J′ with κ_ab ≠ 0. -/
 theorem no_split (M : Matrix ι ι ℝ) (hsym : ∀ a b, M a b = M b a)
-    (connected : (couplingGraph M).Connected) (J : Set ι) {a b : ι} (ha : a ∈ J) (hb : b ∉ J) :
+    (connected : (lockGraph M).Connected) (J : Set ι) {a b : ι} (ha : a ∈ J) (hb : b ∉ J) :
     ∃ a' ∈ J, ∃ b' ∉ J, M a' b' ≠ 0 := by
   obtain ⟨p⟩ := connected.preconnected a b
   obtain ⟨d, -, hd1, hd2⟩ := p.exists_boundary_dart J ha hb
@@ -120,4 +120,4 @@ theorem no_split (M : Matrix ι ι ℝ) (hsym : ∀ a b, M a b = M b a)
   · exact h
   · rwa [hsym]
 
-end UEF.Coupling
+end UEF.Lock

@@ -419,7 +419,7 @@ end K7
 
 /-! ## §5.2 — The manifold and the seven fields -/
 
-/-- φ = (P, I, Sₐ, Ψ, Q, A, Rₐ): the seven coupled fields.   (§5.2, p. 126, l. 2712) -/
+/-- φ = (P, I, Sₐ, Ψ, Q, A, Rₐ): the seven locked fields.   (§5.2, p. 126, l. 2712) -/
 inductive Field
   | P | I | S | Ψ | Q | A | R
   deriving DecidableEq, Repr
@@ -432,7 +432,7 @@ def Field.ofChannel : Fin 7 → Field
   | ⟨0, _⟩ => .P | ⟨1, _⟩ => .I | ⟨2, _⟩ => .S | ⟨3, _⟩ => .Ψ
   | ⟨4, _⟩ => .Q | ⟨5, _⟩ => .A | ⟨6, _⟩ => .R
 
-/-- The seven fields are exactly the seven channels of K7: one coupled problem. -/
+/-- The seven fields are exactly the seven channels of K7, locked as one. -/
 theorem seven_fields_seven_channels :
     (∀ f, Field.ofChannel f.channel = f) ∧ (∀ i, (Field.ofChannel i).channel = i) := by
   refine ⟨fun f => by cases f <;> rfl, fun i => ?_⟩
