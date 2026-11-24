@@ -17,6 +17,8 @@ import UEFContainment
 import UEFMoral
 import UEFCycle
 import UEFCollapse
+import UEFBridges
+import UEFRiemann
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -87,3 +89,10 @@ import UEFCollapse
 #print axioms UEF.Collapse.drift_log
 #print axioms UEF.Collapse.laplace
 #print axioms UEF.Collapse.coherence_one_iff
+#print axioms UEF.Bridges.closure
+#print axioms UEF.Bridges.constant_bridge
+#print axioms UEF.Bridges.B5
+#print axioms UEF.Riemann.transport_determinant
+#print axioms UEF.Riemann.spectral_bridge
+#print axioms UEF.Riemann.xi4_zero_iff
+#print axioms UEF.Riemann.theorem_xi4_5
