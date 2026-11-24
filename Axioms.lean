@@ -15,6 +15,7 @@ import UEFTorus
 import UEFTunneling
 import UEFContainment
 import UEFMoral
+import UEFCycle
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -77,3 +78,6 @@ import UEFMoral
 #print axioms UEF.Containment.gtc_strict
 #print axioms UEF.Moral.energy_zero_iff
 #print axioms UEF.Moral.free_energy_falls
+#print axioms UEF.Cycle.tortoise
+#print axioms UEF.Cycle.dust_conserved
+#print axioms UEF.Cycle.winding_integer
