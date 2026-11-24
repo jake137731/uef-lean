@@ -64,13 +64,12 @@ theorem vacuum_nonzero (μ2 lam : ℝ) (hl : 0 < lam) : 0 < μ2 / (2 * lam) ↔ 
 /-- v = μ/√λ gives |φ|² = μ²/2λ = v²/2. -/
 theorem v_squared (μ lam : ℝ) (hl : 0 < lam) : (μ / Real.sqrt lam) ^ 2 / 2 = μ ^ 2 / (2 * lam) := by
   rw [div_pow, Real.sq_sqrt hl.le]
-  field_simp
   ring
 
 /-! ## Corollary 1.2 — Mass generation -/
 
 /-- m_F = g_F · v/√2 = g_F · μ/√(2λ). -/
-theorem fermion_mass (gF μ lam : ℝ) (hl : 0 < lam) :
+theorem fermion_mass (gF μ lam : ℝ) :
     gF * ((μ / Real.sqrt lam) / Real.sqrt 2) = gF * (μ / Real.sqrt (2 * lam)) := by
   rw [Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2), div_div, mul_comm (Real.sqrt lam)]
 
