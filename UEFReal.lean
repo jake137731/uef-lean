@@ -86,8 +86,7 @@ theorem dVK (Ξ : ℝ → Fin 7 → ℝ) (G : (Fin 7 → ℝ) → Fin 7 → ℝ)
     simpa [mul_comm, mul_assoc, mul_left_comm] using this
   have hs := HasDerivAt.sum h
   convert hs using 1
-  · funext s; simp
-  · rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => ?_; ring
+  rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => ?_; ring
 
 /-- VK(t) ≤ VK(t₀) e^{−γ(t − t₀)}.   (evidence §8.6, p. 161, l. 3492)
     When the K7 flow satisfies ΞᵀG(Ξ) ≤ −(γ/2)ΞᵀΞ for some γ > 0, this gives
@@ -123,7 +122,8 @@ theorem proposition_8_6 (Ξ : ℝ → Fin 7 → ℝ) (G : (Fin 7 → ℝ) → Fi
     (lyapunov : ∀ t, ∑ i, Ξ t i * G (Ξ t) i ≤ -(γ / 2) * VK (Ξ t)) {t₀ t : ℝ} (ht : t₀ ≤ t) :
     VK (Ξ t) ≤ VK (Ξ t₀) * Real.exp (-(γ * (t - t₀))) :=
   decay (fun s => VK (Ξ s)) (fun s => 2 * ∑ i, Ξ s i * G (Ξ s) i) γ
-    (fun s => dVK Ξ G s (flow s)) (fun s => by linarith [lyapunov s]) ht
+    (fun s => dVK Ξ G s (flow s))
+    (fun s => by show 2 * ∑ i, Ξ s i * G (Ξ s) i ≤ -γ * VK (Ξ s); linarith [lyapunov s]) ht
 
 end Approach
 
@@ -163,6 +163,7 @@ theorem kk_mode (n : ℤ) (R : ℝ) (hR : R ≠ 0) :
       intro y; ring
     simp_rw [e]
     rw [this]
+    have hR' : (R : ℂ) ≠ 0 := by exact_mod_cast hR
     have h2 : (n * Complex.I / R : ℂ) * (2 * π * R : ℝ) = n * (2 * π * Complex.I) := by
       push_cast; field_simp; ring
     rw [h2, Complex.exp_int_mul_two_pi_mul_I]
@@ -178,7 +179,7 @@ theorem newton_constant (G₈ G₄ vol : ℝ) (h₈ : 0 < G₈) (hv : 0 < vol) :
   constructor
   · intro h
     have hG₄ : G₄ ≠ 0 := by
-      rintro rfl; simp at h; exact absurd h (by positivity)
+      rintro rfl; simp at h
     field_simp at h ⊢
     nlinarith [h]
   · intro h; subst h; field_simp; ring
@@ -209,8 +210,11 @@ noncomputable def action (dV : Measure M) (L : M → ℝ) : ℝ := ∫ x, L x �
 theorem action_sectors (dV : Measure M) (L_SM L_grav L_cross : M → ℝ)
     (h₁ : Integrable L_SM dV) (h₂ : Integrable L_grav dV) (h₃ : Integrable L_cross dV) :
     action dV (lagrangian L_SM L_grav L_cross) = action dV L_SM + action dV L_grav + action dV L_cross := by
+  have e1 : ∫ x, L_SM x + L_grav x + L_cross x ∂dV
+      = ∫ x, L_SM x + L_grav x ∂dV + ∫ x, L_cross x ∂dV := integral_add (h₁.add h₂) h₃
+  have e2 : ∫ x, L_SM x + L_grav x ∂dV = ∫ x, L_SM x ∂dV + ∫ x, L_grav x ∂dV := integral_add h₁ h₂
   unfold action lagrangian
-  rw [integral_add (h₁.add h₂) h₃, integral_add h₁ h₂]
+  rw [e1, e2]
 
 end Action
 
