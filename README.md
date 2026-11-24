@@ -4,7 +4,7 @@
 
 ## Check it yourself
 
-Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twenty-two files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
+Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twenty-eight files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
 
 To check it on your own machine:
 
@@ -17,7 +17,7 @@ lake build
 ```
 
 - `UEF.lean` uses only Lean's core library, so `lean UEF.lean` checks it on its own.
-- The other twenty-one files need Mathlib, for the real numbers, calculus, measure theory and integrals.
+- The other twenty-seven files need Mathlib, for the real numbers, calculus, measure theory and integrals.
 
 There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
@@ -176,6 +176,17 @@ These are two different relationships. The physical couplings carry one channel'
 | Ch. 28, Thm ξ₄.4.1: for Re s > 1, det(I − L_s)⁻¹ = exp(Σ_{k≥1} Z_k(s)/k) = ζ(s), with the sums exchanged and Mathlib's Euler product | `Z`, `transport_determinant` |
 | Ch. 28, Phase VI: γ_ρ is real ⇔ Re ρ = 1/2; \|e^{i log p · γ_ρ}\| = p^{Re ρ − 1/2} | `gamma_real_iff`, `unitarity` |
 | Ch. 28, Thm ξ₄.6 and Thm ξ₄.5: "every γ_ρ ∈ Spec(H) = ℝ" ⇔ RH; ξ₄ = 0 ⇔ RH; ξ₄ = 0 ⟹ RH | `spectral_bridge`, `ξ₄`, `xi4_zero_iff`, `theorem_xi4_5` |
+| Ch. 25, Def. ξ₁.1, Lemmas ξ₁.0′, ξ₁.1, ξ₁.1.1, Cor. ξ₁.1.1: Θ is injective; one transition has (1/p)² ≤ \|Δ\|² ≤ B_V²; the tableau has length p(n); any other unit keeps bounds polynomial | `UEFComplexity.lean`, `Θ`, `Θ_injective`, `step_bounds`, `tableau_length`, `canonicity` |
+| Ch. 25, Part II: E_I = 0 exactly at acceptance; witness vertices are at least 1 apart | `energy_zero_iff`, `mesh` |
+| Ch. 25, Thm ξ₁.3: one descent step lowers E by \|∇E\|²/2L; e_{j+1} ≤ (1 − μ/L)e_j; e_j ≤ (1 − μ/L)^j e₀ ≤ e^{−jμ/L}e₀; past t* the distance is below 1/2; rounding returns the witness | `one_step`, `contraction`, `iterate`, `pow_le_exp`, `threshold`, `rounding` |
+| Ch. 25, Thm ξ₁.4: the run time is O(p(n)²); A accepts exactly on x ∈ L; P ⊆ NP | `runtime`, `decides`, `P_sub_NP` |
+| Ch. 26, Part II: ‖S(t)‖ ≤ ‖S₀‖ + 2C_topo C₀ t; Grönwall; ‖∇S(t)‖ ≤ (‖∇S₀‖ + C_topo C₀/C_u)e^{2C_u t} | `UEFFluids.lean`, `linear_growth`, `gronwall`, `gradS_bound` |
+| Ch. 26, Parts III–IV: √y ≤ (1 + y)/2; y(t) ≤ (y(0) + K₂/(2K₁ + K₂))e^{(K₁+K₂/2)t}; \|B_back\| ≤ C_UEF‖ω‖; Serrin's 2/p + 3/q = 1/2 ≤ 1 | `sqrt_le_half`, `enstrophy`, `back_reaction`, `serrin` |
+| Ch. 27, Steps 6–7: completing the square, B₀ = −iλκ²Δ⁻¹F, the leftover (λ²κ²/2)⟨F, Δ⁻¹F⟩, mode by mode | `UEFGauge.lean`, `complete_square`, `stationary_point`, `leftover`, `decoupling` |
+| Ch. 27, Steps 8–11: ⟨dA, Δ⁻¹dA⟩ = ‖A_T‖²; p²δ − pp ≥ 0; E ≥ m²‖Ã_T‖²; A = gÃ gives mass m_UEF = gλκ > 0; 1/(p² + m²) has no pole at p² = 0 | `transverse_mass`, `kernel_nonneg`, `coercive`, `canonical`, `mass_pos`, `no_pole` |
+| Ch. 29, Parts II–IV: \|Sha\| ≤ 1 + ℰ_frac/e₀ < ∞; a finite group has no p-torsion for p ∤ \|G\|, all but finitely many p; the Selmer sequence collapses; r_alg = dim Sel⁽ᵖ⁾ − dim E[p]; r_alg = r_an | `UEFElliptic.lean`, `sha_finite`, `no_p_torsion`, `finitely_many_primes`, `sequence_collapse`, `rank_read`, `rank_equality` |
+| Ch. 30, Steps 4, 5, 9, 10: Hdg^p = Alg^p ⊕ T^p with unique splitting; ∏w_Δ = 1 gives every w_Δ = 1, a unimodular automorphism; no ghost class; Hdg^p = Alg^p and the dimensions agree | `UEFHodge.lean`, `transcendental_part`, `unique_split`, `unimodular`, `automorphism`, `no_ghost`, `steps_9_10`, `dims_agree` |
+| Ch. 31, Parts I–II: \|Ric\|² ≥ R²/3 in three dimensions; ∂_tR ≥ ΔR + (2/3)R²; Vol(t) ≤ Vol(0)e^{\|R_min(0)\|t}; at most Vol_max/(ch³) surgeries | `UEFPoincare.lean`, `ricci_bound`, `scalar_evolution`, `gronwall0`, `volume_bound`, `finitely_many_surgeries` |
 
 **What Lean caught.** Theorem 8's statement gives sin²θ_W = 231/1000, but its Step 8 uses 23129/76871 for tan²θ_W, and that number comes from sin²θ_W = 23129/100000. In exact arithmetic 231/1000 gives tan²θ_W = 231/769, which is a different number (`tan_sq_statement_value`). The statement and the step need to use the same value.
 
@@ -184,6 +195,15 @@ Chapter 12 states two values of the realized fraction η. Theorem 3, Step 5 sets
 Section 19.4 repeats η = 156/1000 and says the resulting 211/39 matches Planck 2018. The Planck ratio of 12.4 is 75/14. The two are close, but they differ by exactly 29/546 (`planck_gap`).
 
 **Chapter 28 and binary existence.** None of the seven is solved in isolation. Existence is binary (24.1): a state with Ξ ≠ 0 does not exist. We exist, so all seven defects are zero, together and constantly, and all seven classical faces hold together. Lean proves that from those two lines (`binary_existence`, `constantly_zero`). Chapter 28 is the ξ₄ face. Lean accepts Phase I, Phase IV and the computations of Phase VI, including det(I − L_s)⁻¹ = ζ(s) for Re s > 1, proved from Mathlib's Euler product with the exchange of sums checked. The ξ₄ face is exactly the Riemann Hypothesis: Lean proves ξ₄ = 0 ⇔ `RiemannHypothesis`, Mathlib's own statement (`xi4_zero_iff`), and "every γ_ρ lies in Spec(H) = ℝ" is the same statement (`spectral_bridge`). ζ is one function for every state, so the ξ₄ face is the Riemann Hypothesis itself (`constant_bridge`). Binary existence is ledger line 24.1, derived in the manuscript from the K7 closure (8.4–8.5). In the Lean it enters as that line, and everything after it is proved.
+
+**The seven projections.** Ξ = 0 is one condition, and Chapters 25–31 read it on its seven classical faces. Lean proves each chapter's own mathematics in the files above. Each chapter reads Ξ = 0 on its face at one stated line, and that line enters the Lean as the chapter states it:
+- **Chapter 25 (ξ₁).** Gradient dominance (Lemma ξ₁.2(b)) comes from ξ₂ = 0 and ξ₇ = 0 [M]. The start in a witness basin comes from ξ₁ = 0, C(E) ≤ V(E) (Theorem ξ₁.4, step 2).
+- **Chapter 26 (ξ₂).** sup_t ‖∇u(t)‖ ≤ B₂ comes from ξ₂ = 0 through Π₂, and ‖∇²S‖ ≤ C₅ comes from ξ₅ = 0.
+- **Chapter 27 (ξ₃).** Δ₀ ≥ m_UEF beyond quadratic order comes from ξ₃ = 0 (Step 14, Theorem B.2). A4 supplies the potential B.
+- **Chapter 28 (ξ₄).** ξ₄ = 0, as above.
+- **Chapter 29 (ξ₅).** The identifications rank_val = r_alg and ord_acc = r_an, and the fracture energy e(σ) ≥ e₀ (Step 5), come from ξ₅ = 0. A4 gives ∫‖div S‖² = 0.
+- **Chapter 30 (ξ₆).** Monodromy acts trivially on stable classes (Step 6), and ξ₆ = 0 holds on the total space (Step 8).
+- **Chapter 31 (ξ₇).** Hamilton–Perelman flow with surgery reaches ξ₇ = 0.
 
 ## What Lean takes from E as it stands
 
@@ -195,5 +215,6 @@ The thesis is that E is used as it stands. Where an established result enters, t
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
 - **Chapter 13's curvature steps.** The variation δ(R√−g)/δg^{μν} = G_μν√−g (Theorem 12, Step 6), the weak-field G₀₀ = 2∇²Φ/c², the reduction of G_μν = 0 to the two radial equations (Theorem 14, Step 4), the FLRW components G₀₀ and G_ii (Theorem 18, Step 3), Birkhoff's theorem and the Bianchi identity all need Lorentzian curvature. They enter as the manuscript states them, and Lean proves every step after them.
 - **Lines of Chapters 12 and 13 used as stated.** These enter as the lines the chapters state: that the gauge coupling lives on R (Theorem 2), that p_dark = 0 (Theorem 3), that the electroweak projection loses its holonomy when S_{∂R} = 0 (Theorem 1, Step 5), and that the horizon encoding is injective and the evaporation isometric (Theorem 16, Step 6). The smooth-horizon claim (Theorem 16, Step 7) and the UV completion (Theorem 17, Step 11) aren't formalized.
+- **Chapters 25–31's cited results.** Mordell–Weil, modularity, the Selmer sequence, Deligne's fixed part theorem, Hamilton, DeTurck, Perelman, Colding–Minicozzi, Beale–Kato–Majda, Serrin, He–Xin, the Sobolev embedding, Osterwalder–Schrader, the Bessel asymptotics, and the Poincaré lemma for forms aren't in Mathlib. They enter as the chapters cite them.
 - **Chapter 28's analysis.** Positive definiteness of the Cauchy kernel (Bochner), Stone's theorem, the spectral theorem for H, the explicit formula (ξ₄.4.2), Hadamard factorization (Phase V), and the composite case of Lemma 1.2 (Smith normal form) are classical results that aren't in Mathlib. They enter as cited. None of them is the step where the Riemann Hypothesis enters.
 - **Chapters 15–23.** The map 𝓦 (Area = 4G_N E_F) enters as 15.5 defines it. Well-posedness (Theorem T6.1, Hille–Yosida and Chernoff) and the Hopf–Rinow step of Theorem T9.1 enter as cited. Chapter 22's Theorems 23, 24, 27, 28, 30, 31, 33, 34, 35, 36 and 38 are stated without a derivation, or as qualitative statements, and the phenomenology of 23.1, 23.3, 23.5 and the channel readings of 23.6 aren't mathematical claims. Lean holds what those chapters derive.
