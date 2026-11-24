@@ -88,7 +88,7 @@ theorem identity_attractor {X : Type*} [MetricSpace X] [CompleteSpace X] [Nonemp
 
 /-- Theorem 26 — with |Ψ_{R} − Ψ*| ≤ c^R|Ψ − Ψ*|, the fidelity F = |Ψ_R − Ψ*|⁻¹ is at least
     c^{−R}F₀. -/
-theorem fidelity_bound (d0 dR c : ℝ) (R : ℕ) (hc0 : 0 < c) (hd0 : 0 < d0) (hdR : 0 < dR)
+theorem fidelity_bound (d0 dR c : ℝ) (R : ℕ) (hdR : 0 < dR)
     (h : dR ≤ c ^ R * d0) : 1 / c ^ R * (1 / d0) ≤ 1 / dR := by
   rw [div_mul_div_comm, one_mul]
   exact one_div_le_one_div_of_le hdR h

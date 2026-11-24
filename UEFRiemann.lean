@@ -107,7 +107,8 @@ theorem transport_determinant (s : ℂ) (hs : 1 < s.re) :
     show ‖primeWeight s p ^ (k + 1) / ((k + 1 : ℕ) : ℂ)‖ ≤ ‖primeWeight s p‖ ^ (k + 1)
     rw [norm_div, norm_pow]
     apply div_le_self (by positivity)
-    simp
+    rw [Complex.norm_eq_abs, Complex.abs_natCast]
+    exact_mod_cast Nat.le_add_left 1 k
   have hZ : ∀ k : ℕ, Z (k + 1) s / ((k + 1 : ℕ) : ℂ)
       = ∑' p : Nat.Primes, primeWeight s p ^ (k + 1) / ((k + 1 : ℕ) : ℂ) := by
     intro k
@@ -141,6 +142,7 @@ noncomputable def γ (ρ : ℂ) : ℂ := -I * (ρ - ((1 / 2 : ℝ) : ℂ))
 /-- Phase VI, Step 3 — γ_ρ is real exactly when Re ρ = 1/2. -/
 theorem gamma_real_iff (ρ : ℂ) : (γ ρ).im = 0 ↔ ρ.re = 1 / 2 := by
   simp [γ, Complex.mul_im, sub_eq_zero]
+  exact eq_comm
 
 /-- Unitarity and the critical line — |e^{i log p · γ_ρ}| = p^{Re ρ − 1/2}: modulus 1 exactly
     on the line. -/
@@ -148,7 +150,9 @@ theorem unitarity (p : ℕ) (hp : 0 < p) (ρ : ℂ) :
     Complex.abs (Complex.exp (I * (Real.log p : ℂ) * γ ρ)) = (p : ℝ) ^ (ρ.re - 1 / 2) := by
   rw [Complex.abs_exp, Real.rpow_def_of_pos (by exact_mod_cast hp)]
   congr 1
-  simp [γ, Complex.mul_re, Complex.mul_im] <;> ring
+  simp only [γ, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re,
+    Complex.ofReal_im, Complex.neg_re, Complex.neg_im, Complex.sub_re, Complex.sub_im]
+  ring
 
 /-- Theorem ξ₄.6 — Spec(H) = ℝ, so "every γ_ρ lies in Spec(H)" says every γ_ρ is real, and that
     is exactly the Riemann Hypothesis. -/
