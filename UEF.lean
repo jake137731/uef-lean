@@ -212,7 +212,12 @@ theorem R6 {T' : Stmts S} (hT : IsTheory R T') (hne : T' ≠ Th R E) :
 
 end Theorem
 
-/-! ## §5.3 — K7: the seven channels, equal, none weighted -/
+/-! ## §5.3 — K7: the seven channels, equal, none weighted
+
+Annotation key: [P] physical coupling, cross-terms κ_ij; the fields stay
+individually definable and coupling permits partial resolution. [M] K7 mutual
+necessity locking: no single channel has a well-defined ground state in
+isolation; locking forbids partial resolution by construction. -/
 
 namespace K7
 
@@ -291,12 +296,13 @@ def Certifiable (G : Flow) (i : Fin 7) (Ξ : Defects) : Prop := Ξ i = 0 ∧ G �
 /-- The ground state is at rest under the flow (Proposition 8.6): G(0) = 0. -/
 def AtRest (G : Flow) : Prop := ∀ i, G (fun _ => 0) i = 0
 
-/-- The lock (evidence §8.3): on the face ξᵢ = 0 with some ξⱼ > 0, Gᵢ(Ξ) ≠ 0.
+/-- Sufficient K7 locking condition [M] (evidence §8.3): on the face ξᵢ = 0 with some ξⱼ > 0, Gᵢ(Ξ) ≠ 0.
     `Near Ξ` is the neighbourhood of Ξ = 0 where the lock holds. -/
 def Locked (G : Flow) (Near : Defects → Prop) : Prop :=
   ∀ Ξ, Near Ξ → NonNeg Ξ → ¬ Zero Ξ → ∀ i, Ξ i = 0 → G Ξ i ≠ 0
 
-/-- The lock from its local form (evidence §8.3): Gᵢ(Ξ) = Σ cᵢⱼξⱼ + Rᵢ(Ξ) with
+/-- The lock [M] from its local form (evidence §8.3). The cross-dependence is a physical
+    coupling [P]; this condition makes it K7 locking [M]: Gᵢ(Ξ) = Σ cᵢⱼξⱼ + Rᵢ(Ξ) with
     every cᵢⱼ ≥ c > 0, the defects non-negative and |Rᵢ(Ξ)| ≤ K|Ξ|². The linear
     part is at least c|Ξ|, which exceeds K|Ξ|² for 0 < |Ξ| < c/K. So Gᵢ ≠ 0.
     Here `n` is |Ξ|, `lin` the linear part and `rem` the remainder. -/
@@ -305,7 +311,7 @@ theorem lock_local (c K n lin rem : Int) (hn : 0 < n) (hlin : c * n ≤ lin)
   have : K * n * n < c * n := Int.mul_lt_mul_of_pos_right hsmall hn
   omega
 
-/-- Theorem 8.3 (ground-state closure; mutual necessity). For each channel i,
+/-- Theorem 8.3 [M] (ground-state closure; mutual necessity). For each channel i,
     ξᵢ = 0 is certifiable exactly when Ξ = 0.   (evidence §8.3) -/
 theorem certifiable_iff (G : Flow) (Near : Defects → Prop) (hL : Locked G Near) (hR : AtRest G)
     {Ξ : Defects} (hN : Near Ξ) (h : NonNeg Ξ) (i : Fin 7) : Certifiable G i Ξ ↔ Zero Ξ := by
@@ -321,7 +327,7 @@ theorem certifiable_iff (G : Flow) (Near : Defects → Prop) (hL : Locked G Near
 def Solve (G : Flow) (i : Fin 7) (Ξ : Defects) : Prop := Certifiable G i Ξ
 def SolveAll (G : Flow) (Ξ : Defects) : Prop := ∀ i, Certifiable G i Ξ
 
-/-- Theorem 6 — Ground-State Mutual Necessity. Solve(i) ⇔ Solve(all) ⇔ Ξ = 0.
+/-- Theorem 6 [M] — Ground-State Mutual Necessity. Solve(i) ⇔ Solve(all) ⇔ Ξ = 0.
     (§5.3, p. 127, l. 2740) -/
 theorem theorem6 (G : Flow) (Near : Defects → Prop) (hL : Locked G Near) (hR : AtRest G)
     {Ξ : Defects} (hN : Near Ξ) (h : NonNeg Ξ) (i : Fin 7) :
@@ -330,7 +336,7 @@ theorem theorem6 (G : Flow) (Near : Defects → Prop) (hL : Locked G Near) (hR :
   refine ⟨⟨fun hi j => (each j).mpr ((each i).mp hi), fun hall => hall i⟩,
           ⟨fun hall => (each 0).mp (hall 0), fun hz j => (each j).mpr hz⟩⟩
 
-/-- One open channel leaves none of the seven certified: Ξ = (0, 1, 0, 0, 0, 0, 0).
+/-- [M] One open channel leaves none of the seven certified: Ξ = (0, 1, 0, 0, 0, 0, 0).
     (evidence §8.3) -/
 theorem one_open_certifies_none (G : Flow) (Near : Defects → Prop) (hL : Locked G Near)
     (hR : AtRest G) (hN : Near (fun j => if j = 1 then 1 else 0)) (i : Fin 7) :
@@ -419,7 +425,7 @@ end K7
 
 /-! ## §5.2 — The manifold and the seven fields -/
 
-/-- φ = (P, I, Sₐ, Ψ, Q, A, Rₐ): the seven locked fields.   (§5.2, p. 126, l. 2712) -/
+/-- φ = (P, I, Sₐ, Ψ, Q, A, Rₐ): the seven fields, with physical couplings [P].   (§5.2, p. 126, l. 2712) -/
 inductive Field
   | P | I | S | Ψ | Q | A | R
   deriving DecidableEq, Repr
@@ -432,7 +438,7 @@ def Field.ofChannel : Fin 7 → Field
   | ⟨0, _⟩ => .P | ⟨1, _⟩ => .I | ⟨2, _⟩ => .S | ⟨3, _⟩ => .Ψ
   | ⟨4, _⟩ => .Q | ⟨5, _⟩ => .A | ⟨6, _⟩ => .R
 
-/-- The seven fields are exactly the seven channels of K7, locked as one. -/
+/-- The seven fields are exactly the seven channels of K7, which are locked [M]. -/
 theorem seven_fields_seven_channels :
     (∀ f, Field.ofChannel f.channel = f) ∧ (∀ i, (Field.ofChannel i).channel = i) := by
   refine ⟨fun f => by cases f <;> rfl, fun i => ?_⟩

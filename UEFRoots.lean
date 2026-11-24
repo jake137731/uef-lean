@@ -18,20 +18,20 @@ variable {ℋ : Type*} [NormedAddCommGroup ℋ] [InnerProductSpace ℂ ℋ] [Com
 
 /-! ## §4.2 — A1 is proved from E -/
 
-/-- A1.1 — P ≔ 0 ∈ ℋ, the zero vector: the origin of the state space. -/
+/-- A1.1 [P] — P ≔ 0 ∈ ℋ, the zero vector: the origin of the state space. -/
 def P : ℋ := 0
 
-/-- A1.2–A1.4 — A1: ∃P ∀ observables O: ⟨O⟩_P = 0. -/
+/-- A1.2–A1.4 [P] — A1: ∃P ∀ observables O: ⟨O⟩_P = 0. -/
 theorem A1 : ∀ O : ℋ →L[ℂ] ℋ, inner (P : ℋ) (O P) = (0 : ℂ) := by
   intro O
   simp [P]
 
-/-- A1.5 — Only P. A state x with ⟨O⟩ₓ = 0 for every O has ⟨𝟙⟩ₓ = ‖x‖² = 0, so x = 0 = P. -/
+/-- A1.5 [P] — Only P. A state x with ⟨O⟩ₓ = 0 for every O has ⟨𝟙⟩ₓ = ‖x‖² = 0, so x = 0 = P. -/
 theorem A1_only_P (x : ℋ) (h : ∀ O : ℋ →L[ℂ] ℋ, inner x (O x) = (0 : ℂ)) : x = P := by
   have := h (ContinuousLinearMap.id ℂ ℋ)
   simpa [P] using this
 
-/-- A1.6 — Perfectly symmetric. Every unitary U is linear, so UP = U0 = 0 = P. -/
+/-- A1.6 [P] — Perfectly symmetric. Every unitary U is linear, so UP = U0 = 0 = P. -/
 theorem A1_symmetric (U : ℋ →L[ℂ] ℋ) : U P = P := by
   simp [P]
 
@@ -40,7 +40,7 @@ theorem neg_one_unitary : (-1 : ℋ →L[ℂ] ℋ) ∈ unitary (ℋ →L[ℂ] �
   rw [unitary.mem_iff]
   simp
 
-/-- A1.7 — The only fixed point. For x ≠ P, (−𝟙)x = −x ≠ x. -/
+/-- A1.7 [P] — The only fixed point. For x ≠ P, (−𝟙)x = −x ≠ x. -/
 theorem A1_only_fixed (x : ℋ) (hx : x ≠ P) : (-1 : ℋ →L[ℂ] ℋ) x ≠ x := by
   intro h
   apply hx
@@ -48,13 +48,13 @@ theorem A1_only_fixed (x : ℋ) (hx : x ≠ P) : (-1 : ℋ →L[ℂ] ℋ) x ≠ 
   have : (2 : ℂ) • x = 0 := by rw [two_smul]; nth_rewrite 1 [← h]; simp
   simpa [P] using (smul_eq_zero.mp this).resolve_left (by norm_num)
 
-/-- A1.8 — ‖P‖ = 0, while every realized state has norm 1 (E9). P is not a realized state. -/
+/-- A1.8 [P] — ‖P‖ = 0, while every realized state has norm 1 (E9). P is not a realized state. -/
 theorem A1_not_realized : ‖(P : ℋ)‖ ≠ 1 := by
   simp [P]
 
 /-! ## §4.3 — A2: the first disturbance is necessary -/
 
-/-- A2.1–A2.6 — Lemma 1, First-Difference Necessity. The history starts at P (A1.1).
+/-- A2.1–A2.6 [P] — Lemma 1, First-Difference Necessity. The history starts at P (A1.1).
     The record contains a realized state, of norm 1 (E9, E11, E12): physical
     differentiation. Then there is a first disturbance: a step from P to P′ ≠ P. -/
 theorem A2 (history : ℕ → ℋ) (start : history 0 = P)
@@ -72,7 +72,7 @@ theorem A2 (history : ℕ → ℋ) (start : history 0 = P)
   rw [all n] at hn
   exact A1_not_realized hn
 
-/-- A2.5 — Every deterministic linear evolution keeps P where it is: U(t)P = U(t)0 = 0.
+/-- A2.5 [P] — Every deterministic linear evolution keeps P where it is: U(t)P = U(t)0 = 0.
     The first transition is not an evolution of P under any law that acts on P linearly. -/
 theorem A2_not_linear (L : ℋ →ₗ[ℂ] ℋ) : L P ≠ P → False := by
   intro h
@@ -83,7 +83,7 @@ theorem A2_not_linear (L : ℋ →ₗ[ℂ] ℋ) : L P ≠ P → False := by
 /-- G, the full symmetry group of P: the unitaries (A1.6). -/
 def G : Set (ℋ →L[ℂ] ℋ) := unitary (ℋ →L[ℂ] ℋ)
 
-/-- A3.1–A3.3 — Lemma 2, Symmetry Preservation. F is an admissible deterministic
+/-- A3.1–A3.3 [P] — Lemma 2, Symmetry Preservation. F is an admissible deterministic
     internal evolution law: G-equivariant, F(gx) = gF(x). Then F(P) is fixed by
     all of G, and the only vector fixed by all of G is P. So F(P) = P. -/
 theorem lemma2 (F : ℋ → ℋ) (equivariant : ∀ g ∈ (G : Set (ℋ →L[ℂ] ℋ)), ∀ x, F (g x) = g (F x)) :
@@ -93,13 +93,13 @@ theorem lemma2 (F : ℋ → ℋ) (equivariant : ∀ g ∈ (G : Set (ℋ →L[ℂ
   rw [A1_symmetric] at h
   exact A1_only_fixed (F P) hne h.symm
 
-/-- A3.4 — Corollary 2.1. A deterministic internal rule with no prior asymmetry cannot
+/-- A3.4 [P] — Corollary 2.1. A deterministic internal rule with no prior asymmetry cannot
     select a G-breaking outcome from P, and A2 requires P′ ≠ P. -/
 theorem corollary2_1 (F : ℋ → ℋ) (equivariant : ∀ g ∈ (G : Set (ℋ →L[ℂ] ℋ)), ∀ x, F (g x) = g (F x)) :
     ¬ (F P ≠ P) :=
   fun h => h (lemma2 F equivariant)
 
-/-- A3.11 — Exhaustion (Lemma 3A). Before ε the history is P alone, so P is the only
+/-- A3.11 [P] — Exhaustion (Lemma 3A). Before ε the history is P alone, so P is the only
     prior state. Any outcome that is a function of the prior state, by a rule with no
     prior asymmetry, is P. The first disturbance is a function of no prior state. -/
 theorem exhaustion (history : ℕ → ℋ) (start : history 0 = P) (PD : ∃ n, ‖history n‖ = 1)
@@ -111,7 +111,7 @@ theorem exhaustion (history : ℕ → ℋ) (start : history 0 = P) (PD : ∃ n, 
 section Spread
 variable [MeasurableSpace ℋ] [BorelSpace ℋ] [SecondCountableTopology ℋ]
 
-/-- A3.5–A3.6 — Spread. Every unit vector is as compatible with P as P′ is: the law
+/-- A3.5–A3.6 [P] — Spread. Every unit vector is as compatible with P as P′ is: the law
     of the outcome is the same under every symmetry of P. Such a law is no single
     value: the outcome of ε has more than one possible value, so Var(ε) > 0 (E15, E18). -/
 theorem spread (μ : Measure ℋ) (invariant : ∀ g ∈ (G : Set (ℋ →L[ℂ] ℋ)), μ.map g = μ)
@@ -136,7 +136,7 @@ theorem four_mul_le_two_pow : ∀ m, 4 ≤ m → 4 * m ≤ 2 ^ m := by
   | base => norm_num
   | succ m hm ih => rw [pow_succ]; omega
 
-/-- A3.8 — Lemma 3, line (ii). A Martin-Löf random record has K(x↾n) ≥ n − c₀ for all n
+/-- A3.8 [P] — Lemma 3, line (ii). A Martin-Löf random record has K(x↾n) ≥ n − c₀ for all n
     (E23). A fixed program's output has K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′ (E24, E25).
     For large n, n − c₀ > log₂ n + 2 log₂ log₂ n + c′: contradiction. No computable
     sequence is Martin-Löf random. `K n` is the complexity of the first n terms. -/
@@ -151,7 +151,7 @@ theorem no_computable_is_random (K : ℕ → ℕ) (c₀ c' : ℕ)
   have h₃ : Nat.log 2 m ≤ m := (Nat.log_lt_self 2 (by omega)).le
   omega
 
-/-- A3.9 — No seed, no repetition. A seeded process has finitely many internal states,
+/-- A3.9 [P] — No seed, no repetition. A seeded process has finitely many internal states,
     so its record is eventually periodic (E22): some internal state returns, and from
     then on the record repeats. -/
 theorem seeded_repeats {k : ℕ} (next : Fin (k + 1) → Fin (k + 1)) (seed : Fin (k + 1)) :
@@ -168,7 +168,7 @@ theorem seeded_repeats {k : ℕ} (next : Fin (k + 1) → Fin (k + 1)) (seed : Fi
 
 /-! ## §4.5 — A4: div S = ∇ₐSᵃ = 0 -/
 
-/-- Lemma 4 — Local Conservation Implies Zero Divergence (A4.3–A4.5). The net flux of
+/-- Lemma 4 [P] — Local Conservation Implies Zero Divergence (A4.3–A4.5). The net flux of
     S through the boundary of every compact region is zero; by the divergence theorem
     (E32) the integral of ∇ₐSᵃ over every compact region is zero. A continuous
     divergence with that property is zero at every point. -/
@@ -178,7 +178,7 @@ theorem lemma4 {n : ℕ} (divS : EuclideanSpace ℝ (Fin n) → ℝ) (hc : Conti
     ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' hc.locallyIntegrable flux
   exact (Continuous.ae_eq_iff_eq volume hc continuous_const).mp hae
 
-/-- A4.2 — Local conservation from unitary evolution, on a finite lattice of sites.
+/-- A4.2 [P] — Local conservation from unitary evolution, on a finite lattice of sites.
     Under iψ′ = Hψ with H Hermitian, the probability ρᵢ = |ψᵢ|² changes only by the
     currents Jᵢⱼ between sites, and every current leaves one site and enters another:
     Σᵢ ρᵢ′ = 0. -/
