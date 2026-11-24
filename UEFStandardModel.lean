@@ -36,33 +36,33 @@ theorem quadratic_negative (a b ρ₀ : ℝ) (hb : 0 < b) (hρ : 0 < ρ₀)
 /-! ## Corollary 1.1 — The vacuum expectation value -/
 
 /-- V_H = −μ²|φ|² + λ|φ|⁴, written in ρ = |φ|. -/
-def VH (μ2 λ' ρ : ℝ) : ℝ := -μ2 * ρ ^ 2 + λ' * ρ ^ 4
+noncomputable def VH (μ2 lam ρ : ℝ) : ℝ := -μ2 * ρ ^ 2 + lam * ρ ^ 4
 
 /-- V_H(ρ) = −μ⁴/4λ + λ(ρ² − μ²/2λ)². -/
-theorem VH_complete_square (μ2 λ' ρ : ℝ) (hl : 0 < λ') :
-    VH μ2 λ' ρ = -(μ2 ^ 2) / (4 * λ') + λ' * (ρ ^ 2 - μ2 / (2 * λ')) ^ 2 := by
+theorem VH_complete_square (μ2 lam ρ : ℝ) (hl : 0 < lam) :
+    VH μ2 lam ρ = -(μ2 ^ 2) / (4 * lam) + lam * (ρ ^ 2 - μ2 / (2 * lam)) ^ 2 := by
   unfold VH
   field_simp
   ring
 
 /-- dV_H/d|φ| = 0 ⟹ |φ|² = μ²/2λ: that is where V_H is least. -/
-theorem vacuum_is_minimum (μ2 λ' ρ σ : ℝ) (hl : 0 < λ') (hσ : σ ^ 2 = μ2 / (2 * λ')) :
-    VH μ2 λ' σ ≤ VH μ2 λ' ρ := by
-  rw [VH_complete_square μ2 λ' ρ hl, VH_complete_square μ2 λ' σ hl, hσ, sub_self]
-  have : 0 ≤ λ' * (ρ ^ 2 - μ2 / (2 * λ')) ^ 2 := mul_nonneg hl.le (sq_nonneg _)
+theorem vacuum_is_minimum (μ2 lam ρ σ : ℝ) (hl : 0 < lam) (hσ : σ ^ 2 = μ2 / (2 * lam)) :
+    VH μ2 lam σ ≤ VH μ2 lam ρ := by
+  rw [VH_complete_square μ2 lam ρ hl, VH_complete_square μ2 lam σ hl, hσ, sub_self]
+  have : 0 ≤ lam * (ρ ^ 2 - μ2 / (2 * lam)) ^ 2 := mul_nonneg hl.le (sq_nonneg _)
   simp only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, add_zero]
   linarith
 
 /-- The vacuum is nonzero exactly when μ² > 0: then |φ|² = μ²/2λ > 0. -/
-theorem vacuum_nonzero (μ2 λ' : ℝ) (hl : 0 < λ') : 0 < μ2 / (2 * λ') ↔ 0 < μ2 := by
+theorem vacuum_nonzero (μ2 lam : ℝ) (hl : 0 < lam) : 0 < μ2 / (2 * lam) ↔ 0 < μ2 := by
   constructor
   · intro h; by_contra h'; push_neg at h'
-    have : μ2 / (2 * λ') ≤ 0 := div_nonpos_of_nonpos_of_nonneg h' (by positivity)
+    have : μ2 / (2 * lam) ≤ 0 := div_nonpos_of_nonpos_of_nonneg h' (by positivity)
     linarith
   · intro h; positivity
 
 /-- v = μ/√λ gives |φ|² = μ²/2λ = v²/2. -/
-theorem v_squared (μ λ' : ℝ) (hl : 0 < λ') : (μ / Real.sqrt λ') ^ 2 / 2 = μ ^ 2 / (2 * λ') := by
+theorem v_squared (μ lam : ℝ) (hl : 0 < lam) : (μ / Real.sqrt lam) ^ 2 / 2 = μ ^ 2 / (2 * lam) := by
   rw [div_pow, Real.sq_sqrt hl.le]
   field_simp
   ring
@@ -70,34 +70,34 @@ theorem v_squared (μ λ' : ℝ) (hl : 0 < λ') : (μ / Real.sqrt λ') ^ 2 / 2 =
 /-! ## Corollary 1.2 — Mass generation -/
 
 /-- m_F = g_F · v/√2 = g_F · μ/√(2λ). -/
-theorem fermion_mass (gF μ λ' : ℝ) (hl : 0 < λ') :
-    gF * ((μ / Real.sqrt λ') / Real.sqrt 2) = gF * (μ / Real.sqrt (2 * λ')) := by
-  rw [Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2), div_div, mul_comm (Real.sqrt λ')]
+theorem fermion_mass (gF μ lam : ℝ) (hl : 0 < lam) :
+    gF * ((μ / Real.sqrt lam) / Real.sqrt 2) = gF * (μ / Real.sqrt (2 * lam)) := by
+  rw [Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2), div_div, mul_comm (Real.sqrt lam)]
 
 /-! ## Corollary 1.3 — The Higgs boson mass -/
 
 /-- V_H(h) = −(μ²/2)(v + h)² + (λ/4)(v + h)⁴, with φ = (v + h)/√2. -/
-def Vh (μ2 λ' v h : ℝ) : ℝ := -(μ2 / 2) * (v + h) ^ 2 + (λ' / 4) * (v + h) ^ 4
+noncomputable def Vh (μ2 lam v h : ℝ) : ℝ := -(μ2 / 2) * (v + h) ^ 2 + (lam / 4) * (v + h) ^ 4
 
-theorem Vh_deriv (μ2 λ' v h : ℝ) :
-    HasDerivAt (fun h => Vh μ2 λ' v h) (-μ2 * (v + h) + λ' * (v + h) ^ 3) h := by
+theorem Vh_deriv (μ2 lam v h : ℝ) :
+    HasDerivAt (fun h => Vh μ2 lam v h) (-μ2 * (v + h) + lam * (v + h) ^ 3) h := by
   have h1 : HasDerivAt (fun h => v + h) 1 h := (hasDerivAt_id h).const_add v
-  have := ((h1.pow 2).const_mul (-(μ2 / 2))).add ((h1.pow 4).const_mul (λ' / 4))
+  have := ((h1.pow 2).const_mul (-(μ2 / 2))).add ((h1.pow 4).const_mul (lam / 4))
   convert this using 1
   push_cast
   ring
 
-theorem Vh_deriv2 (μ2 λ' v h : ℝ) :
-    HasDerivAt (fun h => -μ2 * (v + h) + λ' * (v + h) ^ 3) (-μ2 + 3 * λ' * (v + h) ^ 2) h := by
+theorem Vh_deriv2 (μ2 lam v h : ℝ) :
+    HasDerivAt (fun h => -μ2 * (v + h) + lam * (v + h) ^ 3) (-μ2 + 3 * lam * (v + h) ^ 2) h := by
   have h1 : HasDerivAt (fun h => v + h) 1 h := (hasDerivAt_id h).const_add v
-  have := (h1.const_mul (-μ2)).add ((h1.pow 3).const_mul λ')
+  have := (h1.const_mul (-μ2)).add ((h1.pow 3).const_mul lam)
   convert this using 1
   push_cast
   ring
 
 /-- d²V_H/dh² at h = 0 is −μ² + 3λv² = −μ² + 3μ² = 2μ², so m_H = √2 μ. -/
-theorem higgs_mass (μ λ' v : ℝ) (hμ : 0 ≤ μ) (hv : λ' * v ^ 2 = μ ^ 2) :
-    -μ ^ 2 + 3 * λ' * (v + 0) ^ 2 = 2 * μ ^ 2 ∧ Real.sqrt (2 * μ ^ 2) = Real.sqrt 2 * μ := by
+theorem higgs_mass (μ lam v : ℝ) (hμ : 0 ≤ μ) (hv : lam * v ^ 2 = μ ^ 2) :
+    -μ ^ 2 + 3 * lam * (v + 0) ^ 2 = 2 * μ ^ 2 ∧ Real.sqrt (2 * μ ^ 2) = Real.sqrt 2 * μ := by
   refine ⟨by rw [add_zero, mul_assoc, hv]; ring, ?_⟩
   rw [Real.sqrt_mul (by norm_num), Real.sqrt_sq hμ]
 
@@ -114,7 +114,7 @@ theorem lambda_value : (12520 / 100 : ℝ) ^ 2 / (2 * (24622 / 100) ^ 2) = 19593
 /-! ## Theorem 7 — Asymptotic freedom -/
 
 /-- β₀ = (11/3)C_A − (4/3)T_F n_f. -/
-def β₀ (CA TF nf : ℝ) : ℝ := 11 / 3 * CA - 4 / 3 * TF * nf
+noncomputable def β₀ (CA TF nf : ℝ) : ℝ := 11 / 3 * CA - 4 / 3 * TF * nf
 
 /-- For SU(3), C_A = 3 and T_F = 1/2: β₀ = 11 − (2/3)n_f; with six flavours β₀ = 7 > 0. -/
 theorem β₀_SU3 (nf : ℝ) : β₀ 3 (1 / 2) nf = 11 - 2 / 3 * nf ∧ β₀ 3 (1 / 2) 6 = 7 := by
