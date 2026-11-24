@@ -145,7 +145,7 @@ theorem dimensional_access (C R M : ℝ) (hC : 0 < C) (hR : 0 < R) (hM : 0 < M) 
 /-! ## 23.2 — collapse path integrals -/
 
 /-- Z_β = Σ_B e^{−βE(B)}: as β → ∞ the weight of the unique minimizer tends to 1 (Laplace). -/
-theorem laplace {ι : Type*} [Fintype ι] (E : ι → ℝ) (b : ι) (hb : ∀ B, B ≠ b → E b < E B) :
+theorem laplace {ι : Type*} [Fintype ι] [DecidableEq ι] (E : ι → ℝ) (b : ι) (hb : ∀ B, B ≠ b → E b < E B) :
     Tendsto (fun β : ℝ => Real.exp (-β * E b) / ∑ B, Real.exp (-β * E B)) atTop (𝓝 1) := by
   have key : ∀ β : ℝ, Real.exp (-β * E b) / ∑ B, Real.exp (-β * E B)
       = 1 / ∑ B, Real.exp (-β * (E B - E b)) := by
