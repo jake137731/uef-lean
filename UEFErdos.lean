@@ -34,7 +34,7 @@ theorem power_law (μ : ℕ → ℝ) (hpos : ∀ n, 0 < μ n)
       Real.log_mul (hf m).ne' (hf n).ne']
     ring
   have g1 : g 1 = 0 := by rw [hg, div_self (hpos 1).ne', Real.log_one, neg_zero]
-  have gpow : ∀ n k, 1 ≤ n → g (n ^ k) = k * g n := by
+  have gpow : ∀ n k : ℕ, 1 ≤ n → g (n ^ k) = (k : ℝ) * g n := by
     intro n k hn
     induction k with
     | zero => simp [g1]
