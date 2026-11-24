@@ -33,7 +33,6 @@ theorem tortoise (m r : ℝ) (hm : 0 < m) (hr : 2 * m < r) :
     ((hasDerivAt_id r).div_const (2 * m)).sub_const 1
   refine ((hasDerivAt_id r).add ((h1.log hpos.ne').const_mul (2 * m))).congr_deriv ?_
   field_simp
-  ring
 
 /-! ## WH.2 — no un-collapse -/
 
@@ -106,7 +105,7 @@ theorem turnover (a add ρ p G Λ : ℝ) (ha : 0 < a)
 /-- Contraction deepens binding — |V_grav| = (3/5)GM²/R with R = R₀a grows as a falls. -/
 theorem binding_grows (G M R0 a b : ℝ) (hG : 0 < G) (hM : 0 < M) (hR : 0 < R0) (ha : 0 < a)
     (hab : a < b) : 3 / 5 * G * M ^ 2 / (R0 * b) < 3 / 5 * G * M ^ 2 / (R0 * a) := by
-  rw [div_lt_div_iff₀ (by positivity) (by positivity)]
+  rw [div_lt_div_iff₀ (mul_pos hR (ha.trans hab)) (mul_pos hR ha)]
   exact mul_lt_mul_of_pos_left (mul_lt_mul_of_pos_left hab hR) (by positivity)
 
 /-- No new mass — for dust, ρ̇ + 3(ȧ/a)ρ = 0 keeps ρa³ constant: contraction concentrates

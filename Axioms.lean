@@ -16,6 +16,7 @@ import UEFTunneling
 import UEFContainment
 import UEFMoral
 import UEFCycle
+import UEFCollapse
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -81,3 +82,8 @@ import UEFCycle
 #print axioms UEF.Cycle.tortoise
 #print axioms UEF.Cycle.dust_conserved
 #print axioms UEF.Cycle.winding_integer
+#print axioms UEF.Collapse.minimizer_unique
+#print axioms UEF.Collapse.identity_attractor
+#print axioms UEF.Collapse.drift_log
+#print axioms UEF.Collapse.laplace
+#print axioms UEF.Collapse.coherence_one_iff
