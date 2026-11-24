@@ -1,6 +1,8 @@
 import UEF
 import UEFReal
 import UEFRoots
+import UEFTime
+import UEFBell
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -15,3 +17,8 @@ import UEFRoots
 #print axioms UEF.Roots.conservation
 #print axioms UEF.Roots.no_computable_is_random
 #print axioms UEF.Roots.seeded_repeats
+#print axioms UEF.Time.theorem6
+#print axioms UEF.Time.time_requires_events
+#print axioms UEF.Bell.chsh
+#print axioms UEF.Bell.quantum_S
+#print axioms UEF.Bell.no_predetermined_strategy
