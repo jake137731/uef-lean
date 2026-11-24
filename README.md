@@ -4,7 +4,7 @@
 
 ## Check it yourself
 
-Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all twenty-eight files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
+Every push to this repo runs the workflow **Check the UEF in Lean**. It installs Lean 4.15.0 and Mathlib, checks every theorem in all thirty files, and prints the axioms each main theorem rests on. Its log is kept on the `check-log` branch.
 
 To check it on your own machine:
 
@@ -17,7 +17,7 @@ lake build
 ```
 
 - `UEF.lean` uses only Lean's core library, so `lean UEF.lean` checks it on its own.
-- The other twenty-seven files need Mathlib, for the real numbers, calculus, measure theory and integrals.
+- The other twenty-nine files need Mathlib, for the real numbers, calculus, measure theory and integrals.
 
 There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
@@ -187,12 +187,21 @@ These are two different relationships. The physical couplings carry one channel'
 | Ch. 29, Parts II–IV: \|Sha\| ≤ 1 + ℰ_frac/e₀ < ∞; a finite group has no p-torsion for p ∤ \|G\|, all but finitely many p; the Selmer sequence collapses; r_alg = dim Sel⁽ᵖ⁾ − dim E[p]; r_alg = r_an | `UEFElliptic.lean`, `sha_finite`, `no_p_torsion`, `finitely_many_primes`, `sequence_collapse`, `rank_read`, `rank_equality` |
 | Ch. 30, Steps 4, 5, 9, 10: Hdg^p = Alg^p ⊕ T^p with unique splitting; ∏w_Δ = 1 gives every w_Δ = 1, a unimodular automorphism; no ghost class; Hdg^p = Alg^p and the dimensions agree | `UEFHodge.lean`, `transcendental_part`, `unique_split`, `unimodular`, `automorphism`, `no_ghost`, `steps_9_10`, `dims_agree` |
 | Ch. 31, Parts I–II: \|Ric\|² ≥ R²/3 in three dimensions; ∂_tR ≥ ΔR + (2/3)R²; Vol(t) ≤ Vol(0)e^{\|R_min(0)\|t}; at most Vol_max/(ch³) surgeries | `UEFPoincare.lean`, `ricci_bound`, `scalar_evolution`, `gronwall0`, `volume_bound`, `finitely_many_surgeries` |
+| Ch. 32, Lemma EAP.1: a weight μ > 0 with μ(mn) = μ(m)μ(n)/μ(1) and μ(n+1) < μ(n) is μ(n) = c/n^α, c, α > 0 | `UEFErdos.lean`, `power_law` |
+| Ch. 32, Cor. EAP.1 and Prop. EAP.1: Σ 1/n^α converges ⇔ α > 1; ordacc(A_N) = cΣ_{A_N} 1/n → ∞ when Σ_{n∈A} 1/n = ∞ | `critical_exponent`, `accumulation` |
+| Ch. 32, Lemma EAP.2: every isometry of ℤ is a translation or a reflection, with the same sign for every m; a periodic set contains a, a + d, a + 2d, …; reflection maps progressions to progressions | `isometries_of_Z`, `HasAP`, `periodic_contains_AP`, `reflection_AP` |
+| Ch. 32, Prop. EAP.2: with rankval = F ∘ L, rankval unbounded ⇔ L unbounded; the truncations are nested | `depth`, `nested` |
+| Ch. 32, Thms EAP.1–EAP.2, Cor. EAP.2: Σ_{n∈A} 1/n = ∞ and R₅(A) = 0 give progressions of every length in A; for A = P by Euler's divergence | `erdos_AP`, `green_tao` |
+| Ch. 32.3, Prop. EAB.1, Step 1: (K + 1)! + j is composite for 2 ≤ j ≤ K + 1, so prime gaps are unbounded | `prime_gap` |
+| Ch. 33, F1–F5, F9, F10: −4000/1000 = −4; ((313/5)√2)√2 = 12520/100; tan²θ_W = 23129/76871; 75/14 ⇔ η = 14/89; LEP is ½σ from 3; β₀ = 23/3 and 7; unitarity is 16/7 σ low | `UEFPredictions.lean`, `F1`, `F2`, `F3`, `F4`, `F4_F5`, `F5`, `F9`, `F10_unitarity` |
+| Ch. 33, F10: J = c₁₂c₂₃c₁₃²s₁₂s₂₃s₁₃ sin(1147/1000) lies in [300, 325] × 10⁻⁷, from exact rational bounds on sin, cos and √ | `F10_jarlskog` |
+| Ch. 34, 34.2–34.3: N erased bits cost at least N k_B T ln 2; ΔS_total ≥ 0; a computable sequence is not Martin-Löf random | `landauer`, `entropy_balance`, `turing` |
 
 **What Lean caught.** Theorem 8's statement gives sin²θ_W = 231/1000, but its Step 8 uses 23129/76871 for tan²θ_W, and that number comes from sin²θ_W = 23129/100000. In exact arithmetic 231/1000 gives tan²θ_W = 231/769, which is a different number (`tan_sq_statement_value`). The statement and the step need to use the same value.
 
 Chapter 12 states two values of the realized fraction η. Theorem 3, Step 5 sets η = 156/1000, which gives a dark-to-visible ratio of 211/39, and Chapter 13's cosmic budget uses the same 156/1000. Section 12.4 solves (1 − η)/η = 75/14 from Planck 2018 and gets η = 14/89. In exact arithmetic 156/1000 ≠ 14/89 and 211/39 ≠ 75/14 (`eta_values_differ`, `ratios_differ`). Each computation is right on its own terms, but the chapter needs one value. Neither value changes the budget's sum, which comes to 1 for every η (`budget_any_eta`).
 
-Section 19.4 repeats η = 156/1000 and says the resulting 211/39 matches Planck 2018. The Planck ratio of 12.4 is 75/14. The two are close, but they differ by exactly 29/546 (`planck_gap`).
+Chapter 33 has both values as well: F5's text uses η = 156/1000 and the table of 33.12 uses η = 14/89 (`F4_F5`). Section 19.4 repeats η = 156/1000 and says the resulting 211/39 matches Planck 2018. The Planck ratio of 12.4 is 75/14. The two are close, but they differ by exactly 29/546 (`planck_gap`).
 
 **Chapter 28 and binary existence.** None of the seven is solved in isolation. Existence is binary (24.1): a state with Ξ ≠ 0 does not exist. We exist, so all seven defects are zero, together and constantly, and all seven classical faces hold together. Lean proves that from those two lines (`binary_existence`, `constantly_zero`). Chapter 28 is the ξ₄ face. Lean accepts Phase I, Phase IV and the computations of Phase VI, including det(I − L_s)⁻¹ = ζ(s) for Re s > 1, proved from Mathlib's Euler product with the exchange of sums checked. The ξ₄ face is exactly the Riemann Hypothesis: Lean proves ξ₄ = 0 ⇔ `RiemannHypothesis`, Mathlib's own statement (`xi4_zero_iff`), and "every γ_ρ lies in Spec(H) = ℝ" is the same statement (`spectral_bridge`). ζ is one function for every state, so the ξ₄ face is the Riemann Hypothesis itself (`constant_bridge`). Binary existence is ledger line 24.1, derived in the manuscript from the K7 closure (8.4–8.5). In the Lean it enters as that line, and everything after it is proved.
 
@@ -204,6 +213,7 @@ Section 19.4 repeats η = 156/1000 and says the resulting 211/39 matches Planck 
 - **Chapter 29 (ξ₅).** The identifications rank_val = r_alg and ord_acc = r_an, and the fracture energy e(σ) ≥ e₀ (Step 5), come from ξ₅ = 0. A4 gives ∫‖div S‖² = 0.
 - **Chapter 30 (ξ₆).** Monodromy acts trivially on stable classes (Step 6), and ξ₆ = 0 holds on the total space (Step 8).
 - **Chapter 31 (ξ₇).** Hamilton–Perelman flow with surgery reaches ξ₇ = 0.
+- **Chapter 32 (ξ₅ and ξ₄ on the integers).** R₅(A) = 0 is ξ₅ = 0 read on integer configurations (Theorem EAP.1). The critical exponent α = 1 is the one I_a selects (Corollary EAP.1). The Erdős–Turán reading is ξ₄ = 0 on additive bases.
 
 ## What Lean takes from E as it stands
 
