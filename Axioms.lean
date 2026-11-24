@@ -71,6 +71,14 @@ import UEFPredictions
 #print axioms UEF.Dark.eta_planck
 #print axioms UEF.Dark.units_forced
 #print axioms UEF.Gravity.horizon_entropy
+#print axioms UEF.Gravity.horizon_correction_iff
+#print axioms UEF.Gravity.tortoise
+#print axioms UEF.Gravity.ingoing_form
+#print axioms UEF.Gravity.ingoing_det
+#print axioms UEF.Gravity.ingoing_smooth
+#print axioms UEF.Gravity.infall_crosses
+#print axioms UEF.Gravity.infall_time
+#print axioms UEF.Gravity.planck_energy
 #print axioms UEF.Gravity.friedmann_acceleration
 #print axioms UEF.Gravity.geodesic_equation
 #print axioms UEF.Gravity.grr
@@ -105,6 +113,8 @@ import UEFPredictions
 #print axioms UEF.Riemann.xi4_zero_iff
 #print axioms UEF.Riemann.theorem_xi4_5
 #print axioms UEF.Bridges.K7.certifiable_iff
+#print axioms UEF.Bridges.invariant_tangent
+#print axioms UEF.Bridges.cannot_stay
 #print axioms UEF.Bridges.cannot_be_held
 #print axioms UEF.Bridges.binary
 #print axioms UEF.Bridges.binary_existence

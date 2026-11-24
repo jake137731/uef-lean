@@ -145,6 +145,19 @@ theorem K7.certifiable_iff (k : K7) {Ξ : Fin 7 → ℝ} (h : ∀ j, 0 ≤ Ξ j)
   · rintro rfl
     exact ⟨by simp, by simp [k.rest]⟩
 
+/-- Invariance of a level set (Nagumo; Khalil §4.2), the direction Theorem 8.3 uses: if ξᵢ stays at
+    zero along a trajectory of the flow, dξᵢ/dt = Gᵢ(Ξ(t)), then Gᵢ = 0 there. -/
+theorem invariant_tangent (k : K7) (Ξ : ℝ → Fin 7 → ℝ) (i : Fin 7) (t : ℝ)
+    (flow : HasDerivAt (fun t => Ξ t i) (k.G (Ξ t) i) t) (stays : ∀ᶠ s in nhds t, Ξ s i = 0) :
+    k.G (Ξ t) i = 0 :=
+  flow.unique ((hasDerivAt_const t (0 : ℝ)).congr_of_eventuallyEq stays)
+
+/-- 8.3 — along the flow, no channel can stay at zero while Ξ ≠ 0: the lock and Nagumo. -/
+theorem cannot_stay (k : K7) (Ξ : ℝ → Fin 7 → ℝ) (i : Fin 7) (t : ℝ)
+    (flow : HasDerivAt (fun t => Ξ t i) (k.G (Ξ t) i) t) (h : ∀ j, 0 ≤ Ξ t j) (hne : Ξ t ≠ 0) :
+    ¬∀ᶠ s in nhds t, Ξ s i = 0 := fun stays =>
+  k.lock (Ξ t) h hne i stays.self_of_nhds (invariant_tangent k Ξ i t flow stays)
+
 /-- Every defect is non-negative: ξᵢ = Rᵢ ∘ Πᵢ and Rᵢ ≥ 0 (24.2). -/
 theorem Ξ_nonneg {C : Fin 7 → Type*} (bs : ∀ i, Bridge State (C i)) (s : State) :
     ∀ j, 0 ≤ Ξ bs s j :=

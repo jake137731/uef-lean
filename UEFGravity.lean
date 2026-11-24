@@ -239,6 +239,89 @@ theorem information_preserved {States H H' : Type*} [NormedAddCommGroup H]
       ∀ x y, @inner ℂ _ _ (U (Enc x)) (U (Enc y)) = @inner ℂ _ _ (Enc x) (Enc y) :=
   ⟨U.injective.comp hEnc, fun x y => U.inner_map_map (Enc x) (Enc y)⟩
 
+/-! ## Theorem 16, Step 7 — the horizon stays smooth -/
+
+/-- 15.7 — the horizon correction ∫_H (div S)² dA. It is zero exactly when div S = 0 on the
+    horizon: then δg_μν|∂BH = 0 and no firewall forms. -/
+theorem horizon_correction_iff {H : Type*} [MeasurableSpace H] (μ : MeasureTheory.Measure H)
+    (divS : H → ℝ) (hi : MeasureTheory.Integrable (fun x => divS x ^ 2) μ) :
+    ∫ x, divS x ^ 2 ∂μ = 0 ↔ ∀ᵐ x ∂μ, divS x = 0 := by
+  rw [MeasureTheory.integral_eq_zero_iff_of_nonneg (fun x => sq_nonneg (divS x)) hi]
+  constructor
+  · intro h
+    filter_upwards [h] with x hx
+    simpa using hx
+  · intro h
+    filter_upwards [h] with x hx
+    simp [hx]
+
+/-- With div S = 0 (A4) the correction vanishes: δg_μν|∂BH = 0. -/
+theorem horizon_unperturbed {H : Type*} [MeasurableSpace H] (μ : MeasureTheory.Measure H)
+    (divS : H → ℝ) (h : ∀ x, divS x = 0) : ∫ x, divS x ^ 2 ∂μ = 0 := by
+  simp [h]
+
+/-- The ingoing coordinate v = t + r*, with r* = r + r_s log(r/r_s − 1): outside the horizon
+    dr*/dr = 1/(1 − r_s/r). -/
+theorem tortoise (rs r : ℝ) (hrs : 0 < rs) (hr : rs < r) :
+    HasDerivAt (fun r => r + rs * Real.log (r / rs - 1)) (1 / (1 - rs / r)) r := by
+  have hr0 : 0 < r := hrs.trans hr
+  have hpos : 0 < r / rs - 1 := by
+    rw [sub_pos, one_lt_div hrs]
+    exact hr
+  have h1 : HasDerivAt (fun r => r / rs - 1) (1 / rs) r :=
+    ((hasDerivAt_id' r).div_const rs).sub_const 1
+  have := (hasDerivAt_id' r).add ((h1.log hpos.ne').const_mul rs)
+  convert this using 1
+  have a : rs ≠ 0 := hrs.ne'
+  have b : r ≠ 0 := hr0.ne'
+  have c : r - rs ≠ 0 := (sub_pos.mpr hr).ne'
+  have d : r / rs - 1 = (r - rs) / rs := by field_simp
+  rw [d]
+  field_simp
+
+/-- With dv = dt + dr/f, the Schwarzschild line element −f dt² + dr²/f + r²dΩ² is
+    −f dv² + 2 dv dr + r²dΩ², in which nothing is divided by f = 1 − r_s/r. -/
+theorem ingoing_form (f dt dr dΩ2 r : ℝ) (hf : f ≠ 0) :
+    -f * (dt + dr / f) ^ 2 + 2 * (dt + dr / f) * dr + r ^ 2 * dΩ2 =
+      -f * dt ^ 2 + dr ^ 2 / f + r ^ 2 * dΩ2 := by
+  field_simp
+  ring
+
+/-- The (v, r) block of the ingoing metric, g_vv = −(1 − r_s/r), g_vr = g_rv = 1, g_rr = 0, has
+    determinant −1 at every r, the horizon r = r_s included: the metric is nondegenerate there. -/
+theorem ingoing_det (rs r : ℝ) : (!![-(1 - rs / r), 1; 1, 0] : Matrix (Fin 2) (Fin 2) ℝ).det = -1 := by
+  rw [Matrix.det_fin_two_of]
+  ring
+
+/-- g_vv = −(1 − r_s/r) is smooth at every r > 0, the horizon r = r_s included. -/
+theorem ingoing_smooth (rs r : ℝ) (hr : 0 < r) (n : ℕ) :
+    ContDiffAt ℝ n (fun r : ℝ => -(1 - rs / r)) r :=
+  (contDiffAt_const.sub (contDiffAt_const.div contDiffAt_id hr.ne')).neg
+
+/-- An observer falling in from rest at infinity has E = 1 and ṙ = −√(r_s/r). Write a = √(r_s/r),
+    so f = 1 − a², and v̇ = 1/(1 + a). The worldline is timelike, −f v̇² + 2 v̇ ṙ = −1, with
+    E = f v̇ − ṙ = 1, for every a ≥ 0: at the horizon a = 1 it has v̇ = 1/2 and ṙ = −1. The
+    observer crosses r = r_s with finite velocity. -/
+theorem infall_crosses (a : ℝ) (ha : 0 ≤ a) :
+    -(1 - a ^ 2) * (1 / (1 + a)) ^ 2 + 2 * (1 / (1 + a)) * (-a) = -1 ∧
+      (1 - a ^ 2) * (1 / (1 + a)) - (-a) = 1 := by
+  have h : 1 + a ≠ 0 := by positivity
+  constructor
+  · field_simp
+    ring
+  · field_simp
+    ring
+
+/-- The proper time of that fall is T(r₀) − T(r) with T(r) = (2/3) r^{3/2}/√r_s: dT/dr = √r/√r_s
+    = 1/|ṙ| at every r > 0, so the fall from r₀ to r_s takes the finite time T(r₀) − T(r_s). -/
+theorem infall_time (rs r : ℝ) (hr : 0 < r) :
+    HasDerivAt (fun r => 2 / 3 * r ^ (3 / 2 : ℝ) / Real.sqrt rs) (Real.sqrt r / Real.sqrt rs) r := by
+  have h := ((Real.hasDerivAt_rpow_const (p := (3 / 2 : ℝ)) (Or.inl hr.ne')).const_mul
+    (2 / 3 : ℝ)).div_const (Real.sqrt rs)
+  convert h using 1
+  rw [show (3 / 2 : ℝ) - 1 = 1 / 2 by norm_num, Real.sqrt_eq_rpow r]
+  ring
+
 /-! ## Theorem 17 — the dimension count -/
 
 /-- Step 4 — in d dimensions [G_d] = 2 − d, so (1/G_d)R carries (d − 2) + 2 = d against the
@@ -258,6 +341,44 @@ theorem kk_correspondence :
   ⟨fun a b h => by
     have : 4 + 2 * a = 4 + 2 * b := h
     omega, fun k => by omega⟩
+
+
+/-! ## Theorem 17, Step 11 — the UV completion -/
+
+/-- ħc⁵/G with h = 662607015/10⁴² J s, ħ = h/2π, c = 299792458 m/s and G = 667430/10¹⁶ (CODATA 2018)
+    is K/π for the exact rational K below. -/
+theorem planck_sq :
+    662607015 / 10 ^ 42 / (2 * π) * 299792458 ^ 5 / (667430 / 10 ^ 16) =
+      (662607015 * 299792458 ^ 5 * 10 ^ 16 / (10 ^ 42 * 2 * 667430) : ℝ) / π := by
+  have := Real.pi_pos.ne'
+  field_simp
+  ring
+
+/-- Step 11 — E_UEF = m_P c² = √(ħc⁵/G)/E_GeV GeV, with E_GeV = 1602176634/10¹⁹ J. It lies
+    between 12208 × 10¹⁵ GeV and 12210 × 10¹⁵ GeV. -/
+theorem planck_energy :
+    (12208 * 10 ^ 15 : ℝ) <
+        Real.sqrt (662607015 / 10 ^ 42 / (2 * π) * 299792458 ^ 5 / (667430 / 10 ^ 16)) /
+          (1602176634 / 10 ^ 19) ∧
+      Real.sqrt (662607015 / 10 ^ 42 / (2 * π) * 299792458 ^ 5 / (667430 / 10 ^ 16)) /
+          (1602176634 / 10 ^ 19) < 12210 * 10 ^ 15 := by
+  have p1 : (3141592 / 1000000 : ℝ) < π := by
+    have := Real.pi_gt_3141592
+    norm_num at this ⊢
+    linarith
+  have p2 : π < 3141593 / 1000000 := by
+    have := Real.pi_lt_3141593
+    norm_num at this ⊢
+    linarith
+  have hπ := Real.pi_pos
+  rw [planck_sq]
+  constructor
+  · rw [lt_div_iff₀ (by norm_num), Real.lt_sqrt (by norm_num), lt_div_iff₀ hπ]
+    norm_num
+    linarith
+  · rw [div_lt_iff₀ (by norm_num), Real.sqrt_lt' (by norm_num), div_lt_iff₀ hπ]
+    norm_num
+    linarith
 
 /-! ## Theorem 18 — the Friedmann equations -/
 
