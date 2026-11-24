@@ -117,6 +117,16 @@ These are two different relationships. The physical couplings carry one channel'
 | A4.4–A4.5 [P], localization: zero integral over every box ⟹ zero at every point | `UEFGauss.lean`, `zero_of_box_integrals` |
 | A4 [P]: zero net flux through every box ⟹ div S = ∇ₐSᵃ = 0 at every point | `UEFGauss.lean`, `A4` |
 | A4.2 [P]: a state is a ray, so every observable is invariant under the phase; the charge of that symmetry, Σ\|ψᵢ\|², is conserved under iψ′ = Hψ | `UEFGauss.lean`, `phase_invariant`, `charge_conserved` |
+| Ch. 9, temporal emergence: the CIO always has a least-energy branch; the record grows by inclusion; (T, ≺) is a strict total order; strictly increasing labels preserve it; H_QC = 0 without C | `UEFEmergence.lean` |
+| Ch. 11, Theorem 1: a bounded potential with a nonzero vacuum forces a = −2bρ₀² < 0 | `UEFStandardModel.lean`, `quadratic_negative` |
+| Cor. 1.1: V_H is least at \|φ\|² = μ²/2λ = v²/2, nonzero exactly when μ² > 0 | `vacuum_is_minimum`, `vacuum_nonzero`, `v_squared` |
+| Cor. 1.2: m_F = g_F v/√2 = g_F μ/√(2λ) | `fermion_mass` |
+| Cor. 1.3: d²V_H/dh² = 2μ², m_H = √2 μ; μ = (313/5)√2 GeV; λ = 19593800/151560721 | `Vh_deriv`, `Vh_deriv2`, `higgs_mass`, `mu_value`, `lambda_value` |
+| Thm 7: β₀ = 11 − (2/3)n_f, 7 for six flavours; g_s → 0 as μ → ∞; the denominator vanishes at Λ_QCD | `β₀_SU3`, `asymptotic_freedom`, `lambda_QCD` |
+| Thm 8: m_W/m_Z = g/√(g²+g′²) = 1/√(1+tan²θ_W) = cos θ_W | `mass_ratio`, `tan_sq_value` |
+| Thm 10: \|W(SU(3))\| / \|W(U(2))\| = 6/2 = 3 | `weyl_count` |
+
+**What Lean caught.** Theorem 8's statement gives sin²θ_W = 231/1000, but its Step 8 uses 23129/76871 for tan²θ_W, and that number comes from sin²θ_W = 23129/100000. In exact arithmetic 231/1000 gives tan²θ_W = 231/769, which is a different number (`tan_sq_statement_value`). The statement and the step need to use the same value.
 
 ## What Lean takes from E as it stands
 
