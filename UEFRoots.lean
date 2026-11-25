@@ -33,7 +33,7 @@ theorem N9 {State : Type*} (world : ℝ → State) :
 
 /-- N10 (E11, E12) — the realized record is nonempty; the world is here. The record holds at least
     three distinct states (E11), each a state the world was in (E12). -/
-theorem N10 {State : Type*} (world : ℝ → State) (record : Finset ℝ)
+theorem N10 {State : Type*} [DecidableEq State] (world : ℝ → State) (record : Finset ℝ)
     (E11 : 3 ≤ (record.image world).card) : Nonempty State := by
   obtain ⟨x, _⟩ := Finset.card_pos.mp (show 0 < (record.image world).card by omega)
   exact ⟨x⟩
