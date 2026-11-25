@@ -41,6 +41,7 @@ import UEFPredictions
 #print axioms UEF.Roots.contradiction_is_absence
 #print axioms UEF.Roots.N4
 #print axioms UEF.Roots.E35_noether
+#print axioms UEF.Roots.not_random_of_computable
 #print axioms UEF.Roots.N9
 #print axioms UEF.Roots.N10
 #print axioms UEF.Roots.lemma2

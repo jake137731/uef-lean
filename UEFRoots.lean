@@ -215,6 +215,71 @@ theorem no_computable_is_random (K : ℕ → ℕ) (c₀ c' : ℕ)
   have h₃ : Nat.log 2 m ≤ m := (Nat.log_lt_self 2 (by omega)).le
   omega
 
+/-! #### A3.8 (ii) from the definition of Martin-Löf randomness
+
+The same conclusion, with no Kolmogorov complexity: a computable sequence is caught by the test made
+of its own prefixes. -/
+
+/-- The first n terms of x: pre x 0 = [], pre x (n + 1) = pre x n ++ [x n]. -/
+def pre (x : ℕ → Bool) (n : ℕ) : List Bool :=
+  Nat.rec (motive := fun _ => List Bool) [] (fun y IH => IH ++ [x y]) n
+
+theorem pre_succ (x : ℕ → Bool) (n : ℕ) : pre x (n + 1) = pre x n ++ [x n] := rfl
+
+theorem pre_length (x : ℕ → Bool) (n : ℕ) : (pre x n).length = n := by
+  induction n with
+  | zero => rfl
+  | succ n ih => rw [pre_succ, List.length_append, ih]; rfl
+
+/-- The weight 2^{−|w|} of an enumerated string, and 0 for none. -/
+noncomputable def wt : Option (List Bool) → ℝ
+  | none => 0
+  | some w => (1 / 2) ^ w.length
+
+/-- A Martin-Löf test (Martin-Löf 1966; Downey & Hirschfeldt §6.2), given by c.e. generators: for each
+    level n a computable enumeration of strings whose weights Σ 2^{−|w|} are at most 2^{−n}. Every
+    Σ⁰₁ class has a prefix-free c.e. generator, whose weight is its measure, so these tests catch
+    exactly the sequences the measure-form tests catch. -/
+structure MLTest where
+  enum : ℕ → ℕ → Option (List Bool)
+  computable : Computable₂ enum
+  summable : ∀ n, Summable fun k => wt (enum n k)
+  small : ∀ n, ∑' k, wt (enum n k) ≤ (1 / 2) ^ n
+
+/-- The test catches x when at every level x extends one of the enumerated strings. -/
+def MLTest.catches (T : MLTest) (x : ℕ → Bool) : Prop :=
+  ∀ n, ∃ k w, T.enum n k = some w ∧ w = pre x w.length
+
+/-- x is Martin-Löf random when no test catches it. -/
+def MLRandom (x : ℕ → Bool) : Prop := ∀ T : MLTest, ¬T.catches x
+
+theorem pre_computable {x : ℕ → Bool} (hx : Computable x) : Computable (pre x) :=
+  (Computable.nat_rec Computable.id (Computable.const ([] : List Bool))
+    (Computable.list_concat.comp (Computable.snd.comp Computable.snd)
+      (hx.comp (Computable.fst.comp Computable.snd))).to₂).of_eq fun _ => rfl
+
+/-- The test of x's own prefixes: at level n, the single string x↾n, of weight 2^{−n}. -/
+def prefixTest {x : ℕ → Bool} (hx : Computable x) : MLTest where
+  enum n k := Nat.casesOn (motive := fun _ => Option (List Bool)) k (some (pre x n)) fun _ => none
+  computable := Computable.nat_casesOn Computable.snd
+    (Computable.option_some.comp ((pre_computable hx).comp Computable.fst))
+    (Computable.const (none : Option (List Bool))).to₂
+  summable n := summable_of_ne_finset_zero (s := {0}) fun b hb => by
+    cases b with
+    | zero => simp at hb
+    | succ k => rfl
+  small n := by
+    rw [tsum_eq_single 0 fun b hb => by
+      cases b with
+      | zero => exact absurd rfl hb
+      | succ k => rfl]
+    show (1 / 2 : ℝ) ^ (pre x n).length ≤ (1 / 2) ^ n
+    rw [pre_length]
+
+/-- A3.8 (ii) — no computable sequence is Martin-Löf random. -/
+theorem not_random_of_computable {x : ℕ → Bool} (hx : Computable x) : ¬MLRandom x :=
+  fun hr => hr (prefixTest hx) fun n => ⟨0, pre x n, rfl, by rw [pre_length]⟩
+
 /-- A3.9 [P] — No seed, no repetition. A seeded process has finitely many internal states,
     so its record is eventually periodic (E22): some internal state returns, and from
     then on the record repeats. -/
