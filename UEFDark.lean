@@ -102,7 +102,10 @@ theorem tan_unbounded {g' : ℝ} (hg' : 0 < g') :
 /-- Step 5 — if S_∂R = 0, then W³ = 0 and g = 0, so cos θ_W = 0 and the photon A is zero. -/
 theorem photon_vanishes (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V)
     (bd : Set Ω) (h : bd.indicator S = 0) : photon π lam S bd = 0 := by
-  simp [photon, h]
+  have hW : π (bd.indicator S) = (0 : U →ᵇ (U →L[ℝ] ℝ)) := by
+    rw [h]
+    exact map_zero π
+  simp only [photon, hW, norm_zero, mul_zero, zero_div, zero_smul, smul_zero, add_zero]
 
 /-- Step 5 — the zero field has zero field strength and trivial holonomy around every loop. -/
 theorem fieldStrength_zero (x v w : U) : fieldStrength (0 : U →ᵇ (U →L[ℝ] ℝ)) x v w = 0 := by
