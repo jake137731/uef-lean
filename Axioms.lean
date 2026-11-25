@@ -37,7 +37,10 @@ import UEFPredictions
 #print axioms UEF.Roots.roots
 #print axioms UEF.Roots.A1_9_every_ray
 #print axioms UEF.Roots.A1_9
+#print axioms UEF.Roots.thesis
+#print axioms UEF.Roots.contradiction_is_absence
 #print axioms UEF.Roots.N4
+#print axioms UEF.Roots.E35_noether
 #print axioms UEF.Roots.N9
 #print axioms UEF.Roots.N10
 #print axioms UEF.Roots.lemma2

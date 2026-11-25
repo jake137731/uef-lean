@@ -105,6 +105,7 @@ Everything after that is the Law of Reciprocity.
 | A1.6: every unitary fixes P | `A1_symmetric` |
 | A1.7: the only fixed point, (−𝟙)x ≠ x for x ≠ P | `A1_only_fixed` |
 | A1.8: ‖P‖ = 0, so P is not a realized state | `A1_not_realized` |
+| The thesis: "Everything that exists must coexist non-contradictorily. Contradiction is not a state of affairs; it is the absence of one." P ∧ ¬P holds of nothing, and is False | `thesis`, `contradiction_is_absence` |
 | §4.1, N1–N10: P ∧ ¬P ↔ F; no assignment satisfies it; no realized state instantiates same-respect contradiction; the record is nonempty (E11, E12), the world is here | `N4`, `N5`, `N9`, `N10` |
 | A1.9 [M]: 0 = ∞. Every ray passes through P (E10), and the rays are infinitely many (E19): nothing is realized at P, and every possible state is a direction out of P | `A1_9_every_ray`, `A1_9_rays_distinct`, `A1_9` |
 | A2, Lemma 1: from P and a realized record, a first disturbance P → P′ ≠ P | `A2` |
@@ -242,7 +243,7 @@ These are two different relationships. The physical couplings carry one channel'
 The thesis is that E is used as it stands. Where an established result enters, the file names it:
 
 - **Kolmogorov complexity bounds (E23–E25).** A Martin-Löf random record has K(x↾n) ≥ n − c₀, and a program's output has K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′. Mathlib doesn't define Kolmogorov complexity, so these enter as stated. Lean proves the contradiction that follows from them.
-- **Noether in general (E35).** It enters where A4.7 cites it. The case A4.2 uses is proved directly: the charge of the phase symmetry is conserved. Bell (E26) and the divergence theorem (E32) no longer come from E. `UEFBell.lean` and `UEFGauss.lean` prove them.
+- **Noether (E35).** Proved (`E35_noether`): along a solution of the Euler–Lagrange equations, the charge of a continuous symmetry never changes. The case A4.2 uses is proved directly as well: the charge of the phase symmetry is conserved. Bell (E26) and the divergence theorem (E32) no longer come from E. `UEFBell.lean` and `UEFGauss.lean` prove them.
 - **The K7 lock.** It is defined as §5.3 and 8.7 state it, [M] "by construction": no channel can stay at zero unless all seven do. `lock_local` proves it near Ξ = 0 from its local form, and Nagumo's invariance step is proved (`invariant_tangent`). The realized world enters through the step from existence above.
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
 - **Chapter 13's curvature steps.** The variation δ(R√−g)/δg^{μν} = G_μν√−g (Theorem 12, Step 6), the weak-field G₀₀ = 2∇²Φ/c², the reduction of G_μν = 0 to the two radial equations (Theorem 14, Step 4), the FLRW components G₀₀ and G_ii (Theorem 18, Step 3), Birkhoff's theorem and the Bianchi identity all need Lorentzian curvature. They enter as the manuscript states them, and Lean proves every step after them.
