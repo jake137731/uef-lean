@@ -132,8 +132,8 @@ theorem photon_needs_dark [TopologicalSpace Ω] [T2Space Ω] [MeasurableSpace Ω
   apply (dark_open hC).measure_pos μ
   by_contra hne
   rw [Set.not_nonempty_iff_eq_empty] at hne
-  have h0 : photon π lam S (interface C) = 0 := no_dark_no_photon hne π lam S
-  exact h (by rw [h0]; exact holonomy_zero γ)
+  have h0 : (photon π lam S (interface C) : U →ᵇ (U →L[ℝ] ℝ)) = 0 := no_dark_no_photon hne π lam S
+  exact h ((congrArg (fun A => holonomy A γ) h0).trans (holonomy_zero γ))
 
 end Photon
 
