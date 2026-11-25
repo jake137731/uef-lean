@@ -37,7 +37,9 @@ The seven channels are locked [M], not coupled [P]. No channel has a ground stat
 - Tests 1–7: one open channel opens all seven.
 - Ξ = 0 is the one closed, certifiable ground state, and the kernel Ker(Φ) is not empty.
 
-**The classical readings.** The seven channels read on specific configurations give the classical statements of Chapters 25–32. Each chapter's mathematics is proved from its channel at zero. The readings hold together at a state in the kernel. That a state of our world carries them is the step §4.4 and §8.7 take from existence, "the realized world is what shows it." Lean proves that this step and the seven readings are one statement (`pinned_world`), and does not derive it from E.
+**The step from existence.** In the author's words, §4.4: "The realized world exists, so its ground state lies in Ker(Φ)," and §8.7: "the realized world is held." The step is taken from existence, not derived from E, and the Lean takes it the same way.
+
+**The classical readings.** The seven channels read on specific configurations give the classical statements of Chapters 25–32. Each chapter's mathematics is proved from its channel at zero, and the readings hold together at a state in the kernel. Lean proves that the step from existence and the seven readings are one statement (`pinned_world`).
 
 ## There is no closure operator
 
@@ -241,7 +243,7 @@ The thesis is that E is used as it stands. Where an established result enters, t
 
 - **Kolmogorov complexity bounds (E23–E25).** A Martin-Löf random record has K(x↾n) ≥ n − c₀, and a program's output has K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′. Mathlib doesn't define Kolmogorov complexity, so these enter as stated. Lean proves the contradiction that follows from them.
 - **Noether in general (E35).** It enters where A4.7 cites it. The case A4.2 uses is proved directly: the charge of the phase symmetry is conserved. Bell (E26) and the divergence theorem (E32) no longer come from E. `UEFBell.lean` and `UEFGauss.lean` prove them.
-- **The K7 lock.** It is defined as §5.3 and 8.7 state it, [M] "by construction": no channel can stay at zero unless all seven do. `lock_local` proves it near Ξ = 0 from its local form, and Nagumo's invariance step is proved (`invariant_tangent`). Whether our world satisfies the lock is the one open statement above.
+- **The K7 lock.** It is defined as §5.3 and 8.7 state it, [M] "by construction": no channel can stay at zero unless all seven do. `lock_local` proves it near Ξ = 0 from its local form, and Nagumo's invariance step is proved (`invariant_tangent`). The realized world enters through the step from existence above.
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
 - **Chapter 13's curvature steps.** The variation δ(R√−g)/δg^{μν} = G_μν√−g (Theorem 12, Step 6), the weak-field G₀₀ = 2∇²Φ/c², the reduction of G_μν = 0 to the two radial equations (Theorem 14, Step 4), the FLRW components G₀₀ and G_ii (Theorem 18, Step 3), Birkhoff's theorem and the Bianchi identity all need Lorentzian curvature. They enter as the manuscript states them, and Lean proves every step after them.
 - **Lines of Chapters 12 and 13 used as stated.** These enter as the lines the chapters state: that the gauge coupling lives on R (Theorem 2), that p_dark = 0 (Theorem 3), that the electroweak projection loses its holonomy when S_{∂R} = 0 (Theorem 1, Step 5), and that the horizon encoding is injective and the evaporation isometric (Theorem 16, Step 6).
