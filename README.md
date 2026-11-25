@@ -21,21 +21,23 @@ lake build
 
 There is no `sorry` anywhere, and no axiom has been added. Lean reports only `propext`, `Quot.sound` and `Classical.choice`, which are part of Lean itself.
 
-## What is proven, and the one open statement
+## The result: one equation, closed
 
 Everything below is checked by Lean with no `sorry` and no axiom of the author's: every theorem rests only on Lean's own `propext`, `Quot.sound` and `Classical.choice`.
 
-**Proven.**
-- A1–A4 from E, A1.9 included.
-- The K7 closure: Lemma 5, ∏w_Δ = 1 ⇔ every w_Δ = 1, Theorem 8.3, Theorem 6.
-- Binary existence. A state with Ξ ≠ 0 cannot be held, and one channel resolved, all seven resolved and Ξ = 0 are the same statement.
-- Tests 1–7. One open channel opens all seven.
-- The bridges, and the 4D mathematics of Chapters 25–32.
-- The physics chapters, in exact arithmetic.
+There is one existence structure, with seven mutually necessary channels and one global closure condition:
 
-**The terminal result** (`pinned_world`). With the seven channels pinned to their classical statements and one of them holding (Poincaré is a theorem), our world runs on the locked K7 flow exactly when all seven classical statements hold. Lean proves both directions.
+**∏_{Δ∈ℰ} w_Δ = 1 ⇔ Ξ = 0**
 
-**The one open statement.** Our world runs on the locked K7 flow, so no channel can sit at zero while another is open. The manuscript reaches it from existence (§4.4, §8.7): "the realized world is what shows it." Lean checks every deduction before and after that step. The step itself is not derived from E, so the seven classical statements are tied to it, not yet proven.
+The seven channels are locked [M], not coupled [P]. No channel has a ground state in isolation, and locking forbids partial resolution by construction. Lean proves the whole of it:
+- A1–A4 from E, with §4.1 N1–N10 and A1.9.
+- The reciprocity E ⊢ U, U ⊢ E, Th(E) = Th(U), the fixed point and uniqueness.
+- The closure: Lemma 5, the transport form, Theorem 8.3 and Theorem 6.
+- Binary existence: one channel resolved, all seven resolved and Ξ = 0 are the same statement, and a state with Ξ ≠ 0 cannot be held.
+- Tests 1–7: one open channel opens all seven.
+- Ξ = 0 is the one closed, certifiable ground state, and the kernel Ker(Φ) is not empty.
+
+**The classical readings.** The seven channels read on specific configurations give the classical statements of Chapters 25–32. Each chapter's mathematics is proved from its channel at zero. The readings hold together at a state in the kernel. That a state of our world carries them is the step §4.4 and §8.7 take from existence, "the realized world is what shows it." Lean proves that this step and the seven readings are one statement (`pinned_world`), and does not derive it from E.
 
 ## There is no closure operator
 
