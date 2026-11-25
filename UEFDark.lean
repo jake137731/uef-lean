@@ -69,8 +69,6 @@ theorem dark_measure_pos [TopologicalSpace Ω] [T2Space Ω] [MeasurableSpace Ω]
 
 section Photon
 
-open BoundedContinuousFunction
-
 variable {U V E : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [AddCommGroup V] [Module ℝ V]
   [NormedAddCommGroup E] [NormedSpace ℝ E]
 
@@ -78,8 +76,7 @@ variable {U V E : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [AddCommGrou
     S_∂R the part of S on the interface ∂R. The hypercharge field is B = π_U(S)|_R and the isospin
     field is W³ = π_U(S)|_∂R. The couplings are the projection strengths g′ = |λ|‖B‖ and
     g = |λ|‖W³‖, and the photon is A = B cos θ_W + W³ sin θ_W, with cos θ_W = g/√(g² + g′²) and
-    sin θ_W = g′/√(g² + g′²). The fields live in a normed space E; on U they are the bounded
-    continuous 1-forms U →ᵇ (U →L[ℝ] ℝ). -/
+    sin θ_W = g′/√(g² + g′²). The fields live in a normed space E. -/
 noncomputable def photon (π : (Ω → V) →ₗ[ℝ] E) (lam : ℝ) (S : Ω → V) (bd : Set Ω) : E :=
   let B := π (S - bd.indicator S)
   let W := π (bd.indicator S)
@@ -87,12 +84,12 @@ noncomputable def photon (π : (Ω → V) →ₗ[ℝ] E) (lam : ℝ) (S : Ω →
   let g := |lam| * ‖W‖
   (g / Real.sqrt (g ^ 2 + g' ^ 2)) • B + (g' / Real.sqrt (g ^ 2 + g' ^ 2)) • W
 
-/-- The holonomy of a 1-form A around a loop γ : [0, 1] → U: exp(i ∮_γ A). -/
-noncomputable def holonomy (A : U →ᵇ (U →L[ℝ] ℝ)) (γ : ℝ → U) : ℂ :=
+/-- The holonomy of a 1-form A on U around a loop γ : [0, 1] → U: exp(i ∮_γ A). -/
+noncomputable def holonomy (A : U → U →L[ℝ] ℝ) (γ : ℝ → U) : ℂ :=
   Complex.exp (Complex.I * ((∫ t in (0 : ℝ)..1, A (γ t) (deriv γ t) : ℝ) : ℂ))
 
 /-- The field strength F = dA: F_x(v, w) = (∂_v A)(w) − (∂_w A)(v). -/
-noncomputable def fieldStrength (A : U →ᵇ (U →L[ℝ] ℝ)) (x v w : U) : ℝ :=
+noncomputable def fieldStrength (A : U → U →L[ℝ] ℝ) (x v w : U) : ℝ :=
   fderiv ℝ A x v w - fderiv ℝ A x w v
 
 /-- Step 5 — tan θ_W = g′/g → ∞ as the boundary coupling g goes to zero. -/
@@ -106,16 +103,14 @@ theorem photon_vanishes (π : (Ω → V) →ₗ[ℝ] E) (lam : ℝ) (S : Ω → 
   simp [photon, h]
 
 /-- Step 5 — the zero field has zero field strength and trivial holonomy around every loop. -/
-theorem fieldStrength_zero (x v w : U) : fieldStrength (0 : U →ᵇ (U →L[ℝ] ℝ)) x v w = 0 := by
+theorem fieldStrength_zero (x v w : U) : fieldStrength (0 : U → U →L[ℝ] ℝ) x v w = 0 := by
   have h : fderiv ℝ (0 : U → U →L[ℝ] ℝ) x = 0 := fderiv_const_apply 0
-  simp only [fieldStrength, BoundedContinuousFunction.coe_zero, h, ContinuousLinearMap.zero_apply,
-    sub_self]
+  simp only [fieldStrength, h, ContinuousLinearMap.zero_apply, sub_self]
 
-theorem holonomy_zero (γ : ℝ → U) : holonomy (0 : U →ᵇ (U →L[ℝ] ℝ)) γ = 1 := by
+theorem holonomy_zero (γ : ℝ → U) : holonomy (0 : U → U →L[ℝ] ℝ) γ = 1 := by
   simp [holonomy]
 
-/-- Steps 4–5 — with no uncollapsed potential, ∂R = ∅, so S_∂R = 0: the photon vanishes, F = 0,
-    and every holonomy is trivial. -/
+/-- Steps 4–5 — with no uncollapsed potential, ∂R = ∅, so S_∂R = 0: the photon vanishes. -/
 theorem no_dark_no_photon [TopologicalSpace Ω] {C : Ω → Ω} (h : dark C = ∅)
     (π : (Ω → V) →ₗ[ℝ] E) (lam : ℝ) (S : Ω → V) :
     photon π lam S (interface C) = 0 := by
@@ -124,16 +119,18 @@ theorem no_dark_no_photon [TopologicalSpace Ω] {C : Ω → Ω} (h : dark C = �
   exact Set.indicator_empty' S
 
 /-- Step 6 — an electromagnetic field with a non-trivial holonomy on U needs a strictly positive
-    measure of uncollapsed potential: μ(Ω_dark) > 0. -/
+    measure of uncollapsed potential: μ(Ω_dark) > 0. A field of E is read as a 1-form on U by a
+    linear map ev. -/
 theorem photon_needs_dark [TopologicalSpace Ω] [T2Space Ω] [MeasurableSpace Ω] (μ : Measure Ω)
-    [μ.IsOpenPosMeasure] {C : Ω → Ω} (hC : Continuous C)
-    (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V) (γ : ℝ → U)
-    (h : holonomy (photon π lam S (interface C)) γ ≠ 1) : 0 < μ (dark C) := by
+    [μ.IsOpenPosMeasure] {C : Ω → Ω} (hC : Continuous C) (π : (Ω → V) →ₗ[ℝ] E)
+    (ev : E →ₗ[ℝ] (U → U →L[ℝ] ℝ)) (lam : ℝ) (S : Ω → V) (γ : ℝ → U)
+    (h : holonomy (ev (photon π lam S (interface C))) γ ≠ 1) : 0 < μ (dark C) := by
   apply (dark_open hC).measure_pos μ
   by_contra hne
   rw [Set.not_nonempty_iff_eq_empty] at hne
-  have h0 : (photon π lam S (interface C) : U →ᵇ (U →L[ℝ] ℝ)) = 0 :=
-    no_dark_no_photon (E := U →ᵇ (U →L[ℝ] ℝ)) hne π lam S
+  have h0 : ev (photon π lam S (interface C)) = 0 := by
+    rw [no_dark_no_photon hne π lam S]
+    exact map_zero ev
   exact h ((congrArg (fun A => holonomy A γ) h0).trans (holonomy_zero γ))
 
 end Photon
