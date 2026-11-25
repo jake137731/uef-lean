@@ -71,15 +71,16 @@ section Photon
 
 open BoundedContinuousFunction
 
-variable {U V : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [AddCommGroup V] [Module ℝ V]
+variable {U V E : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [AddCommGroup V] [Module ℝ V]
+  [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- Theorem 1, Step 3 with Theorem 8, Steps 1–3 and 7. The current splits as S = S_R + S_∂R, with
     S_∂R the part of S on the interface ∂R. The hypercharge field is B = π_U(S)|_R and the isospin
     field is W³ = π_U(S)|_∂R. The couplings are the projection strengths g′ = |λ|‖B‖ and
     g = |λ|‖W³‖, and the photon is A = B cos θ_W + W³ sin θ_W, with cos θ_W = g/√(g² + g′²) and
-    sin θ_W = g′/√(g² + g′²). A field on U is a bounded continuous 1-form. -/
-noncomputable def photon (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V)
-    (bd : Set Ω) : U →ᵇ (U →L[ℝ] ℝ) :=
+    sin θ_W = g′/√(g² + g′²). The fields live in a normed space E; on U they are the bounded
+    continuous 1-forms U →ᵇ (U →L[ℝ] ℝ). -/
+noncomputable def photon (π : (Ω → V) →ₗ[ℝ] E) (lam : ℝ) (S : Ω → V) (bd : Set Ω) : E :=
   let B := π (S - bd.indicator S)
   let W := π (bd.indicator S)
   let g' := |lam| * ‖B‖
@@ -100,12 +101,9 @@ theorem tan_unbounded {g' : ℝ} (hg' : 0 < g') :
   simpa only [div_eq_mul_inv] using tendsto_inv_nhdsGT_zero.const_mul_atTop hg'
 
 /-- Step 5 — if S_∂R = 0, then W³ = 0 and g = 0, so cos θ_W = 0 and the photon A is zero. -/
-theorem photon_vanishes (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V)
-    (bd : Set Ω) (h : bd.indicator S = 0) : photon π lam S bd = 0 := by
-  have hW : π (bd.indicator S) = (0 : U →ᵇ (U →L[ℝ] ℝ)) := by
-    rw [h]
-    exact map_zero π
-  simp only [photon, hW, norm_zero, mul_zero, zero_div, zero_smul, smul_zero, add_zero]
+theorem photon_vanishes (π : (Ω → V) →ₗ[ℝ] E) (lam : ℝ) (S : Ω → V) (bd : Set Ω)
+    (h : bd.indicator S = 0) : photon π lam S bd = 0 := by
+  simp [photon, h]
 
 /-- Step 5 — the zero field has zero field strength and trivial holonomy around every loop. -/
 theorem fieldStrength_zero (x v w : U) : fieldStrength (0 : U →ᵇ (U →L[ℝ] ℝ)) x v w = 0 := by
@@ -119,7 +117,7 @@ theorem holonomy_zero (γ : ℝ → U) : holonomy (0 : U →ᵇ (U →L[ℝ] ℝ
 /-- Steps 4–5 — with no uncollapsed potential, ∂R = ∅, so S_∂R = 0: the photon vanishes, F = 0,
     and every holonomy is trivial. -/
 theorem no_dark_no_photon [TopologicalSpace Ω] {C : Ω → Ω} (h : dark C = ∅)
-    (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V) :
+    (π : (Ω → V) →ₗ[ℝ] E) (lam : ℝ) (S : Ω → V) :
     photon π lam S (interface C) = 0 := by
   apply photon_vanishes
   rw [interface_empty C h]
@@ -134,7 +132,8 @@ theorem photon_needs_dark [TopologicalSpace Ω] [T2Space Ω] [MeasurableSpace Ω
   apply (dark_open hC).measure_pos μ
   by_contra hne
   rw [Set.not_nonempty_iff_eq_empty] at hne
-  exact h (by rw [no_dark_no_photon hne, holonomy_zero])
+  have h0 : photon π lam S (interface C) = 0 := no_dark_no_photon hne π lam S
+  exact h (by rw [h0]; exact holonomy_zero γ)
 
 end Photon
 
