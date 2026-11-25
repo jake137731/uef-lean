@@ -113,7 +113,8 @@ Everything after that is the Law of Reciprocity.
 | A3.1–A3.3, Lemma 2: a G-equivariant rule fixes P | `lemma2` |
 | A3.4, Corollary 2.1 | `corollary2_1` |
 | A3.5–A3.6, spread: a law invariant under the symmetries of P is no single value, so Var(ε) > 0 | `spread` |
-| A3.8: no computable sequence is Martin-Löf random | `no_computable_is_random` |
+| A3.8: no computable sequence is Martin-Löf random, from the definition (the test of its own prefixes catches it) | `not_random_of_computable` |
+| A3.8 by the manuscript's route through E23–E25 | `no_computable_is_random` |
 | A3.9: a seeded process repeats | `seeded_repeats` |
 | A3.11, Lemma 3A, exhaustion: the first disturbance is a function of no prior state | `exhaustion` |
 | A4.3–A4.5, Lemma 4: zero flux through every region ⟹ ∇ₐSᵃ = 0 at every point | `lemma4` |
@@ -242,7 +243,7 @@ These are two different relationships. The physical couplings carry one channel'
 
 The thesis is that E is used as it stands. Where an established result enters, the file names it:
 
-- **Kolmogorov complexity bounds (E23–E25).** A Martin-Löf random record has K(x↾n) ≥ n − c₀, and a program's output has K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′. Mathlib doesn't define Kolmogorov complexity, so these enter as stated. Lean proves the contradiction that follows from them.
+- **Kolmogorov complexity bounds (E23–E25).** Lemma 3's line (ii), that no computable record is Martin-Löf random, is now proved from the definition of Martin-Löf randomness (`not_random_of_computable`): a computable sequence is caught by the test made of its own prefixes, with weight 2^{−n} at level n. That needs no Kolmogorov complexity. The bounds themselves, K(x↾n) ≥ n − c₀ for a random record (Levin–Schnorr) and K(x↾n) ≤ log₂ n + 2 log₂ log₂ n + c′ for a program's output, are the manuscript's route to the same line. Mathlib doesn't define Kolmogorov complexity, so they enter as cited, and Lean proves the contradiction that follows from them (`no_computable_is_random`).
 - **Noether (E35).** Proved (`E35_noether`): along a solution of the Euler–Lagrange equations, the charge of a continuous symmetry never changes. The case A4.2 uses is proved directly as well: the charge of the phase symmetry is conserved. Bell (E26) and the divergence theorem (E32) no longer come from E. `UEFBell.lean` and `UEFGauss.lean` prove them.
 - **The K7 lock.** It is defined as §5.3 and 8.7 state it, [M] "by construction": no channel can stay at zero unless all seven do. `lock_local` proves it near Ξ = 0 from its local form, and Nagumo's invariance step is proved (`invariant_tangent`). The realized world enters through the step from existence above.
 - **Einstein's equation and the identifications.** G_μν = 8πG₄T_μν, π_U(L|gauge+matter) = L_SM and π_U(L|metric) = L_GR enter from E. Mathlib has no Lorentzian curvature yet, so Lean can't derive Einstein's equation itself.
