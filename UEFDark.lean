@@ -69,6 +69,8 @@ theorem dark_measure_pos [TopologicalSpace Ω] [T2Space Ω] [MeasurableSpace Ω]
 
 section Photon
 
+open BoundedContinuousFunction
+
 variable {U V : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [AddCommGroup V] [Module ℝ V]
 
 /-- Theorem 1, Step 3 with Theorem 8, Steps 1–3 and 7. The current splits as S = S_R + S_∂R, with
