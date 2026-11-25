@@ -65,15 +65,102 @@ theorem dark_measure_pos [TopologicalSpace Ω] [T2Space Ω] [MeasurableSpace Ω]
   rw [interface_empty C hne] at h
   exact Set.not_nonempty_empty h
 
+/-! ## Theorem 1, Steps 4–6 — the photon needs the dark sector -/
+
+section Photon
+
+variable {U V : Type*} [NormedAddCommGroup U] [NormedSpace ℝ U] [AddCommGroup V] [Module ℝ V]
+
+/-- Theorem 1, Step 3 with Theorem 8, Steps 1–3 and 7. The current splits as S = S_R + S_∂R, with
+    S_∂R the part of S on the interface ∂R. The hypercharge field is B = π_U(S)|_R and the isospin
+    field is W³ = π_U(S)|_∂R. The couplings are the projection strengths g′ = |λ|‖B‖ and
+    g = |λ|‖W³‖, and the photon is A = B cos θ_W + W³ sin θ_W, with cos θ_W = g/√(g² + g′²) and
+    sin θ_W = g′/√(g² + g′²). A field on U is a bounded continuous 1-form. -/
+noncomputable def photon (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V)
+    (bd : Set Ω) : U →ᵇ (U →L[ℝ] ℝ) :=
+  let B := π (S - bd.indicator S)
+  let W := π (bd.indicator S)
+  let g' := |lam| * ‖B‖
+  let g := |lam| * ‖W‖
+  (g / Real.sqrt (g ^ 2 + g' ^ 2)) • B + (g' / Real.sqrt (g ^ 2 + g' ^ 2)) • W
+
+/-- The holonomy of a 1-form A around a loop γ : [0, 1] → U: exp(i ∮_γ A). -/
+noncomputable def holonomy (A : U →ᵇ (U →L[ℝ] ℝ)) (γ : ℝ → U) : ℂ :=
+  Complex.exp (Complex.I * ((∫ t in (0 : ℝ)..1, A (γ t) (deriv γ t) : ℝ) : ℂ))
+
+/-- The field strength F = dA: F_x(v, w) = (∂_v A)(w) − (∂_w A)(v). -/
+noncomputable def fieldStrength (A : U →ᵇ (U →L[ℝ] ℝ)) (x v w : U) : ℝ :=
+  fderiv ℝ A x v w - fderiv ℝ A x w v
+
+/-- Step 5 — tan θ_W = g′/g → ∞ as the boundary coupling g goes to zero. -/
+theorem tan_unbounded {g' : ℝ} (hg' : 0 < g') :
+    Filter.Tendsto (fun g : ℝ => g' / g) (nhdsWithin 0 (Set.Ioi 0)) Filter.atTop := by
+  simpa only [div_eq_mul_inv] using tendsto_inv_nhdsGT_zero.const_mul_atTop hg'
+
+/-- Step 5 — if S_∂R = 0, then W³ = 0 and g = 0, so cos θ_W = 0 and the photon A is zero. -/
+theorem photon_vanishes (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V)
+    (bd : Set Ω) (h : bd.indicator S = 0) : photon π lam S bd = 0 := by
+  simp [photon, h]
+
+/-- Step 5 — the zero field has zero field strength and trivial holonomy around every loop. -/
+theorem fieldStrength_zero (x v w : U) : fieldStrength (0 : U →ᵇ (U →L[ℝ] ℝ)) x v w = 0 := by
+  have h : fderiv ℝ (0 : U → U →L[ℝ] ℝ) x = 0 := fderiv_const_apply 0
+  simp only [fieldStrength, BoundedContinuousFunction.coe_zero, h, ContinuousLinearMap.zero_apply,
+    sub_self]
+
+theorem holonomy_zero (γ : ℝ → U) : holonomy (0 : U →ᵇ (U →L[ℝ] ℝ)) γ = 1 := by
+  simp [holonomy]
+
+/-- Steps 4–5 — with no uncollapsed potential, ∂R = ∅, so S_∂R = 0: the photon vanishes, F = 0,
+    and every holonomy is trivial. -/
+theorem no_dark_no_photon [TopologicalSpace Ω] {C : Ω → Ω} (h : dark C = ∅)
+    (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V) :
+    photon π lam S (interface C) = 0 := by
+  apply photon_vanishes
+  rw [interface_empty C h]
+  exact Set.indicator_empty' S
+
+/-- Step 6 — an electromagnetic field with a non-trivial holonomy on U needs a strictly positive
+    measure of uncollapsed potential: μ(Ω_dark) > 0. -/
+theorem photon_needs_dark [TopologicalSpace Ω] [T2Space Ω] [MeasurableSpace Ω] (μ : Measure Ω)
+    [μ.IsOpenPosMeasure] {C : Ω → Ω} (hC : Continuous C)
+    (π : (Ω → V) →ₗ[ℝ] (U →ᵇ (U →L[ℝ] ℝ))) (lam : ℝ) (S : Ω → V) (γ : ℝ → U)
+    (h : holonomy (photon π lam S (interface C)) γ ≠ 1) : 0 < μ (dark C) := by
+  apply (dark_open hC).measure_pos μ
+  by_contra hne
+  rw [Set.not_nonempty_iff_eq_empty] at hne
+  exact h (by rw [no_dark_no_photon hne, holonomy_zero])
+
+end Photon
+
 /-! ## Theorem 2 — no gauge coupling to the dark sector -/
 
-/-- Step 4 — a gauge coupling defined over the realized domain has no term between realized
-    matter and the dark sector: L_gauge[R, Ω_dark] = 0. -/
-theorem no_gauge_coupling {C : Ω → Ω} (L : Ω → Ω → ℝ)
-    (supp : ∀ x y, L x y ≠ 0 → x ∈ realized C ∧ y ∈ realized C) {x y : Ω} (hy : y ∈ dark C) :
-    L x y = 0 := by
-  by_contra h
-  exact (show C y ≠ y from hy) (supp x y h).2
+/-- Step 4 — standard gauge couplings [P] are defined strictly over the realized domain R: the
+    coupling density ℓ between two states where both are realized, and nothing elsewhere. -/
+noncomputable def gaugeCoupling (C : Ω → Ω) (ℓ : Ω → Ω → ℝ) (x y : Ω) : ℝ :=
+  (realized C ×ˢ realized C).indicator (fun p => ℓ p.1 p.2) (x, y)
+
+/-- Step 4 — because Ω_dark ∩ R = ∅, the coupling between realized matter and the dark sector
+    vanishes identically: L_gauge[R, Ω_dark] = 0. -/
+theorem no_gauge_coupling (C : Ω → Ω) (ℓ : Ω → Ω → ℝ) (x : Ω) {y : Ω} (hy : y ∈ dark C) :
+    gaugeCoupling C ℓ x y = 0 :=
+  Set.indicator_of_not_mem (fun h => (show C y ≠ y from hy) (Set.mem_prod.mp h).2) _
+
+/-- Step 4 — the same over the whole dark sector: ∫_{Ω_dark} L_gauge(x, ·) dμ = 0. -/
+theorem no_gauge_coupling_integral [MeasurableSpace Ω] (μ : Measure Ω) (C : Ω → Ω)
+    (ℓ : Ω → Ω → ℝ) (x : Ω) : ∫ y in dark C, gaugeCoupling C ℓ x y ∂μ = 0 :=
+  setIntegral_eq_zero_of_forall_eq_zero fun _ hy => no_gauge_coupling C ℓ x hy
+
+/-- Definition 1.2 — realized states generate manifest 4D momentum, and the uncollapsed potential
+    has no collapsed 4D localization. The manifest momentum of a state is its momentum p when it
+    is realized, and zero otherwise. -/
+noncomputable def manifestMomentum {P : Type*} [Zero P] (C : Ω → Ω) (p : Ω → P) : Ω → P :=
+  (realized C).indicator p
+
+/-- Step 2 — an uncollapsed state carries zero 4-momentum: C_λ(ψ) ≠ ψ ⟹ ⟨ψ|P^μ|ψ⟩ = 0. -/
+theorem dark_momentum {P : Type*} [Zero P] {C : Ω → Ω} (p : Ω → P) {x : Ω} (hx : x ∈ dark C) :
+    manifestMomentum C p x = 0 :=
+  Set.indicator_of_not_mem (show x ∉ realized C from hx) p
 
 /-! ## Theorem 3 — the dark sector gravitates -/
 
@@ -83,6 +170,27 @@ theorem action_splits [MeasurableSpace Ω] (μ : Measure Ω) {C : Ω → Ω}
     ∫ x, L x ∂μ = (∫ x in realized C, L x ∂μ) + ∫ x in dark C, L x ∂μ := by
   rw [dark_eq_compl]
   exact (integral_add_compl hR hL).symm
+
+/-- The kinetic pressure of states k with energies E_k and 3-momenta P_k in a volume V:
+    p = (1/3V) Σ_k |P_k|²/E_k, the isotropic part of the momentum flux Σ_k P_k^i P_k^j/E_k. It is the
+    pressure that thermal velocity dispersion gives. -/
+noncomputable def kineticPressure {ι : Type*} [Fintype ι] (V : ℝ) (E : ι → ℝ)
+    (P : ι → EuclideanSpace ℝ (Fin 3)) : ℝ :=
+  1 / (3 * V) * ∑ k, ‖P k‖ ^ 2 / E k
+
+/-- Step 4 — uncollapsed states carry no momentum (Theorem 2, Step 2), so they have no velocity
+    dispersion: p_dark = 0, whatever their energies. -/
+theorem p_dark_zero {ι : Type*} [Fintype ι] {C : Ω → Ω} (p : Ω → EuclideanSpace ℝ (Fin 3))
+    (ψ : ι → Ω) (hψ : ∀ k, ψ k ∈ dark C) (V : ℝ) (E : ι → ℝ) :
+    kineticPressure V E (fun k => manifestMomentum C p (ψ k)) = 0 := by
+  have h : ∀ k, manifestMomentum C p (ψ k) = 0 := fun k => dark_momentum p (hψ k)
+  simp [kineticPressure, h]
+
+/-- Step 4 — w = p_dark/ρ_dark = 0, the equation of state of cold dark matter. -/
+theorem w_dark_zero {ι : Type*} [Fintype ι] {C : Ω → Ω} (p : Ω → EuclideanSpace ℝ (Fin 3))
+    (ψ : ι → Ω) (hψ : ∀ k, ψ k ∈ dark C) (V : ℝ) (E : ι → ℝ) (ρ : ℝ) :
+    kineticPressure V E (fun k => manifestMomentum C p (ψ k)) / ρ = 0 := by
+  rw [p_dark_zero p ψ hψ, zero_div]
 
 /-- Step 6 (E38) — with η = μ(R)/μ(Ω), the dark-to-visible ratio is (1 − η)/η. -/
 theorem dark_ratio (mR mΩ : ℝ) (hR : 0 < mR) (hΩ : 0 < mΩ) :

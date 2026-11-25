@@ -77,6 +77,17 @@ import UEFPredictions
 #print axioms UEF.Golden.invPhi_self_similar
 #print axioms UEF.Dark.partition
 #print axioms UEF.Dark.dark_measure_pos
+#print axioms UEF.Dark.tan_unbounded
+#print axioms UEF.Dark.photon_vanishes
+#print axioms UEF.Dark.fieldStrength_zero
+#print axioms UEF.Dark.holonomy_zero
+#print axioms UEF.Dark.no_dark_no_photon
+#print axioms UEF.Dark.photon_needs_dark
+#print axioms UEF.Dark.no_gauge_coupling
+#print axioms UEF.Dark.no_gauge_coupling_integral
+#print axioms UEF.Dark.dark_momentum
+#print axioms UEF.Dark.p_dark_zero
+#print axioms UEF.Dark.w_dark_zero
 #print axioms UEF.Dark.eta_planck
 #print axioms UEF.Dark.units_forced
 #print axioms UEF.Gravity.horizon_entropy
