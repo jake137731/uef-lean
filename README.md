@@ -1,3 +1,5 @@
+[![Check the UEF in Lean](https://github.com/jake137731/uef-lean/actions/workflows/check.yml/badge.svg)](https://github.com/jake137731/uef-lean/actions/workflows/check.yml)
+
 # The UEF in Lean 4
 
 `UEF.lean` is the Unified Existence Framework written in Lean 4: the Law of Reciprocity and the Reciprocal Existence Theorem. Every equation in it comes from the manuscript (`01_Manuscript.pdf`, `S8_One_Equation_Compression.pdf`) and is marked with its section, page and line.
