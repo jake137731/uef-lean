@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use or reference this formalization, please cite it as below."
+title: "The Unified Existence Framework (UEF) in Lean 4"
+authors:
+  - family-names: "McDonough"
+    given-names: "Jake"
+    affiliation: "Institute for Higher Thinking"
+date-released: 2026-11-25
+version: "1.0.0"
+repository-code: "https://github.com/jake137731/uef-lean"
+keywords:
+  - lean4
+  - mathlib
+  - formal-verification
+  - ontology
+  - foundations
