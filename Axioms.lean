@@ -27,6 +27,7 @@ import UEFHodge
 import UEFPoincare
 import UEFErdos
 import UEFPredictions
+import UEFReciprocity
 
 #print axioms UEF.the_one_equation
 #print axioms UEF.Reals.transport
@@ -166,3 +167,8 @@ import UEFPredictions
 #print axioms UEF.Erdos.erdos_AP
 #print axioms UEF.Erdos.green_tao
 #print axioms UEF.Predictions.F10_jarlskog
+#print axioms UEF.Reciprocity.one_theory
+#print axioms UEF.Reciprocity.uef_doc_reciprocal
+#print axioms UEF.Reciprocity.each_in_the_other
+#print axioms UEF.Reciprocity.nothing_added
+#print axioms UEF.Reciprocity.one_reciprocal

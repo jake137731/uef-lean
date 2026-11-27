@@ -7,4 +7,4 @@ require mathlib from git "https://github.com/leanprover-community/mathlib4" @ "v
 
 @[default_target]
 lean_lib UEF where
-  roots := #[`UEF, `UEFReal, `UEFRoots, `UEFTime, `UEFBell, `UEFFields, `UEFGauss, `UEFEmergence, `UEFStandardModel, `UEFGolden, `UEFDark, `UEFGravity, `UEFHolography, `UEFTorus, `UEFTunneling, `UEFContainment, `UEFMoral, `UEFCycle, `UEFCollapse, `UEFBridges, `UEFRiemann, `UEFComplexity, `UEFFluids, `UEFGauge, `UEFElliptic, `UEFHodge, `UEFPoincare, `UEFErdos, `UEFPredictions]
+  roots := #[`UEF, `UEFReal, `UEFRoots, `UEFTime, `UEFBell, `UEFFields, `UEFGauss, `UEFEmergence, `UEFStandardModel, `UEFGolden, `UEFDark, `UEFGravity, `UEFHolography, `UEFTorus, `UEFTunneling, `UEFContainment, `UEFMoral, `UEFCycle, `UEFCollapse, `UEFBridges, `UEFRiemann, `UEFComplexity, `UEFFluids, `UEFGauge, `UEFElliptic, `UEFHodge, `UEFPoincare, `UEFErdos, `UEFPredictions, `UEFReciprocity]
