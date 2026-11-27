@@ -1,0 +1,174 @@
+✔ [5838/5868] Built UEF
+✔ [5839/5868] Built UEFHodge
+✔ [5840/5868] Built UEFElliptic
+✔ [5841/5868] Built UEFPredictions
+✔ [5842/5868] Built UEFPoincare
+✔ [5843/5868] Built UEFBridges
+✔ [5844/5868] Built UEFTorus
+✔ [5845/5868] Built UEFCycle
+✔ [5846/5868] Built UEFComplexity
+✔ [5847/5868] Built UEFHolography
+✔ [5848/5868] Built UEFContainment
+✔ [5849/5868] Built UEFCollapse
+✔ [5850/5868] Built UEFStandardModel
+✔ [5851/5868] Built UEFBell
+✔ [5852/5868] Built UEFEmergence
+✔ [5853/5868] Built UEFFields
+✔ [5854/5868] Built UEFGauge
+✔ [5855/5868] Built UEFGravity
+✔ [5856/5868] Built UEFMoral
+✔ [5857/5868] Built UEFTime
+✔ [5858/5868] Built UEFTunneling
+✔ [5859/5868] Built UEFGolden
+✔ [5860/5868] Built UEFRiemann
+✔ [5861/5868] Built UEFErdos
+✔ [5862/5868] Built UEFRoots
+✔ [5863/5868] Built UEFReciprocity
+✔ [5864/5868] Built UEFReal
+✔ [5865/5868] Built UEFFluids
+✔ [5866/5868] Built UEFDark
+✔ [5867/5868] Built UEFGauss
+Build completed successfully.
+'UEF.the_one_equation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Reals.transport' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Reals.proposition_8_6' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Reals.inv_phi' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Reals.kk_mode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Reals.fibre_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.roots' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.A1_9_every_ray' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.A1_9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.thesis' does not depend on any axioms
+'UEF.Roots.contradiction_is_absence' depends on axioms: [propext]
+'UEF.Roots.N4' does not depend on any axioms
+'UEF.Roots.E35_noether' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.not_random_of_computable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.N9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.N10' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.lemma2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.spread' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.lemma4' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.conservation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.no_computable_is_random' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Roots.seeded_repeats' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Time.theorem6' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Time.time_requires_events' does not depend on any axioms
+'UEF.Bell.chsh' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bell.quantum_S' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bell.no_predetermined_strategy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Fields.positive_definite' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Fields.no_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gauss.E32' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gauss.A4' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gauss.phase_invariant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gauss.charge_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Emergence.record_grows' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Emergence.labels_preserve_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.quadratic_negative' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.vacuum_is_minimum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.higgs_mass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.lambda_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.asymptotic_freedom' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.mass_ratio' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.tan_sq_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.StandardModel.weyl_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Golden.binary_partition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Golden.whole' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Golden.theorem19' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Golden.invPhi_self_similar' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.partition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.dark_measure_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.tan_unbounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.photon_vanishes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.fieldStrength_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.holonomy_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.no_dark_no_photon' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.photon_needs_dark' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.no_gauge_coupling' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.no_gauge_coupling_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.dark_momentum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.p_dark_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.w_dark_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.eta_planck' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Dark.units_forced' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.horizon_entropy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.horizon_correction_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.tortoise' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.ingoing_form' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.ingoing_det' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.ingoing_smooth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.infall_crosses' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.infall_time' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.planck_energy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.friedmann_acceleration' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.geodesic_equation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.grr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.flat_fixes_K' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gravity.friedmann_second' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Holography.EF_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Holography.bridge_mass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Holography.H_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Torus.attack_detected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Tunneling.closed_length' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Tunneling.radial_green' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Tunneling.Ccorr_one_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Tunneling.lock_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Containment.feasible_later' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Containment.contracts_to_ker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Containment.gtc_strict' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Moral.energy_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Moral.free_energy_falls' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Cycle.tortoise' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Cycle.dust_conserved' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Cycle.winding_integer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Collapse.minimizer_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Collapse.identity_attractor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Collapse.drift_log' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Collapse.laplace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Collapse.coherence_one_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.closure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.constant_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.B5' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Riemann.transport_determinant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Riemann.spectral_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Riemann.xi4_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Riemann.theorem_xi4_5' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.K7.certifiable_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.invariant_tangent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.cannot_stay' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.cannot_be_held' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.binary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.one_opens_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.tests_spread' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.all_open_at_once' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.counterfactual_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.together' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.pinned_lock_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.pinned_world' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.noether_defect' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.closed_loop_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.xi_from_action' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.action_to_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.ker_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.joint_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.noncontradiction_to_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.binary_existence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Bridges.constantly_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Complexity.Θ_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Complexity.threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Fluids.enstrophy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gauge.decoupling' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Gauge.transverse_mass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Elliptic.sha_finite' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Hodge.steps_9_10' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Poincare.volume_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Erdos.power_law' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Erdos.isometries_of_Z' depends on axioms: [propext, Quot.sound]
+'UEF.Erdos.erdos_AP' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Erdos.green_tao' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Predictions.F10_jarlskog' depends on axioms: [propext, Classical.choice, Quot.sound]
+'UEF.Reciprocity.one_theory' depends on axioms: [propext, Quot.sound]
+'UEF.Reciprocity.uef_doc_reciprocal' depends on axioms: [propext, Quot.sound]
+'UEF.Reciprocity.each_in_the_other' depends on axioms: [propext, Quot.sound]
+'UEF.Reciprocity.nothing_added' depends on axioms: [propext, Quot.sound]
+'UEF.Reciprocity.one_reciprocal' depends on axioms: [propext, Quot.sound]
